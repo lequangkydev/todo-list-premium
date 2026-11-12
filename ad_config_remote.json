@@ -1,0 +1,79 @@
+{
+  "showAllAds": true,
+  "nativeFullDisplayMode": 1,
+  "interInterval": 15,
+  "nativeInterval": 10,
+  "buttonXSize": 24,
+  "id2RequestTimeout": 0,
+  "cbFetchInterval": 7,
+  "reloadNativeAdWhenClicked": false,
+  "keepMetaAd": false,
+  "defaultNativeStyle": {
+    "loadingBackground": "#FAFAFA",
+    "loadingShimmerBase": "#0D9B5BEF",
+    "loadingShimmerHighlight": "#339B5BEF",
+    "fullAds": {
+      "buttonBackground": "#9B5BEF",
+      "buttonText": "#FFFFFF",
+      "adRadius": 10,
+      "buttonRadius": 8,
+      "buttonPosition": "top",
+      "buttonHeights": { "large": 52, "noMedia": 48, "medium": 44, "small": 36, "adaptive": 40 }
+    },
+    "normal": {
+      "background": "#FAFAFA",
+      "buttonBackground": "#9B5BEF",
+      "buttonText": "#FFFFFF",
+      "adRadius": 10,
+      "buttonRadius": 8,
+      "adBorderWidth": 1,
+      "adBorderColor": "#F2F3F5",
+      "buttonPosition": "bottom",
+      "buttonHeights": { "large": 52, "noMedia": 48, "medium": 44, "small": 36, "adaptive": 40 }
+    }
+  },
+  "adUnitsConfig": {
+    "openOnResume": { "id": "ca-app-pub-3940256099942544/9257395921", "id2": "", "enableFullAds": true, "enableNormal": true, "id2RequestPercentage": 100 },
+    "nativeResume": {
+      "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100,
+      "nativeAppOpenConfig": { "xCountdown": true, "countdownSeconds": 2, "xClickToClose": false, "xAdClickPercent": 50, "xAdClickPercentMeta": 70, "clickToPass": true }
+    },
+    "interSplash": { "id": "ca-app-pub-3940256099942544/1033173712", "id2": "", "enableFullAds": true, "enableNormal": true, "id2RequestPercentage": 100 },
+    "openSplash": { "id": "ca-app-pub-3940256099942544/9257395921", "id2": "", "enableFullAds": true, "enableNormal": true, "id2RequestPercentage": 100 },
+    "nativeSplash": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "typeFullAds": 1, "typeNormal": 1, "id2RequestPercentage": 100 },
+    "bannerAll": { "id": "ca-app-pub-3940256099942544/6300978111", "id2": "", "enableFullAds": true, "enableNormal": true, "id2RequestPercentage": 100 },
+    "nativeBanner": {
+      "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": true, "typeFullAds": 4, "typeNormal": 4, "id2RequestPercentage": 100,
+      "nativeBannerConfig": { "isCollapsible": true, "xClickToClose": false, "xAdClickPercent": 100 },
+      "extraKeys": {
+        "nativeLanguageSetting": { "enableFullAds": true, "enableNormal": true, "typeFullAds": 5, "typeNormal": 4 },
+        "nativeWifiDevices": { "enableFullAds": true, "enableNormal": true },
+        "nativeIrDevices": { "enableFullAds": true, "enableNormal": true },
+        "nativeSaveRemote": { "enableFullAds": true, "enableNormal": true },
+        "nativeHistory": { "enableFullAds": true, "enableNormal": true }
+      }
+    },
+    "nativeBannerExpand": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "id2RequestPercentage": 100 },
+    "nativeLanguage": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": true, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativeLanguageSelect": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": true, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativeIntro1": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": true, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativeIntro2": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": false, "enableNormal": false, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativeFullIntro2": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100 },
+    "nativeIntro3": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": false, "enableNormal": true, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativeFullIntro3": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100 },
+    "nativeIntro4": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "interIntro": { "id": "ca-app-pub-3940256099942544/1033173712", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100 },
+    "nativePermission": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativePermissionStorage": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "typeFullAds": 5, "typeNormal": 5, "id2RequestPercentage": 100 },
+    "nativeFull": {
+      "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100,
+      "nativeInterstitialConfig": { "openStoreCorner": 1, "closeCorner": 0, "showOpenStore": false, "xCountdown": true, "countdownSeconds": 1, "xClickToClose": false, "xAdClickPercent": 50, "xAdClickPercentMeta": 50, "clickToPass": true }
+    },
+    "nativeFullSplash": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100 },
+    "interSplashUninstall": { "id": "ca-app-pub-3940256099942544/1033173712", "id2": "", "enableFullAds": true, "enableNormal": true, "id2RequestPercentage": 100 },
+    "interUninstall": { "id": "ca-app-pub-3940256099942544/1033173712", "id2": "", "enableFullAds": true, "enableNormal": false, "id2RequestPercentage": 100 },
+    "nativeUninstall": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "typeFullAds": 4, "typeNormal": 4, "id2RequestPercentage": 100 },
+    "nativeExit": { "id": "ca-app-pub-3940256099942544/2247696110", "id2": "", "enableFullAds": true, "enableNormal": false, "typeFullAds": 4, "typeNormal": 4, "id2RequestPercentage": 100 },
+    "interAll": { "id": "ca-app-pub-3940256099942544/1033173712", "id2": "", "enableFullAds": true, "enableNormal": true, "id2RequestPercentage": 100, "opacity": 1 }
+  }
+}

@@ -1,0 +1,29 @@
+flavors:
+  dev:
+    app:
+      name: "Todo List Dev"
+
+    android:
+      applicationId: "com.vtn.todolist.dev"
+      icon: "assets/images/logo/rounded_logo.png"
+      firebase:
+        config: "android/app/src/dev/google-services.json"
+    ios:
+      bundleId: "com.vtn.todolist.dev"
+      icon: "assets/images/logo/logo.png"
+      firebase:
+        config: "ios/Runner/dev/GoogleService-Info.plist"
+
+  prod:
+    app:
+      name: "Todo List"
+    android:
+      applicationId: "com.vtn.todolist"
+      icon: "assets/images/logo/rounded_logo.png"
+      firebase:
+        config: "android/app/src/prod/google-services.json"
+    ios:
+      bundleId: "com.vtn.todolist"
+      icon: "assets/images/logo/logo.png"
+      firebase:
+        config: "ios/Runner/prod/GoogleService-Info.plist"

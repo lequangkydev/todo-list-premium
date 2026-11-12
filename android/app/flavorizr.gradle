@@ -1,0 +1,16 @@
+android {
+    flavorDimensions += "flavor-type"
+
+    productFlavors {
+        dev {
+            dimension "flavor-type"
+            applicationId "com.vtn.todolist.dev"
+            resValue "string", "app_name", "Todo List Dev"
+        }
+        prod {
+            dimension "flavor-type"
+            applicationId "com.vtn.todolist"
+            resValue "string", "app_name", "Todo List"
+        }
+    }
+}
