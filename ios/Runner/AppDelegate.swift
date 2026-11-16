@@ -4,6 +4,7 @@ import FirebaseCore
 import google_mobile_ads
 import FBAudienceNetwork
 import FBSDKCoreKit
+import flutter_local_notifications
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -19,6 +20,11 @@ import FBSDKCoreKit
         )
         
         GeneratedPluginRegistrant.register(with: self)
+        // Notification actions (Done / Snooze) run in a background isolate
+        FlutterLocalNotificationsPlugin.setPluginRegistrantCallback { registry in
+            GeneratedPluginRegistrant.register(with: registry)
+        }
+        UNUserNotificationCenter.current().delegate = self as UNUserNotificationCenterDelegate
         //    FirebaseApp.configure()
         registerAdFactory()
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)

@@ -27,23 +27,23 @@ class NotificationPermissionDialog extends StatefulWidget {
 }
 
 class _NotificationPermissionDialogState
-    extends State<NotificationPermissionDialog> with TickerProviderStateMixin {
-  late final AnimationController _animationController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 500),
-    lowerBound: 1,
-    upperBound: 1.05,
-  )
-    ..addListener(
-      () {
-        if (_animationController.isCompleted) {
-          _animationController.reverse();
-        } else if (_animationController.isDismissed) {
-          _animationController.forward();
-        }
-      },
-    )
-    ..forward();
+    extends State<NotificationPermissionDialog>
+    with TickerProviderStateMixin {
+  late final AnimationController _animationController =
+      AnimationController(
+          vsync: this,
+          duration: const Duration(milliseconds: 500),
+          lowerBound: 1,
+          upperBound: 1.05,
+        )
+        ..addListener(() {
+          if (_animationController.isCompleted) {
+            _animationController.reverse();
+          } else if (_animationController.isDismissed) {
+            _animationController.forward();
+          }
+        })
+        ..forward();
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +63,7 @@ class _NotificationPermissionDialogState
               padding: const EdgeInsets.symmetric(vertical: 12).h,
               child: Text(
                 context.l10n.allowNotifications,
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -93,12 +90,11 @@ class _NotificationPermissionDialogState
                     scale: _animationController.value,
                     child: FilledButton(
                       style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 14,
-                          ).w,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.r),
-                          )),
+                        padding: const EdgeInsets.symmetric(vertical: 14).w,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.r),
+                        ),
+                      ),
                       onPressed: requestPermission,
                       child: Text(
                         context.l10n.continueText,
@@ -133,8 +129,9 @@ class _NotificationPermissionDialogState
 
   Future<void> requestPermission() async {
     context.maybePop();
-    PermissionUtil.instance
-        .requestPermissionNotificationDefault(openSetting: true);
+    PermissionUtil.instance.requestPermissionNotificationDefault(
+      openSetting: true,
+    );
   }
 
   @override
@@ -154,9 +151,7 @@ class _NotificationImage extends StatelessWidget {
       width: 266.r,
       child: Stack(
         children: [
-          Center(
-            child: Assets.images.phone.image(),
-          ),
+          Center(child: Assets.images.phone.image()),
           Positioned(
             top: 45.r,
             left: 40.r,
@@ -164,10 +159,7 @@ class _NotificationImage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Assets.images.logo.logo.image(
-                  height: 36.r,
-                  width: 36.r,
-                ),
+                Assets.images.logo.logo.image(height: 36.r, width: 36.r),
                 16.horizontalSpace,
                 Expanded(
                   child: Text(
@@ -208,15 +200,10 @@ class _NotificationImage extends StatelessWidget {
                   Expanded(
                     child: Text(
                       context.l10n.notifications,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: const TextStyle(fontWeight: FontWeight.w500),
                     ),
                   ),
-                  CustomSwitch(
-                    value: true,
-                    onChanged: (value) {},
-                  ),
+                  CustomSwitch(value: true, onChanged: (value) {}),
                 ],
               ),
             ),

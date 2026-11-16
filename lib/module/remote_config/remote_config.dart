@@ -44,6 +44,7 @@ class RemoteConfigManager {
   IapConfigModel get iapConfig => _iapConfig;
 
   bool get enableAllAds {
+    return false;
     if (PurchasesManager.instance.isPremium) {
       return false;
     }

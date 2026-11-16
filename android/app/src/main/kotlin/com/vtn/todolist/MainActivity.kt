@@ -10,6 +10,7 @@ import com.vtn.todolist.util.method_handler.PermissionHandler
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import com.adjust.helper.AdjustChannel
+import com.vtn.global.base.flutter.RegularNativeFactories
 
 class MainActivity : FlutterActivity() {
     private var notificationCallHandler: NotificationCallHandler? = null

@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import '../extension/context_extension.dart';
 
 class CustomSwitch extends StatefulWidget {
-  const CustomSwitch({
-    super.key,
-    required this.value,
-    required this.onChanged,
-  });
+  const CustomSwitch({super.key, required this.value, required this.onChanged});
 
   final bool value;
   final void Function(bool value) onChanged;
@@ -38,8 +34,9 @@ class _CustomSwitchState extends State<CustomSwitch> {
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 400),
           curve: Curves.fastOutSlowIn,
-          alignment:
-              widget.value ? Alignment.centerRight : Alignment.centerLeft,
+          alignment: widget.value
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
           child: Container(
             width: 20,
             height: 20,

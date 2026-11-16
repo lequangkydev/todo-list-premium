@@ -23,9 +23,13 @@ class MainBlocObserver extends BlocObserver {
 
   @override
   void onTransition(
-      Bloc<dynamic, dynamic> bloc, Transition<dynamic, dynamic> transition) {
-    logger.d('TRANSITION',
-        error: '${bloc.runtimeType} , Transition: $transition');
+    Bloc<dynamic, dynamic> bloc,
+    Transition<dynamic, dynamic> transition,
+  ) {
+    logger.d(
+      'TRANSITION',
+      error: '${bloc.runtimeType} , Transition: $transition',
+    );
     super.onTransition(bloc, transition);
   }
 
@@ -37,8 +41,10 @@ class MainBlocObserver extends BlocObserver {
 
   @override
   void onEvent(Bloc<dynamic, dynamic> bloc, Object? event) {
-    logger.d('EVENT',
-        error: 'Bloc: ${bloc.runtimeType}, Event: ${event.runtimeType}');
+    logger.d(
+      'EVENT',
+      error: 'Bloc: ${bloc.runtimeType}, Event: ${event.runtimeType}',
+    );
     super.onEvent(bloc, event);
   }
 }

@@ -25,16 +25,12 @@ class BackDialog extends StatelessWidget {
       // update color theo design
       backgroundColor: const Color(0xFF272727),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(8.r),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(8.r)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            height: 16.h,
-          ),
+          SizedBox(height: 16.h),
           Text(
             title,
             // update textStyle theo design
@@ -53,9 +49,7 @@ class BackDialog extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-          SizedBox(
-            height: 16.h,
-          ),
+          SizedBox(height: 16.h),
           if (adConfig != null)
             AutoReloadNativeAd(
               adConfig: adConfig!,
@@ -63,16 +57,12 @@ class BackDialog extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 10.h),
             ),
           Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.w,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
               children: [
                 Expanded(
                   child: _buildButton(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.r),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                     backgroundColor: const Color(0xFF535353),
                     onTap: () {
                       context.maybePop(true);
@@ -80,27 +70,21 @@ class BackDialog extends StatelessWidget {
                     title: context.l10n.yes,
                   ),
                 ),
-                SizedBox(
-                  width: 16.h,
-                ),
+                SizedBox(width: 16.h),
                 Expanded(
                   child: _buildButton(
                     backgroundColor: context.colorScheme.primary,
                     title: context.l10n.no,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10.r),
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
                     onTap: () {
                       context.maybePop();
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),
-          SizedBox(
-            height: 16.h,
-          ),
+          SizedBox(height: 16.h),
         ],
       ),
     );
@@ -120,10 +104,7 @@ class BackDialog extends StatelessWidget {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: borderRadius ??
-              BorderRadius.all(
-                Radius.circular(5.r),
-              ),
+          borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(5.r)),
         ),
         child: Text(
           title,

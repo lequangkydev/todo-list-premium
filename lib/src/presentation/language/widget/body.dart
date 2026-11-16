@@ -24,7 +24,11 @@ class _BodyWidgetState extends State<_BodyWidget> {
   @override
   void initState() {
     languageList.remove(suggestLanguage);
-    languageList.insert(3, suggestLanguage);
+    // Phone's language first; clamp so a short list doesn't throw
+    languageList.insert(
+      languageList.length.clamp(0, 3) == 3 ? 3 : 0,
+      suggestLanguage,
+    );
     super.initState();
   }
 

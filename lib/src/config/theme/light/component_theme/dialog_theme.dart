@@ -5,7 +5,6 @@ class MyDialogTheme extends DialogThemeData {
   Color? get surfaceTintColor => Colors.white;
 
   @override
-  ShapeBorder? get shape => RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10).r,
-      );
+  ShapeBorder? get shape =>
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10).r);
 }

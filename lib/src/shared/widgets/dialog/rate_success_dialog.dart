@@ -12,21 +12,21 @@ class RateSuccessDialog extends Dialog {
 
   @override
   Widget? get child => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Assets.images.pinkHeart.image(width: 68),
-            16.verticalSpace,
-            Text(
-              context.l10n.thank,
-              style: const TextStyle(
-                fontSize: 18,
-                color: Palette.primary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
+    padding: const EdgeInsets.symmetric(vertical: 24),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Assets.images.pinkHeart.image(width: 68),
+        16.verticalSpace,
+        Text(
+          context.l10n.thank,
+          style: const TextStyle(
+            fontSize: 18,
+            color: Palette.primary,
+            fontWeight: FontWeight.w700,
+          ),
         ),
-      );
+      ],
+    ),
+  );
 }

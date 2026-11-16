@@ -9,8 +9,9 @@ class AppConstants {
   static const String packageName = 'com.vtn.todolist';
   static const urlPolicy = 'url';
   static const urlTerms = 'url';
-  static String appName =
-      F.appFlavor == Flavor.dev ? 'app name Dev' : 'app name Product';
+  static String appName = F.appFlavor == Flavor.dev
+      ? 'Todo List Dev'
+      : 'Todo List';
 
   // 2 cái này không thay đổi
   static const String appIOSUrl = 'https://apps.apple.com/us/app/id$appIOSId';

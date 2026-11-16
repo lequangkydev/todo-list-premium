@@ -108,10 +108,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
             Text(
               title ?? '',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -136,10 +133,7 @@ class _UpdateDialogState extends State<UpdateDialog> {
             Text(
               appMessages.message(UpgraderMessage.prompt) ?? '',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             16.verticalSpace,
             FilledButton(
@@ -185,18 +179,18 @@ class _UpdateDialogState extends State<UpdateDialog> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: StreamBuilder(
-          initialData: widget.upgrader.state,
-          stream: widget.upgrader.stateStream,
-          builder:
-              (BuildContext context, AsyncSnapshot<UpgraderState> snapshot) {
-            final upgraderState = snapshot.data!;
-            if (upgraderState.versionInfo != null) {
-              if (widget.upgrader.shouldDisplayUpgrade()) {
-                return buildUpdateCard(context);
-              }
+        initialData: widget.upgrader.state,
+        stream: widget.upgrader.stateStream,
+        builder: (BuildContext context, AsyncSnapshot<UpgraderState> snapshot) {
+          final upgraderState = snapshot.data!;
+          if (upgraderState.versionInfo != null) {
+            if (widget.upgrader.shouldDisplayUpgrade()) {
+              return buildUpdateCard(context);
             }
-            return const SizedBox.shrink();
-          }),
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

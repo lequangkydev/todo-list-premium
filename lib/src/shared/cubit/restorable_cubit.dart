@@ -1,9 +1,7 @@
 import 'value_cubit.dart';
 
 class RestorableCubit<T> extends ValueCubit<T> {
-  RestorableCubit(super.state)
-      : initialValue = state,
-        savedValue = state;
+  RestorableCubit(super.state) : initialValue = state, savedValue = state;
   final T initialValue;
 
   T savedValue;

@@ -1,23 +1,22 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_ads/ads_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-import '../../../module/admob/utils/utils.dart';
 import '../../../module/admob/model/ad_config/ad_config.dart';
 import '../../../module/admob/utils/native_all_util.dart';
+import '../../../module/admob/utils/utils.dart';
 import '../../../module/admob/widget/ads/auto_reload_native_ad.dart';
-import '../../../module/remote_config/remote_config.dart';
 import '../../../module/tracking_screen/loggable_widget.dart';
+import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../core/notifications/reminder_service.dart';
 import '../../shared/extension/context_extension.dart';
-import '../../shared/global.dart';
-import '../../shared/helpers/permission_util.dart';
-import '../../shared/widgets/dialog/back_dialog.dart';
-import '../../shared/widgets/dialog/notification_permission_dialog.dart';
+import '../../shared/helpers/day_clock.dart';
+import '../lists/lists_tab.dart';
+import '../tasks/task_editor_sheet.dart';
+import '../today/today_tab.dart';
+import '../upcoming/upcoming_tab.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulLoggableWidget {
@@ -27,70 +26,102 @@ class HomeScreen extends StatefulLoggableWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  Future<void> requestPermissionNotification() async {
-    if (Global.instance.requestedNotificationPermission) {
-      return;
-    }
-    Global.instance.requestedNotificationPermission = true;
-    final isGranted = await PermissionUtil.instance.checkPermission(
-      Permission.notification,
-    );
-    if (isGranted) {
-      return;
-    }
-    if (RemoteConfigManager
-        .instance
-        .appConfig
-        .screenFlow
-        .enableInAppPermission) {
-      await NotificationPermissionDialog.show();
-    } else {
-      await PermissionUtil.instance.requestPermissionNotificationDefault();
-    }
-  }
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+  int _tab = 0;
+  final _reminders = getIt<ReminderService>();
 
   @override
   void initState() {
     super.initState();
     NativeAllUtil.instance.preloadSlots();
-    requestPermissionNotification();
+    WidgetsBinding.instance.addObserver(this);
+    _reminders.openTaskRequest.addListener(_openRequestedTask);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _openRequestedTask());
   }
 
   @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _reminders.openTaskRequest.removeListener(_openRequestedTask);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      getIt<DayClock>().refresh();
+    }
+  }
+
+  /// Notification tapped → open that task
+  void _openRequestedTask() {
+    final id = _reminders.openTaskRequest.value;
+    if (id == null || !mounted) {
+      return;
+    }
+    _reminders.openTaskRequest.value = null;
+    unawaited(TaskEditorSheet.show(context, id));
+  }
+
+  List<Widget> _actions(BuildContext context) => [
+    IconButton(
+      tooltip: context.l10n.search,
+      icon: const Icon(Icons.search_rounded),
+      onPressed: () => context.pushRoute(const SearchRoute()),
+    ),
+    IconButton(
+      tooltip: context.l10n.setting,
+      icon: const Icon(Icons.settings_outlined),
+      onPressed: () => context.pushRoute(const SettingRoute()),
+    ),
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          return;
-        }
-        // Udpate Logic
-        // showDialogExitApp();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('home'),
-          actions: [
-            IconButton(
-              onPressed: () => context.pushRoute(const SettingRoute()),
-              icon: const Icon(Icons.settings),
-            ),
-          ],
-        ),
-        body: Column(
+    final actions = _actions(context);
+    final l10n = context.l10n;
+    return Scaffold(
+      body: IndexedStack(
+        index: _tab,
+        children: [
+          TodayTab(actions: actions),
+          UpcomingTab(actions: actions),
+          ListsTab(actions: actions),
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const Expanded(child: Center(child: Text('Home'))),
-            if (adUnitsConfig.nativeBanner.isEnable &&
-                !adUnitsConfig.nativeBanner.isBottomAd)
-              _buildAd(),
+            MediaQuery.removePadding(
+              context: context,
+              removeBottom: true,
+              child: NavigationBar(
+                selectedIndex: _tab,
+                onDestinationSelected: (index) => setState(() => _tab = index),
+                destinations: [
+                  NavigationDestination(
+                    icon: const Icon(Icons.wb_sunny_outlined),
+                    selectedIcon: const Icon(Icons.wb_sunny_rounded),
+                    label: l10n.today,
+                  ),
+                  NavigationDestination(
+                    icon: const Icon(Icons.calendar_month_outlined),
+                    selectedIcon: const Icon(Icons.calendar_month_rounded),
+                    label: l10n.upcoming,
+                  ),
+                  NavigationDestination(
+                    icon: const Icon(Icons.format_list_bulleted_rounded),
+                    selectedIcon: const Icon(Icons.view_list_rounded),
+                    label: l10n.lists,
+                  ),
+                ],
+              ),
+            ),
+            if (adUnitsConfig.nativeBanner.isEnable) _buildAd(),
           ],
         ),
-        // collapsibleBanner/large → neo đáy màn
-        bottomNavigationBar:
-            adUnitsConfig.nativeBanner.isEnable &&
-                adUnitsConfig.nativeBanner.isBottomAd
-            ? _buildAd()
-            : null,
       ),
     );
   }
@@ -101,34 +132,5 @@ class _HomeScreenState extends State<HomeScreen> {
       expandedAdConfig: adUnitsConfig.nativeBannerExpand,
       enableAutoReload: true,
     );
-  }
-
-  Future<void> showDialogExitApp() async {
-    if (MyAds.instance.isFullAds) {
-      final result = await showDialog(
-        context: context,
-        builder: (_) {
-          return BackDialog(
-            // Update adID
-            adConfig: adUnitsConfig.nativeExit,
-            subTitle: context.l10n.areYouSureYouWantToExitApp,
-            title: context.l10n.exitApp,
-          );
-        },
-      );
-      if (result == true) {
-        exitApp();
-      }
-    } else {
-      exitApp();
-    }
-  }
-
-  void exitApp() {
-    if (Platform.isAndroid) {
-      SystemNavigator.pop();
-    } else {
-      exit(0);
-    }
   }
 }

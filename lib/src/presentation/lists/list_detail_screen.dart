@@ -1,0 +1,138 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+
+import '../../config/di/di.dart';
+import '../../data/local/database/app_database.dart';
+import '../../data/repositories/list_repository.dart';
+import '../../data/repositories/task_repository.dart';
+import '../../shared/extension/context_extension.dart';
+import '../../shared/helpers/day_clock.dart';
+import '../tasks/widgets/quick_add_field.dart';
+import '../tasks/widgets/task_sources.dart';
+import '../tasks/widgets/task_tile.dart';
+import 'list_form_sheet.dart';
+
+/// One list (or the Inbox when [listId] is null) with drag-to-reorder.
+@RoutePage()
+class ListDetailScreen extends StatefulWidget {
+  const ListDetailScreen({super.key, this.listId});
+
+  final String? listId;
+
+  @override
+  State<ListDetailScreen> createState() => _ListDetailScreenState();
+}
+
+class _ListDetailScreenState extends State<ListDetailScreen> {
+  final _repo = getIt<TaskRepository>();
+  late final _tasks = _repo.watchList(widget.listId);
+  late final _list = widget.listId == null
+      ? Stream<TaskList?>.value(null)
+      : getIt<ListRepository>().watchList(widget.listId!);
+
+  /// Order shown while a drag is being saved, so rows don't jump back
+  List<Task>? _optimistic;
+
+  Future<void> _reorder(List<Task> tasks, int oldIndex, int newIndex) async {
+    final ordered = [...tasks];
+    final moved = ordered.removeAt(oldIndex);
+    ordered.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, moved);
+    setState(() => _optimistic = ordered);
+    await _repo.reorder(ordered);
+    if (mounted) {
+      setState(() => _optimistic = null);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<TaskList?>(
+      stream: _list,
+      builder: (context, listSnapshot) {
+        final list = listSnapshot.data;
+        final title = widget.listId == null
+            ? context.l10n.inbox
+            : list?.name ?? '';
+        return Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: [
+                if (list != null) ...[
+                  Icon(Icons.circle, size: 14, color: Color(list.colorValue)),
+                  const SizedBox(width: 10),
+                ],
+                Flexible(child: Text(title, overflow: TextOverflow.ellipsis)),
+              ],
+            ),
+            actions: [
+              if (list != null)
+                IconButton(
+                  tooltip: context.l10n.editList,
+                  icon: const Icon(Icons.edit_outlined),
+                  onPressed: () async {
+                    final deleted = await ListFormSheet.show(
+                      context,
+                      list: list,
+                    );
+                    if ((deleted ?? false) && context.mounted) {
+                      context.maybePop();
+                    }
+                  },
+                ),
+            ],
+          ),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                child: QuickAddField(listId: widget.listId),
+              ),
+              Expanded(
+                child: StreamBuilder<List<Task>>(
+                  stream: _tasks,
+                  builder: (context, snapshot) {
+                    final tasks = _optimistic ?? snapshot.data;
+                    if (tasks == null) {
+                      return const SizedBox.shrink();
+                    }
+                    if (tasks.isEmpty) {
+                      return SingleChildScrollView(
+                        child: CalmEmptyState(
+                          icon: Icons.check_circle_outline_rounded,
+                          title: context.l10n.listEmptyTitle,
+                          message: context.l10n.listEmptyMessage,
+                        ),
+                      );
+                    }
+                    final today = getIt<DayClock>().value;
+                    return TaskLookupsBuilder(
+                      builder: (context, lookups) =>
+                          ReorderableListView.builder(
+                            padding: const EdgeInsets.only(bottom: 96),
+                            buildDefaultDragHandles: false,
+                            itemCount: tasks.length,
+                            onReorder: (a, b) => _reorder(tasks, a, b),
+                            itemBuilder: (context, index) {
+                              final task = tasks[index];
+                              return ReorderableDelayedDragStartListener(
+                                key: ValueKey(task.id),
+                                index: index,
+                                child: TaskTile(
+                                  task: task,
+                                  today: today,
+                                  subtasks: lookups.subtasks[task.id],
+                                ),
+                              );
+                            },
+                          ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

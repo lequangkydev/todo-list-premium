@@ -28,17 +28,10 @@ class MarqueeText extends StatelessWidget {
         if (overflow) {
           return SizedBox(
             height: (style?.fontSize ?? 14.sp) + 2,
-            child: Marquee(
-              text: text,
-              style: style,
-              blankSpace: blankSpace,
-            ),
+            child: Marquee(text: text, style: style, blankSpace: blankSpace),
           );
         }
-        return Text(
-          text,
-          style: style,
-        );
+        return Text(text, style: style);
       },
     );
   }

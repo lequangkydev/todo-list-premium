@@ -81,14 +81,8 @@ class _PermissionScreenState extends State<PermissionScreen> {
         ),
       ],
       child: Scaffold(
-        appBar: CustomAppbar(
-          titleText: context.l10n.permission,
-        ),
-        body: SafeArea(
-          child: PermissionBody(
-            adController: controller,
-          ),
-        ),
+        appBar: CustomAppbar(titleText: context.l10n.permission),
+        body: SafeArea(child: PermissionBody(adController: controller)),
       ),
     );
   }

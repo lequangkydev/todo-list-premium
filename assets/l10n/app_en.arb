@@ -1,5 +1,5 @@
 {
-  "app_title": "Flutter Base",
+  "app_title": "Todo List",
   "language": "Language",
   "thisActionCanContainAds": "This action can contain ads",
   "next": "Next",
@@ -60,6 +60,208 @@
   "translatingLanguage": "Translating language for the app...",
   "allowNotifications": "Allow notifications?",
   "later": "Later",
-  "notifications": "Notifications"
+  "notifications": "Notifications",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "yesterday": "Yesterday",
+  "upcoming": "Upcoming",
+  "lists": "Lists",
+  "inbox": "Inbox",
+  "completed": "Completed",
+  "myLists": "My lists",
+  "search": "Search",
+  "searchHint": "Search tasks",
+  "noResults": "Nothing matches “{query}”",
+  "@noResults": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "addTask": "Add a task",
+  "quickAddHint": "e.g. Call mom tomorrow 5pm",
+  "keepAsText": "Keep as text",
+  "addedTo": "Added to {day}",
+  "@addedTo": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "stillOpen": "Still open",
+  "moveToToday": "Move to today",
+  "todayEmptyTitle": "Nothing planned for today",
+  "todayEmptyMessage": "Add something above, or enjoy the quiet.",
+  "todayEmptyWithOverdue": "Today is clear",
+  "doneToday": "{count, plural, =1{1 task done today} other{{count} tasks done today}}",
+  "@doneToday": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "upcomingEmptyTitle": "Nothing coming up",
+  "upcomingEmptyMessage": "Tasks with a future date show up here.",
+  "newList": "New list",
+  "editList": "Edit list",
+  "createList": "Create list",
+  "listName": "List name",
+  "listNameRequired": "Give the list a name",
+  "listsHint": "Create lists for areas of your life — work, home, groceries. As many as you like.",
+  "listEmptyTitle": "No open tasks here",
+  "listEmptyMessage": "Add one above.",
+  "deleteListNamed": "Delete “{name}”",
+  "@deleteListNamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteListMessage": "The list and its tasks will be removed. You can undo right after.",
+  "listDeleted": "Deleted “{name}”",
+  "@listDeleted": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "completedEmptyTitle": "Completed tasks will show up here",
+  "taskCompleted": "Task completed",
+  "taskCompletedRepeat": "Done — next one scheduled",
+  "taskDeleted": "Task deleted",
+  "undo": "Undo",
+  "delete": "Delete",
+  "save": "Save",
+  "deleteTask": "Delete task",
+  "addNote": "Add a note",
+  "subtasks": "Subtasks",
+  "addSubtask": "Add a subtask",
+  "noDate": "No date",
+  "pickDate": "Pick a date",
+  "nextWeek": "Next week",
+  "allDay": "All day",
+  "changeTime": "Change time",
+  "noRepeat": "Doesn't repeat",
+  "repeatDaily": "Every day",
+  "repeatEveryNDays": "Every {count} days",
+  "@repeatEveryNDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatWeekdays": "Every weekday",
+  "repeatWeeklyOn": "Every week on {days}",
+  "@repeatWeeklyOn": {
+    "placeholders": {
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatEveryNWeeksOn": "Every {count} weeks on {days}",
+  "@repeatEveryNWeeksOn": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "days": {
+        "type": "String"
+      }
+    }
+  },
+  "repeatMonthlyOnDay": "Every month on day {day}",
+  "@repeatMonthlyOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatEveryNMonthsOnDay": "Every {count} months on day {day}",
+  "@repeatEveryNMonthsOnDay": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatLastDayOfMonth": "Last day of every month",
+  "repeatYearlyOn": "Every year on {date}",
+  "@repeatYearlyOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "noReminder": "No reminder",
+  "reminderAtTime": "At time of task",
+  "reminderMinutesBefore": "{count} min before",
+  "@reminderMinutesBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderHoursBefore": "{count, plural, =1{1 hour before} other{{count} hours before}}",
+  "@reminderHoursBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderDaysBefore": "{count, plural, =1{1 day before} other{{count} days before}}",
+  "@reminderDaysBefore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderAllDayHint": "Tasks without a time are reminded at 9:00 on the day.",
+  "priorityNone": "No priority",
+  "priorityLow": "Low",
+  "priorityMedium": "Medium",
+  "priorityHigh": "High",
+  "reminders": "Reminders",
+  "reminderChannelName": "Task reminders",
+  "reminderChannelDescription": "Reminders you set on your tasks",
+  "reminderDue": "Due {when}",
+  "@reminderDue": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "actionDone": "Done",
+  "actionSnooze": "Snooze 1 hour",
+  "exactAlarmTitle": "On-time reminders",
+  "exactAlarmMessage": "To ring exactly on time, Android needs the “Alarms & reminders” permission. Without it, reminders may arrive a few minutes late.",
+  "exactAlarmOffHint": "Off — reminders may arrive a few minutes late",
+  "allowExactAlarms": "Allow",
+  "notNow": "Not now",
+  "notificationsOnHint": "Reminders will notify you",
+  "notificationsOffHint": "Off — you won't get reminders",
+  "turnOn": "Turn on",
+  "appearance": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "about": "About",
+  "privacyTitle": "Your data stays on this phone",
+  "privacyMessage": "No account. Tasks are stored only on this device.",
+  "laterSection": "Later"
 }
-

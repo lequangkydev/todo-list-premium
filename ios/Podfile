@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '12.0'
+# platform :ios, '13.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -36,7 +36,8 @@ target 'Runner' do
 
   pod 'GoogleMobileAdsMediationFacebook'
   pod 'FBAudienceNetwork'
-  pod 'FBSDKCoreKit'
+  # 19.x ships swiftinterfaces Xcode 26.2 can't parse (Swift::Error syntax)
+  pod 'FBSDKCoreKit', '~> 18.0'
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end

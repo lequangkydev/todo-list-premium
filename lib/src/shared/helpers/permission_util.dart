@@ -80,14 +80,13 @@ class PermissionUtil {
 
 extension PermissionExtension on Permission {
   ValueCubit? get cubit => switch (this) {
-        Permission.photos ||
-        Permission.storage =>
-          PermissionUtil.instance.photoPermissionCubit,
-        Permission.camera => PermissionUtil.instance.cameraPermissionCubit,
-        Permission.notification =>
-          PermissionUtil.instance.notificationPermissionCubit,
-        _ => null,
-      };
+    Permission.photos ||
+    Permission.storage => PermissionUtil.instance.photoPermissionCubit,
+    Permission.camera => PermissionUtil.instance.cameraPermissionCubit,
+    Permission.notification =>
+      PermissionUtil.instance.notificationPermissionCubit,
+    _ => null,
+  };
 
   Future<bool> openPermissionSetting() async {
     if (Platform.isIOS) {

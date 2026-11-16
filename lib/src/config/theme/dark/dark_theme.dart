@@ -6,9 +6,7 @@ import '../palette.dart';
 part 'component_theme/text_theme_dark.dart';
 
 ThemeData darkThemeData = ThemeData(
-  colorScheme: const ColorScheme.dark(
-    primary: Palette.primary,
-  ),
+  colorScheme: const ColorScheme.dark(primary: Palette.primary),
   useMaterial3: true,
   textTheme: MyTextThemeDark(),
 );

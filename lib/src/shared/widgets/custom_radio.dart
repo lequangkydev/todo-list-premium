@@ -25,20 +25,14 @@ class CustomRadio<T> extends StatelessWidget {
       padding: const EdgeInsets.all(3.5),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          width: 1.5,
-          color: customColor,
-        ),
+        border: Border.all(width: 1.5, color: customColor),
       ),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         switchOutCurve: Curves.ease,
         switchInCurve: Curves.ease,
         child: value == groupValue
-            ? CircleAvatar(
-                backgroundColor: customColor,
-                radius: 6,
-              )
+            ? CircleAvatar(backgroundColor: customColor, radius: 6)
             : const SizedBox(),
       ),
     );

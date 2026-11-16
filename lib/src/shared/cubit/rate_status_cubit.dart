@@ -16,8 +16,6 @@ class RateStatusCubit extends ValueCubit<bool> with HydratedMixin {
 
   @override
   Map<String, dynamic>? toJson(bool state) {
-    return {
-      _storageKey: state,
-    };
+    return {_storageKey: state};
   }
 }

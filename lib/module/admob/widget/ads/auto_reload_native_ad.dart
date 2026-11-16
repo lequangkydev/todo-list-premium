@@ -84,14 +84,16 @@ class _AutoReloadNativeAdState extends State<AutoReloadNativeAd>
   bool isPaused = false;
   bool isCurrentScreen = true;
 
-  bool get _ownsController => widget.controller == null;
+  /// Tạo bằng constructor mặc định (tự tạo + dispose controller) — ngược lại
+  /// là `.control` (controller do nơi khác quản, có thể null khi chưa có ad)
+  bool get _ownsController => widget.adConfig != null;
 
   NativeAdType? get _type => widget.type ?? widget.adConfig?.type;
 
   @override
   void initState() {
     super.initState();
-    if (widget.controller != null) {
+    if (!_ownsController) {
       controller = widget.controller;
       visible = widget.visible;
     } else if (widget.visible && widget.adConfig!.isEnable) {
@@ -110,6 +112,17 @@ class _AutoReloadNativeAdState extends State<AutoReloadNativeAd>
     }
     if (widget.enableAutoReload) {
       autoReload();
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AutoReloadNativeAd oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_ownsController &&
+        (oldWidget.controller != widget.controller ||
+            oldWidget.visible != widget.visible)) {
+      controller = widget.controller;
+      visible = widget.visible;
     }
   }
 

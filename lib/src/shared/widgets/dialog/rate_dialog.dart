@@ -33,9 +33,7 @@ Future<void> showRatingDialog({bool fromSetting = false}) async {
     if (await inAppReview.isAvailable()) {
       return inAppReview.requestReview();
     } else if (fromSetting) {
-      return inAppReview.openStoreListing(
-        appStoreId: AppConstants.appIOSId,
-      );
+      return inAppReview.openStoreListing(appStoreId: AppConstants.appIOSId);
     }
   } else {
     return showDialog(
@@ -71,9 +69,7 @@ class _RatingDialogState extends State<RatingDialog> {
       surfaceTintColor: Colors.white,
       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -91,23 +87,24 @@ class _RatingDialogState extends State<RatingDialog> {
             ),
             16.verticalSpace,
             ValueListenableBuilder<double>(
-                valueListenable: rateValue,
-                builder: (_, double value, __) {
-                  String rateTitle = 'context.l10n.goodRate';
-                  if (value < 4) {
-                    rateTitle = 'context.l10n.badRate';
-                  }
+              valueListenable: rateValue,
+              builder: (_, double value, __) {
+                String rateTitle = 'context.l10n.goodRate';
+                if (value < 4) {
+                  rateTitle = 'context.l10n.badRate';
+                }
 
-                  return Text(
-                    rateTitle,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      height: 28 / 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                  );
-                }),
+                return Text(
+                  rateTitle,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    height: 28 / 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                );
+              },
+            ),
             const SizedBox(height: 16),
             RatingBar.builder(
               minRating: 1,
@@ -115,25 +112,21 @@ class _RatingDialogState extends State<RatingDialog> {
               glowColor: Colors.white,
               itemPadding: const EdgeInsets.symmetric(horizontal: 4),
               itemBuilder: (BuildContext context, int index) {
-                return Assets.icons.rates.fullStar.svg(
-                  height: 30,
-                  width: 30,
-                );
+                return Assets.icons.rates.fullStar.svg(height: 30, width: 30);
               },
               unratedBuilder: (BuildContext context, int index) {
-                return Assets.icons.rates.emptyStar.svg(
-                  height: 30,
-                  width: 30,
-                );
+                return Assets.icons.rates.emptyStar.svg(height: 30, width: 30);
               },
               onRatingUpdate: (double value) => rateValue.value = value,
             ),
             const SizedBox(height: 24),
             FilledButton(
               style: FilledButton.styleFrom(
-                  minimumSize: const Size(200, 40),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8))),
+                minimumSize: const Size(200, 40),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
               onPressed: _rateApp,
               child: const Text('Rate'),
             ),
@@ -172,15 +165,12 @@ class _RatingDialogState extends State<RatingDialog> {
     await showDialog(
       context: getIt<AppRouter>().navigatorKey.currentContext!,
       builder: (context) {
-        Timer(
-          const Duration(seconds: 1),
-          () async {
-            await context.maybePop();
-            if (Global.instance.isExitApp) {
-              exitApp();
-            }
-          },
-        );
+        Timer(const Duration(seconds: 1), () async {
+          await context.maybePop();
+          if (Global.instance.isExitApp) {
+            exitApp();
+          }
+        });
         return RateSuccessDialog(context);
       },
     );

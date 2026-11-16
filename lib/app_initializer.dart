@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_iap/flutter_iap.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'flavors.dart';
@@ -15,6 +17,7 @@ import 'module/adjust/adjust.dart';
 import 'module/admob/utils/utils.dart';
 import 'module/remote_config/remote_config.dart';
 import 'src/config/di/di.dart';
+import 'src/core/notifications/reminder_service.dart';
 import 'src/data/local/shared_preferences_manager.dart';
 import 'src/shared/global.dart';
 import 'src/shared/helpers/method_channel/notification_channel.dart';
@@ -32,10 +35,14 @@ class AppInitializer {
       _initHydrateBlocStorage(),
       SharedPreferencesManager.instance.initialize(),
       initGlobalData(),
+      // Month/day names for every locale, offline
+      initializeDateFormatting(),
     ]);
     await RemoteConfigManager.instance.initConfig();
     _initAdjust();
     _initIAP();
+    // Keeps pending notifications in sync with tasks — runs in background
+    unawaited(getIt<ReminderService>().start());
 
     _settingSystemUI();
   }

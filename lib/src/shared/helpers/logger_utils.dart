@@ -9,11 +9,12 @@ void logInfo(String message) {
 
 class MyLogger extends Logger {
   MyLogger._()
-      : super(
-          filter: MyFilter(),
-          printer: PrettyPrinter(
-              dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart),
-        );
+    : super(
+        filter: MyFilter(),
+        printer: PrettyPrinter(
+          dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
+        ),
+      );
 
   static MyLogger get instance => MyLogger._();
 }

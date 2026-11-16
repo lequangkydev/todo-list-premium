@@ -48,8 +48,10 @@ class _UninstallPageState extends State<_UninstallPage> {
                 return const SizedBox();
               }
               return _ItemCard(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16).r,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 16,
+                ).r,
                 margin: const EdgeInsets.symmetric(vertical: 6).h,
                 child: TextField(
                   decoration: InputDecoration(
@@ -63,7 +65,8 @@ class _UninstallPageState extends State<_UninstallPage> {
                       color: const Color(0xffb0b0b0),
                     ),
                     hintText: context.l10n.pleaseEnterReasonForUninstallingApp(
-                        AppConstants.appName),
+                      AppConstants.appName,
+                    ),
                   ),
                   minLines: 4,
                   maxLines: 4,
@@ -76,10 +79,7 @@ class _UninstallPageState extends State<_UninstallPage> {
     );
   }
 
-  Widget _buildItem({
-    required String text,
-    required int value,
-  }) {
+  Widget _buildItem({required String text, required int value}) {
     return GestureDetector(
       onTap: () {
         seasonCubit.update(value);
@@ -93,9 +93,7 @@ class _UninstallPageState extends State<_UninstallPage> {
             Expanded(
               child: Text(
                 text,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ),
             8.horizontalSpace,

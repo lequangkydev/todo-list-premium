@@ -28,12 +28,17 @@ class ItemSetting extends StatelessWidget {
                 child: SvgPicture.asset(icon!),
               ),
             Expanded(
-                child: Text(
-              text,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-            )),
+              child: Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
             const Icon(
-              Icons.arrow_forward_ios, size: 13,
+              Icons.arrow_forward_ios,
+              size: 13,
               // color: context.colorScheme.onBackground.withOpacity(0.85),
             ),
           ],

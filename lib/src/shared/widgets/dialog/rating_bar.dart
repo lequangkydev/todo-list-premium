@@ -4,11 +4,7 @@ import 'package:flutter/material.dart';
 
 /// Defines widgets which are to used as rating bar items.
 class RatingWidget {
-  RatingWidget({
-    required this.full,
-    required this.half,
-    required this.empty,
-  });
+  RatingWidget({required this.full, required this.half, required this.empty});
 
   /// Defines widget to be used as rating bar item when the item is completely rated.
   final Widget full;
@@ -51,9 +47,9 @@ class RatingBar extends StatefulWidget {
     this.tapOnlyMode = false,
     this.updateOnDrag = false,
     this.wrapAlignment = WrapAlignment.start,
-  })  : _itemBuilder = null,
-        _unratedBuilder = null,
-        _ratingWidget = ratingWidget;
+  }) : _itemBuilder = null,
+       _unratedBuilder = null,
+       _ratingWidget = ratingWidget;
 
   /// Creates [RatingBar] using the [itemBuilder].
   const RatingBar.builder({
@@ -81,9 +77,9 @@ class RatingBar extends StatefulWidget {
     this.tapOnlyMode = false,
     this.updateOnDrag = false,
     this.wrapAlignment = WrapAlignment.start,
-  })  : _itemBuilder = itemBuilder,
-        _unratedBuilder = unratedBuilder,
-        _ratingWidget = null;
+  }) : _itemBuilder = itemBuilder,
+       _unratedBuilder = unratedBuilder,
+       _ratingWidget = null;
 
   /// Return current rating whenever rating is updated.
   ///
@@ -287,9 +283,7 @@ class _RatingBarState extends State<RatingBar> {
       ratingWidget0 = SizedBox(
         width: widget.itemSize,
         height: widget.itemSize,
-        child: FittedBox(
-          child: ratingWidget?.full ?? item,
-        ),
+        child: FittedBox(child: ratingWidget?.full ?? item),
       );
       iconRating += 1.0;
     }
@@ -305,7 +299,8 @@ class _RatingBarState extends State<RatingBar> {
             final double tappedPosition = details.localPosition.dx;
             final bool tappedOnFirstHalf =
                 tappedPosition <= widget.itemSize / 2;
-            value = index +
+            value =
+                index +
                 (tappedOnFirstHalf && widget.allowHalfRating ? 0.5 : 1.0);
           }
 
@@ -435,17 +430,13 @@ class _HalfRatingWidget extends StatelessWidget {
                 ),
                 FittedBox(
                   child: ClipRect(
-                    clipper: _HalfClipper(
-                      rtlMode: rtlMode,
-                    ),
+                    clipper: _HalfClipper(rtlMode: rtlMode),
                     child: child,
                   ),
                 ),
               ],
             )
-          : FittedBox(
-              child: child,
-            ),
+          : FittedBox(child: child),
     );
   }
 }
@@ -457,18 +448,8 @@ class _HalfClipper extends CustomClipper<Rect> {
 
   @override
   Rect getClip(Size size) => rtlMode
-      ? Rect.fromLTRB(
-          size.width / 2,
-          0,
-          size.width,
-          size.height,
-        )
-      : Rect.fromLTRB(
-          0,
-          0,
-          size.width / 2,
-          size.height,
-        );
+      ? Rect.fromLTRB(size.width / 2, 0, size.width, size.height)
+      : Rect.fromLTRB(0, 0, size.width / 2, size.height);
 
   @override
   bool shouldReclip(CustomClipper<Rect> oldClipper) => true;
@@ -490,9 +471,7 @@ class _NoRatingWidget extends StatelessWidget {
     return SizedBox(
       height: size,
       width: size,
-      child: FittedBox(
-        child: child,
-      ),
+      child: FittedBox(child: child),
     );
   }
 }

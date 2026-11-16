@@ -9,11 +9,12 @@ import '../../module/remote_config/remote_config.dart';
 import '../config/di/di.dart';
 import '../config/navigation/app_router.dart';
 import '../config/observer/route_observer.dart';
-import '../config/theme/light/light_theme.dart';
+import '../config/theme/app_theme.dart';
 import '../gen/l18n/app_localizations.dart';
 import '../shared/cubit/ad_visibility_cubit.dart';
 import '../shared/cubit/language_cubit.dart';
 import '../shared/cubit/rate_status_cubit.dart';
+import '../shared/cubit/theme_mode_cubit.dart';
 import '../shared/enum/language.dart';
 import '../shared/helpers/permission_util.dart';
 import '../shared/helpers/shortcut_utils.dart';
@@ -32,7 +33,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => LanguageCubit()),
+        // Same instance as getIt so services (reminders) see language changes
+        BlocProvider.value(value: getIt<LanguageCubit>()),
+        BlocProvider.value(value: getIt<ThemeModeCubit>()),
         BlocProvider(create: (context) => AdVisibilityCubit()),
         BlocProvider(create: (context) => RateStatusCubit()),
         BlocProvider(
@@ -76,12 +79,15 @@ class BodyApp extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        final themeMode = context.watch<ThemeModeCubit>().state;
         return MaterialApp.router(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: state?.locale,
           debugShowCheckedModeBanner: false,
-          theme: lightThemeData,
+          theme: buildAppTheme(Brightness.light),
+          darkTheme: buildAppTheme(Brightness.dark),
+          themeMode: themeMode,
           routerConfig: getIt<AppRouter>().config(
             navigatorObservers: () => [MainRouteObserver()],
           ),

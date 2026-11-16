@@ -11,9 +11,7 @@ part 'component_theme/text_button_theme.dart';
 part 'component_theme/text_theme.dart';
 
 ThemeData lightThemeData = ThemeData(
-  colorScheme: const ColorScheme.light(
-    primary: Palette.primary,
-  ),
+  colorScheme: const ColorScheme.light(primary: Palette.primary),
   useMaterial3: true,
   textTheme: MyTextTheme(),
   dialogTheme: MyDialogTheme(),
