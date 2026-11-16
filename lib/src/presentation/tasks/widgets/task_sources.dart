@@ -100,7 +100,7 @@ class SectionHeader extends StatelessWidget {
     final header = ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 48),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(
+        padding: const EdgeInsetsDirectional.fromSTEB(
           AppSpace.gutter + 4,
           AppSpace.lg,
           AppSpace.sm,

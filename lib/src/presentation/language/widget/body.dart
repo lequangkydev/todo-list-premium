@@ -57,7 +57,7 @@ class _BodyWidgetState extends State<_BodyWidget> {
           child: BlocBuilder<ValueCubit<Language?>, Language?>(
             builder: (context, state) {
               return ListView.separated(
-                separatorBuilder: (context, index) => 16.vSpace,
+                separatorBuilder: (context, index) => 8.vSpace,
                 padding: EdgeInsets.fromLTRB(16, 24, 16, 22.h + _adPadding),
                 itemCount: languageList.length,
                 itemBuilder: (BuildContext context1, int index) {

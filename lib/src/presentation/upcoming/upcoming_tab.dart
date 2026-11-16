@@ -60,7 +60,12 @@ class _UpcomingTabState extends State<UpcomingTab> {
                 builder: (context, lookups) => CustomScrollView(
                   slivers: [
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                        16,
+                        4,
+                        16,
+                        8,
+                      ),
                       sliver: SliverToBoxAdapter(
                         child: QuickAddField(defaultDate: tomorrow),
                       ),

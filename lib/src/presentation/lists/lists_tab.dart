@@ -38,7 +38,7 @@ class _ListsTabState extends State<ListsTab> {
         builder: (context, snapshot) {
           final lists = snapshot.data ?? const <ListWithCount>[];
           return ListView(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppSpace.gutter,
               AppSpace.xs,
               AppSpace.gutter,
@@ -75,7 +75,7 @@ class _ListsTabState extends State<ListsTab> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppSpace.xs,
                   AppSpace.xl,
                   AppSpace.xs,
@@ -131,7 +131,7 @@ class _ListsTabState extends State<ListsTab> {
               ),
               if (snapshot.hasData && lists.isEmpty)
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
                     AppSpace.xs,
                     AppSpace.md,
                     AppSpace.xs,

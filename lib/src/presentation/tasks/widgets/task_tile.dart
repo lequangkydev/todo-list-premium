@@ -62,7 +62,7 @@ class TaskTile extends StatelessWidget {
       child: InkWell(
         onTap: () => TaskEditorSheet.show(context, task.id),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: const EdgeInsetsDirectional.fromSTEB(
             AppSpace.xs + 2,
             AppSpace.xs,
             AppSpace.lg,

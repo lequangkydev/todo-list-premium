@@ -128,7 +128,7 @@ class _TaskEditorSheetState extends State<TaskEditorSheet> {
                   onChanged: _onTextChanged,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 48),
+                  padding: const EdgeInsetsDirectional.only(start: 48),
                   child: TextField(
                     controller: _note,
                     onChanged: (_) => _onTextChanged(),
@@ -526,7 +526,7 @@ class _Subtasks extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 12, bottom: 4),
+          padding: const EdgeInsetsDirectional.only(start: 12, bottom: 4),
           child: Text(
             context.l10n.subtasks,
             style: Theme.of(
@@ -578,7 +578,7 @@ class _Subtasks extends StatelessWidget {
           },
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 12),
+          padding: const EdgeInsetsDirectional.only(start: 12),
           child: TextField(
             controller: controller,
             textCapitalization: TextCapitalization.sentences,

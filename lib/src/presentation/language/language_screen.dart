@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../module/admob/model/ad_config/ad_config.dart';
@@ -15,7 +16,7 @@ import '../../../module/admob/widget/ads/auto_reload_native_ad.dart';
 import '../../../module/admob/widget/ads/native_all_ad.dart';
 import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/navigation/app_router.dart';
-import '../../config/theme/palette.dart';
+import '../../config/theme/app_theme.dart';
 import '../../gen/assets.gen.dart';
 import '../../shared/cubit/language_cubit.dart';
 import '../../shared/cubit/value_cubit.dart';
@@ -217,7 +218,7 @@ class _LanguageScreenState extends State<LanguageScreen>
   /// Text guide đổi theo pha "đang dịch"
   Widget _buildGuide() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 0),
+      padding: EdgeInsets.fromLTRB(16.w, 0.h, 16.w, 0),
       child: ValueListenableBuilder<bool>(
         valueListenable: _isTranslating,
         builder: (context, translating, _) {

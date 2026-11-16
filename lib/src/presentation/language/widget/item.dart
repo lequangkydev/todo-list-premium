@@ -15,35 +15,55 @@ class _LanguageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedLanguageCubit = context.read<ValueCubit<Language?>>();
-    return GestureDetector(
-      onTap: () => selectedLanguageCubit.update(language),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Palette.primary),
-          borderRadius: BorderRadius.circular(15),
+    final scheme = context.colorScheme;
+    final selected = language == selectedValue;
+    return Semantics(
+      selected: selected,
+      button: true,
+      label: language.languageName,
+      excludeSemantics: true,
+      child: Material(
+        color: selected ? scheme.secondaryContainer : context.taskColors.card,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          side: BorderSide(
+            color: selected ? scheme.primary : scheme.outlineVariant,
+            width: selected ? 2 : 1,
+          ),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(
-          children: [
-            Image.asset(language.flagPath, width: 24, height: 24),
-            16.hSpace,
-            Expanded(
-              child: Text(
-                language.languageName,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () => selectedLanguageCubit.update(language),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 56),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpace.lg,
+                vertical: AppSpace.md,
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.asset(language.flagPath, width: 28, height: 28),
+                  const SizedBox(width: AppSpace.lg),
+                  Expanded(
+                    child: Text(
+                      language.languageName,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  IgnorePointer(
+                    child: CustomRadio<Language?>(
+                      value: language,
+                      groupValue: selectedValue,
+                      onChanged: (value) {},
+                    ),
+                  ),
+                ],
               ),
             ),
-            IgnorePointer(
-              child: CustomRadio<Language?>(
-                value: language,
-                groupValue: selectedValue,
-                onChanged: (value) {},
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

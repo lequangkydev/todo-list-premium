@@ -85,7 +85,7 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 4, 16, 8),
                 child: QuickAddField(listId: widget.listId),
               ),
               Expanded(

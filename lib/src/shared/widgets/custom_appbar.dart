@@ -52,7 +52,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
           ? CustomButton(
               padding: const EdgeInsets.symmetric(horizontal: 16).r,
               onTap: onBackButtonPressed ?? getIt<AppRouter>().maybePop,
-              child: Icon(Icons.keyboard_arrow_left_rounded, size: 24.r),
+              child: const BackButtonIcon(),
             )
           : null,
     );

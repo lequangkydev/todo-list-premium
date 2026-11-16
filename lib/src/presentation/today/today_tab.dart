@@ -74,7 +74,7 @@ class _TodayTabState extends State<TodayTab> {
                 builder: (context, lookups) => CustomScrollView(
                   slivers: [
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
                         AppSpace.gutter,
                         AppSpace.xs,
                         AppSpace.gutter,
@@ -191,7 +191,7 @@ class _DoneToday extends StatelessWidget {
           return const SizedBox.shrink();
         }
         return Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: const EdgeInsetsDirectional.fromSTEB(
             AppSpace.gutter,
             AppSpace.xl,
             AppSpace.gutter,
