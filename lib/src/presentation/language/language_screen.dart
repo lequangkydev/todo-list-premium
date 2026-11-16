@@ -284,9 +284,9 @@ class _LanguageScreenState extends State<LanguageScreen>
                 child: gate > 0
                     ? Text(
                         '${gate}s',
-                        style: const TextStyle(color: Colors.black),
+                        style: TextStyle(color: context.colorScheme.onSurface),
                       )
-                    : const Icon(Icons.check, color: Colors.black),
+                    : Icon(Icons.check, color: context.colorScheme.onSurface),
               ),
             );
           },

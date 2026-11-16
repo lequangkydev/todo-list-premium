@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/di/di.dart';
+import '../../config/theme/app_theme.dart';
 import '../../core/date/dates.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
@@ -38,11 +39,15 @@ class _TodayTabState extends State<TodayTab> {
         final repo = getIt<TaskRepository>();
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 72,
+            toolbarHeight: 84,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(context.l10n.today),
+                Text(
+                  context.l10n.today,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 2),
                 Text(
                   TaskFormat.longDay(context, today),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -69,7 +74,12 @@ class _TodayTabState extends State<TodayTab> {
                 builder: (context, lookups) => CustomScrollView(
                   slivers: [
                     SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpace.gutter,
+                        AppSpace.xs,
+                        AppSpace.gutter,
+                        AppSpace.sm,
+                      ),
                       sliver: SliverToBoxAdapter(
                         child: QuickAddField(defaultDate: today),
                       ),
@@ -88,25 +98,34 @@ class _TodayTabState extends State<TodayTab> {
                           ),
                         ),
                       ),
-                      if (_showOverdue)
-                        SliverList.list(
-                          children: [
-                            for (final task in overdue)
-                              TaskTile(
-                                key: ValueKey(task.id),
-                                task: task,
-                                today: today,
-                                subtasks: lookups.subtasks[task.id],
-                                list: lookups.listOf(task),
-                              ),
-                          ],
-                        ),
                       SliverToBoxAdapter(
-                        child: SectionHeader(
-                          title: context.l10n.today,
-                          count: dueToday.length,
+                        child: AnimatedSize(
+                          duration: AppMotion.of(context, AppMotion.medium),
+                          curve: AppMotion.curve,
+                          alignment: Alignment.topCenter,
+                          child: _showOverdue
+                              ? TaskGroup(
+                                  children: [
+                                    for (final task in overdue)
+                                      TaskTile(
+                                        key: ValueKey(task.id),
+                                        task: task,
+                                        today: today,
+                                        subtasks: lookups.subtasks[task.id],
+                                        list: lookups.listOf(task),
+                                      ),
+                                  ],
+                                )
+                              : const SizedBox(width: double.infinity),
                         ),
                       ),
+                      if (dueToday.isNotEmpty)
+                        SliverToBoxAdapter(
+                          child: SectionHeader(
+                            title: context.l10n.today,
+                            count: dueToday.length,
+                          ),
+                        ),
                     ],
                     if (all != null && dueToday.isEmpty)
                       SliverToBoxAdapter(
@@ -120,19 +139,27 @@ class _TodayTabState extends State<TodayTab> {
                               : null,
                         ),
                       ),
-                    SliverList.list(
-                      children: [
-                        for (final task in dueToday)
-                          TaskTile(
-                            key: ValueKey(task.id),
-                            task: task,
-                            today: today,
-                            showDate: false,
-                            subtasks: lookups.subtasks[task.id],
-                            list: lookups.listOf(task),
+                    if (dueToday.isNotEmpty)
+                      SliverPadding(
+                        padding: EdgeInsets.only(
+                          top: overdue.isEmpty ? AppSpace.sm : 0,
+                        ),
+                        sliver: SliverToBoxAdapter(
+                          child: TaskGroup(
+                            children: [
+                              for (final task in dueToday)
+                                TaskTile(
+                                  key: ValueKey(task.id),
+                                  task: task,
+                                  today: today,
+                                  showDate: false,
+                                  subtasks: lookups.subtasks[task.id],
+                                  list: lookups.listOf(task),
+                                ),
+                            ],
                           ),
-                      ],
-                    ),
+                        ),
+                      ),
                     SliverToBoxAdapter(
                       child: _DoneToday(stream: _done.of(today)),
                     ),
@@ -164,22 +191,42 @@ class _DoneToday extends StatelessWidget {
           return const SizedBox.shrink();
         }
         return Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          child: Row(
-            children: [
-              Icon(
-                Icons.check_circle_outline_rounded,
-                size: 18,
-                color: context.colorScheme.primary,
+          padding: const EdgeInsets.fromLTRB(
+            AppSpace.gutter,
+            AppSpace.xl,
+            AppSpace.gutter,
+            0,
+          ),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpace.md,
+                vertical: AppSpace.sm,
               ),
-              const SizedBox(width: 8),
-              Text(
-                context.l10n.doneToday(count),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: context.colorScheme.onSurfaceVariant,
-                ),
+              decoration: BoxDecoration(
+                color: context.colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(100),
               ),
-            ],
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ExcludeSemantics(
+                    child: Icon(
+                      Icons.check_circle_rounded,
+                      size: AppIcon.sm,
+                      color: context.colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpace.sm),
+                  Text(
+                    context.l10n.doneToday(count),
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: context.colorScheme.onSecondaryContainer,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },

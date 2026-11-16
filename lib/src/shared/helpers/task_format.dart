@@ -36,6 +36,13 @@ class TaskFormat {
     return DateFormat.yMMMd(locale).format(date);
   }
 
+  /// Compact header date, e.g. "Sat, 14 Nov"
+  static String shortDay(BuildContext context, DateTime date) {
+    return toBeginningOfSentenceCase(
+      DateFormat.MMMEd(_locale(context)).format(date),
+    );
+  }
+
   /// Long header, e.g. "Saturday, 14 Nov"
   static String longDay(BuildContext context, DateTime date) {
     return toBeginningOfSentenceCase(

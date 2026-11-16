@@ -34,7 +34,11 @@ class _UpcomingTabState extends State<UpcomingTab> {
         final tomorrow = Dates.addDays(today, 1);
         return Scaffold(
           appBar: AppBar(
-            title: Text(context.l10n.upcoming),
+            toolbarHeight: 84,
+            title: Text(
+              context.l10n.upcoming,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
             actions: widget.actions,
           ),
           body: StreamBuilder<List<Task>>(
@@ -76,18 +80,20 @@ class _UpcomingTabState extends State<UpcomingTab> {
                           count: entry.value.length,
                         ),
                       ),
-                      SliverList.list(
-                        children: [
-                          for (final task in entry.value)
-                            TaskTile(
-                              key: ValueKey(task.id),
-                              task: task,
-                              today: today,
-                              showDate: false,
-                              subtasks: lookups.subtasks[task.id],
-                              list: lookups.listOf(task),
-                            ),
-                        ],
+                      SliverToBoxAdapter(
+                        child: TaskGroup(
+                          children: [
+                            for (final task in entry.value)
+                              TaskTile(
+                                key: ValueKey(task.id),
+                                task: task,
+                                today: today,
+                                showDate: false,
+                                subtasks: lookups.subtasks[task.id],
+                                list: lookups.listOf(task),
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                     if (later.isNotEmpty) ...[
@@ -97,17 +103,19 @@ class _UpcomingTabState extends State<UpcomingTab> {
                           count: later.length,
                         ),
                       ),
-                      SliverList.list(
-                        children: [
-                          for (final task in later)
-                            TaskTile(
-                              key: ValueKey(task.id),
-                              task: task,
-                              today: today,
-                              subtasks: lookups.subtasks[task.id],
-                              list: lookups.listOf(task),
-                            ),
-                        ],
+                      SliverToBoxAdapter(
+                        child: TaskGroup(
+                          children: [
+                            for (final task in later)
+                              TaskTile(
+                                key: ValueKey(task.id),
+                                task: task,
+                                today: today,
+                                subtasks: lookups.subtasks[task.id],
+                                list: lookups.listOf(task),
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                     const SliverToBoxAdapter(child: SizedBox(height: 96)),
@@ -124,7 +132,7 @@ class _UpcomingTabState extends State<UpcomingTab> {
   /// "Tomorrow · Sat, 14 Nov"
   String _dayTitle(BuildContext context, DateTime day, DateTime today) {
     final label = TaskFormat.day(context, day, today);
-    final long = TaskFormat.longDay(context, day);
+    final long = TaskFormat.shortDay(context, day);
     return label == long ? label : '$label · $long';
   }
 }

@@ -31,13 +31,15 @@ class CustomIndicator extends StatelessWidget {
 
   Widget indicator(BuildContext context, bool isActive) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+      duration: MediaQuery.maybeDisableAnimationsOf(context) ?? false
+          ? Duration.zero
+          : const Duration(milliseconds: 200),
       height: 4.r,
       width: isActive ? 32.r : 16.r,
       decoration: BoxDecoration(
         color: isActive
             ? context.colorScheme.primary
-            : context.colorScheme.primary.withOpacity(0.4),
+            : context.colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(6),
       ),
     );

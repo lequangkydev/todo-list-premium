@@ -4,17 +4,17 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../module/admob/model/ad_config/ad_config.dart';
 import '../../../module/admob/utils/utils.dart';
 import '../../../module/remote_config/remote_config.dart';
 import '../../../module/tracking_screen/screen_logger.dart';
-import '../../gen/assets.gen.dart';
+import '../../config/theme/app_theme.dart';
 import '../../shared/extension/context_extension.dart';
 import 'utils/intro_ad_util.dart';
 import 'utils/onboarding_controller.dart';
 import 'widgets/indicator.dart';
+import 'widgets/onboarding_illustration.dart';
 import 'widgets/page_widget.dart';
 
 part 'widgets/page_action.dart';
@@ -78,9 +78,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             : const NeverScrollableScrollPhysics(),
         children: <Widget>[
           ContentPageWidget(
-            image: Assets.images.onboarding.onboarding1,
-            title: 'Title',
-            description: 'Description',
+            scene: OnboardingScene.today,
+            title: context.l10n.onbTitle1,
+            description: context.l10n.onbDesc1,
             index: 0,
             adController: IntroAdUtil.instance.nativeController1,
             type: adUnitsConfig.nativeIntro1.type,
@@ -90,9 +90,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             },
           ),
           ContentPageWidget(
-            image: Assets.images.onboarding.onboarding2,
-            title: 'Title',
-            description: 'Description',
+            scene: OnboardingScene.quickAdd,
+            title: context.l10n.onbTitle2,
+            description: context.l10n.onbDesc2,
             index: 1,
             adController: IntroAdUtil.instance.nativeController2,
             type: adUnitsConfig.nativeIntro2.type,
@@ -118,9 +118,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               },
             ),
           ContentPageWidget(
-            image: Assets.images.onboarding.onboarding3,
-            title: 'Title',
-            description: 'Description',
+            scene: OnboardingScene.reminder,
+            title: context.l10n.onbTitle3,
+            description: context.l10n.onbDesc3,
             index: 2,
             adController: IntroAdUtil.instance.nativeController3,
             type: adUnitsConfig.nativeIntro3.type,
@@ -146,9 +146,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               },
             ),
           ContentPageWidget(
-            image: Assets.images.onboarding.onboarding3,
-            title: 'Title',
-            description: 'Description',
+            scene: OnboardingScene.privacy,
+            title: context.l10n.onbTitle4,
+            description: context.l10n.onbDesc4,
             index: 3,
             adController: IntroAdUtil.instance.nativeController4,
             type: adUnitsConfig.nativeIntro4.type,

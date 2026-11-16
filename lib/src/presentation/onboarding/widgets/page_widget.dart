@@ -6,17 +6,17 @@ import 'package:lottie/lottie.dart';
 
 import '../../../../module/admob/widget/ads/auto_reload_native_ad.dart';
 import '../../../../module/remote_config/remote_config.dart';
+import '../../../config/theme/app_theme.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../shared/extension/context_extension.dart';
-import '../../../shared/widgets/custom_fade_in_image.dart';
 import '../onboarding_screen.dart';
 import '../utils/onboarding_controller.dart';
+import 'onboarding_illustration.dart';
 
 class ContentPageWidget extends StatefulWidget {
   const ContentPageWidget({
     super.key,
-    required this.image,
-    this.fullImage,
+    required this.scene,
     required this.title,
     required this.description,
     this.adController,
@@ -27,8 +27,7 @@ class ContentPageWidget extends StatefulWidget {
     required this.type,
   });
 
-  final AssetGenImage image;
-  final AssetGenImage? fullImage;
+  final OnboardingScene scene;
   final String title;
   final TextStyle? titleStyle;
   final String description;
@@ -53,32 +52,30 @@ class _ContentPageWidgetState extends State<ContentPageWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: CustomFadeInImage(
-                  image: widget.image.provider(),
-                  fit: BoxFit.cover,
+    return SafeArea(
+      bottom: false,
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(child: OnboardingIllustration(scene: widget.scene)),
+                buildDescription(),
+                const SizedBox(height: AppSpace.xl),
+                PageAction(
+                  activeIndex: widget.index,
+                  onNextTap: () => context
+                      .read<OnboardingController>()
+                      .pressNextButton(widget.index),
                 ),
-              ),
-              buildDescription(),
-              24.verticalSpace,
-              PageAction(
-                activeIndex: widget.index,
-                onNextTap: () => context
-                    .read<OnboardingController>()
-                    .pressNextButton(widget.index),
-              ),
-            ],
+                const SizedBox(height: AppSpace.lg),
+              ],
+            ),
           ),
-        ),
-        _buildAds(),
-      ],
+          _buildAds(),
+        ],
+      ),
     );
   }
 
@@ -113,22 +110,30 @@ class _ContentPageWidgetState extends State<ContentPageWidget>
   }
 
   Widget buildDescription() {
+    final text = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpace.xxl),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            widget.title,
-            textAlign: TextAlign.center,
-            style:
-                widget.titleStyle ??
-                TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700),
+          Semantics(
+            header: true,
+            child: Text(
+              widget.title,
+              textAlign: TextAlign.center,
+              style: widget.titleStyle ?? text.headlineMedium,
+            ),
           ),
+          const SizedBox(height: AppSpace.md),
           Text(
             widget.description,
             textAlign: TextAlign.center,
-            style: widget.descriptionStyle ?? TextStyle(fontSize: 17.sp),
+            style:
+                widget.descriptionStyle ??
+                text.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: context.colorScheme.onSurfaceVariant,
+                ),
           ),
         ],
       ),

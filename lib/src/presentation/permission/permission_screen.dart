@@ -1,25 +1,22 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../module/admob/model/ad_config/ad_config.dart';
 import '../../../module/admob/utils/utils.dart';
 import '../../../module/admob/widget/ads/auto_reload_native_ad.dart';
 import '../../../module/tracking_screen/loggable_widget.dart';
+import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../config/theme/app_theme.dart';
+import '../../core/notifications/reminder_service.dart';
 import '../../data/local/shared_preferences_manager.dart';
-import '../../shared/global.dart';
-import '../../shared/cubit/value_cubit.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/permission_util.dart';
 import '../../shared/widgets/custom_appbar.dart';
-import '../../shared/widgets/custom_switch.dart';
 import 'cubit/cubit.dart';
 
 part 'widget/permission_body.dart';

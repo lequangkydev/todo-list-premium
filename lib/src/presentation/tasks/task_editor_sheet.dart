@@ -198,7 +198,7 @@ class _TitleRow extends StatelessWidget {
       children: [
         CheckCircle(
           checked: task.isDone,
-          color: priorityColor(context.colorScheme, task.priority),
+          color: context.taskColors.priority(task.priority),
           semanticLabel: task.title,
           size: 24,
           onChanged: () => TaskActions.toggle(context, task),
@@ -242,7 +242,6 @@ class _Properties extends StatelessWidget {
     final today = getIt<DayClock>().value;
     final due = task.dueDate;
     final rec = Recurrence.tryParse(task.rrule);
-    final scheme = context.colorScheme;
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -283,7 +282,7 @@ class _Properties extends StatelessWidget {
         _PropertyChip(
           icon: Icons.flag_rounded,
           iconColor: task.priority > 0
-              ? priorityColor(scheme, task.priority)
+              ? context.taskColors.priority(task.priority)
               : null,
           label: TaskFormat.priority(l10n, task.priority),
           active: task.priority > 0,
@@ -451,11 +450,10 @@ class _Properties extends StatelessWidget {
 
   Future<void> _pickPriority(BuildContext context) async {
     final l10n = context.l10n;
-    final scheme = context.colorScheme;
     final choice = await _choose<int>(context, [
       for (final p in [3, 2, 1, 0])
         (p, Icons.flag_rounded, TaskFormat.priority(l10n, p)),
-    ], iconColor: (p) => priorityColor(scheme, p));
+    ], iconColor: (p) => context.taskColors.priority(p));
     if (choice == null) {
       return;
     }

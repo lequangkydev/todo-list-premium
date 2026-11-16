@@ -13,12 +13,13 @@ class NotificationService {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       await FirebaseMessaging.instance
           .setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+            alert: true,
+            badge: true,
+            sound: true,
+          );
       FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
+        _firebaseMessagingBackgroundHandler,
+      );
     }
   }
 }

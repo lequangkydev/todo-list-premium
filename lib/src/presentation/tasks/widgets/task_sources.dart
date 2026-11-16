@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/di/di.dart';
+import '../../../config/theme/app_theme.dart';
 import '../../../data/local/database/app_database.dart';
 import '../../../data/repositories/list_repository.dart';
 import '../../../data/repositories/task_repository.dart';
@@ -72,7 +73,8 @@ class KeyedStream<K, T> {
   }
 }
 
-/// Small uppercase-free section header used by Today / Upcoming
+/// Section header used by Today / Upcoming / Completed. The whole row is
+/// tappable (≥48dp) when [onTap] is set, and announces expanded state.
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
     super.key,
@@ -92,37 +94,82 @@ class SectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final style = Theme.of(context).textTheme.titleSmall?.copyWith(
-      color: scheme.onSurfaceVariant,
-      fontWeight: FontWeight.w600,
-    );
-    return InkWell(
-      onTap: onTap,
+    final style = Theme.of(
+      context,
+    ).textTheme.titleSmall?.copyWith(color: scheme.onSurfaceVariant);
+    final header = ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 48),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 16, 12, 4),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpace.gutter + 4,
+          AppSpace.lg,
+          AppSpace.sm,
+          AppSpace.xs,
+        ),
         child: Row(
           children: [
-            Flexible(child: Text(title, style: style)),
-            if (count != null) ...[
-              const SizedBox(width: 6),
-              Text(
-                '$count',
-                style: style?.copyWith(fontWeight: FontWeight.w400),
+            Expanded(
+              child: Text.rich(
+                TextSpan(
+                  text: title,
+                  children: [
+                    if (count != null)
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                            start: AppSpace.sm,
+                          ),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 1,
+                            ),
+                            decoration: BoxDecoration(
+                              color: scheme.surfaceContainerHigh,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: Text(
+                              '$count',
+                              style: Theme.of(context).textTheme.labelMedium
+                                  ?.copyWith(color: scheme.onSurfaceVariant),
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (expanded != null)
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: ExcludeSemantics(
+                          child: AnimatedRotation(
+                            turns: expanded! ? 0 : -.25,
+                            duration: AppMotion.of(context, AppMotion.medium),
+                            child: Icon(
+                              Icons.expand_more_rounded,
+                              size: AppIcon.md,
+                              color: scheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                style: style,
               ),
-            ],
-            if (expanded != null)
-              Icon(
-                expanded!
-                    ? Icons.expand_less_rounded
-                    : Icons.expand_more_rounded,
-                size: 20,
-                color: scheme.onSurfaceVariant,
-              ),
-            const Spacer(),
+            ),
             ?trailing,
           ],
         ),
       ),
+    );
+    if (onTap == null) {
+      return Semantics(header: true, child: header);
+    }
+    return Semantics(
+      header: true,
+      button: true,
+      expanded: expanded,
+      child: InkWell(onTap: onTap, child: header),
     );
   }
 }
@@ -145,22 +192,27 @@ class CalmEmptyState extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 48),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpace.xxl + 8,
+        vertical: AppSpace.xxl + 16,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: scheme.secondaryContainer.withValues(alpha: .6),
-              shape: BoxShape.circle,
+          ExcludeSemantics(
+            child: Container(
+              padding: const EdgeInsets.all(AppSpace.xl - 4),
+              decoration: BoxDecoration(
+                color: scheme.secondaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 36, color: scheme.primary),
             ),
-            child: Icon(icon, size: 36, color: scheme.primary),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpace.lg),
           Text(title, style: text.titleMedium, textAlign: TextAlign.center),
           if (message != null) ...[
-            const SizedBox(height: 6),
+            const SizedBox(height: AppSpace.xs + 2),
             Text(
               message!,
               style: text.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),

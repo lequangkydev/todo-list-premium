@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/di/di.dart';
+import '../../config/theme/app_theme.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../data/repositories/task_repository.dart';
@@ -108,19 +109,38 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                     return TaskLookupsBuilder(
                       builder: (context, lookups) =>
                           ReorderableListView.builder(
-                            padding: const EdgeInsets.only(bottom: 96),
+                            padding: const EdgeInsets.fromLTRB(
+                              AppSpace.gutter,
+                              AppSpace.xs,
+                              AppSpace.gutter,
+                              AppSpace.xxl,
+                            ),
                             buildDefaultDragHandles: false,
                             itemCount: tasks.length,
                             onReorder: (a, b) => _reorder(tasks, a, b),
+                            // Lifted row: card surface + soft shadow
+                            proxyDecorator: (child, index, animation) =>
+                                Material(
+                                  elevation: 6,
+                                  color: context.taskColors.card,
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.md,
+                                  ),
+                                  child: child,
+                                ),
                             itemBuilder: (context, index) {
                               final task = tasks[index];
                               return ReorderableDelayedDragStartListener(
                                 key: ValueKey(task.id),
                                 index: index,
-                                child: TaskTile(
-                                  task: task,
-                                  today: today,
-                                  subtasks: lookups.subtasks[task.id],
+                                child: _CardSlice(
+                                  first: index == 0,
+                                  last: index == tasks.length - 1,
+                                  child: TaskTile(
+                                    task: task,
+                                    today: today,
+                                    subtasks: lookups.subtasks[task.id],
+                                  ),
                                 ),
                               );
                             },
@@ -133,6 +153,44 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+/// One row of a card split across a scrolling list: rounded only at the
+/// ends, with a divider between rows, so the list reads as one card
+class _CardSlice extends StatelessWidget {
+  const _CardSlice({
+    required this.first,
+    required this.last,
+    required this.child,
+  });
+
+  final bool first;
+  final bool last;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    const r = Radius.circular(AppRadius.lg);
+    final side = BorderSide(color: scheme.outlineVariant);
+    return Container(
+      decoration: BoxDecoration(
+        color: context.taskColors.card,
+        borderRadius: BorderRadius.vertical(
+          top: first ? r : Radius.zero,
+          bottom: last ? r : Radius.zero,
+        ),
+        border: Border(
+          left: side,
+          right: side,
+          top: first ? side : BorderSide.none,
+          bottom: side,
+        ),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: child,
     );
   }
 }

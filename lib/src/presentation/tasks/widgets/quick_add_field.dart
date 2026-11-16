@@ -210,7 +210,7 @@ class _ParsedChips extends StatelessWidget {
         (
           Icons.flag_rounded,
           TaskFormat.priority(context.l10n, result.priority),
-          priorityColor(scheme, result.priority),
+          context.taskColors.priority(result.priority),
         ),
     ];
     return Wrap(

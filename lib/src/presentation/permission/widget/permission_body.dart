@@ -15,33 +15,31 @@ class _PermissionContentState extends State<PermissionBody>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     super.initState();
+    _refresh();
   }
 
-  Widget _buildItem({
-    required String title,
-    required ValueCubit<bool> cubit,
-    required FutureOr<void> Function(bool value) onChanged,
-  }) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 16.w),
-      margin: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.sp),
-            ),
-          ),
-          BlocBuilder<ValueCubit<bool>, bool>(
-            bloc: cubit,
-            builder: (context, state) =>
-                CustomSwitch(value: state, onChanged: onChanged),
-          ),
-        ],
-      ),
-    );
+  final _reminders = getIt<ReminderService>();
+  bool? _notificationsOn;
+
+  Future<void> _refresh() async {
+    final on = await _reminders.notificationsEnabled();
+    if (mounted) {
+      setState(() => _notificationsOn = on);
+    }
+  }
+
+  Future<void> _toggleNotifications(bool value) async {
+    if (!value || (_notificationsOn ?? false)) {
+      return;
+    }
+    await _reminders.requestNotifications();
+    if (!await _reminders.notificationsEnabled()) {
+      // Denied before → only the system settings page can turn it on
+      await PermissionUtil.instance.requestPermissionNotificationDefault(
+        openSetting: true,
+      );
+    }
+    await _refresh();
   }
 
   AdUnitConfig get _adConfig =>
@@ -59,84 +57,90 @@ class _PermissionContentState extends State<PermissionBody>
 
   @override
   Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    final text = Theme.of(context).textTheme;
+    final on = _notificationsOn ?? false;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
           child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpace.xl),
             child: Column(
               children: [
-                SizedBox.square(dimension: 150.r, child: const Placeholder()),
-                Padding(
-                  padding: const EdgeInsets.all(25).r,
-                  child: const Text(
-                    'context.l10n.requirePermission',
+                const SizedBox(height: AppSpace.xl),
+                ExcludeSemantics(
+                  child: Container(
+                    padding: const EdgeInsets.all(AppSpace.xl + 4),
+                    decoration: BoxDecoration(
+                      color: scheme.secondaryContainer,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.notifications_active_outlined,
+                      size: 56,
+                      color: scheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpace.xl),
+                Semantics(
+                  header: true,
+                  child: Text(
+                    context.l10n.permissionTitle,
                     textAlign: TextAlign.center,
+                    style: text.headlineMedium,
                   ),
                 ),
-                if (Global.instance.androidSdkVersion <= 32 &&
-                    Platform.isAndroid)
-                  _buildItem(
-                    title: 'Storage',
-                    cubit: context.read<StoragePermissionCubit>(),
-                    onChanged: (value) {
-                      PermissionUtil.instance.requestPermission(
-                        Permission.storage,
-                      );
-                    },
+                const SizedBox(height: AppSpace.md),
+                Text(
+                  context.l10n.permissionMessage,
+                  textAlign: TextAlign.center,
+                  style: text.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w400,
+                    color: scheme.onSurfaceVariant,
                   ),
-                if (Global.instance.androidSdkVersion > 32 || Platform.isIOS)
-                  _buildItem(
-                    title: 'Photo & Video',
-                    cubit: context.read<StoragePermissionCubit>(),
-                    onChanged: (value) {
-                      PermissionUtil.instance.requestPermission(
-                        Permission.photos,
-                      );
-                    },
-                  ),
-                _buildItem(
-                  title: 'Camera',
-                  cubit: context.read<CameraPermissionCubit>(),
-                  onChanged: (value) {
-                    PermissionUtil.instance.requestPermission(
-                      Permission.camera,
-                    );
-                  },
                 ),
-                _buildItem(
-                  title: 'Notification',
-                  cubit: context.read<NotificationPermissionCubit>(),
-                  onChanged: (value) {
-                    PermissionUtil.instance
-                        .requestPermissionNotificationDefault(
-                          openSetting: true,
-                        );
-                  },
+                const SizedBox(height: AppSpace.xl),
+                Card(
+                  child: SwitchListTile(
+                    value: on,
+                    onChanged: _toggleNotifications,
+                    secondary: const Icon(Icons.notifications_none_rounded),
+                    title: Text(context.l10n.notifications),
+                    subtitle: Text(
+                      on
+                          ? context.l10n.notificationsOnHint
+                          : context.l10n.permissionNotificationsHint,
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
         ),
         if (!_adConfig.isBottomAd) _buildAd(),
-        BlocBuilder<StoragePermissionCubit, bool>(
-          builder: (context, state) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-              child: FilledButton(
-                child: Text(
-                  state
-                      ? context.l10n.continueText
-                      : context.l10n.grantPermissionLater,
-                ),
-                onPressed: () {
-                  context.replaceRoute(const HomeRoute());
-                  SharedPreferencesManager.instance
-                      .markFirstPermissionAsShown();
-                },
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpace.xl,
+            AppSpace.md,
+            AppSpace.xl,
+            AppSpace.lg,
+          ),
+          child: SizedBox(
+            height: 52,
+            child: FilledButton(
+              child: Text(
+                on
+                    ? context.l10n.continueText
+                    : context.l10n.grantPermissionLater,
               ),
-            );
-          },
+              onPressed: () {
+                context.replaceRoute(const HomeRoute());
+                SharedPreferencesManager.instance.markFirstPermissionAsShown();
+              },
+            ),
+          ),
         ),
         // collapsibleBanner/large → neo đáy màn
         if (_adConfig.isBottomAd) _buildAd(),
@@ -149,6 +153,7 @@ class _PermissionContentState extends State<PermissionBody>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       PermissionUtil.instance.checkAllPermissions();
+      await _refresh();
     }
   }
 

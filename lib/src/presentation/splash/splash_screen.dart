@@ -19,7 +19,6 @@ import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
 import '../../config/theme/palette.dart';
-import '../../gen/assets.gen.dart';
 import '../../shared/constants/app_constants.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/global.dart';
@@ -28,7 +27,7 @@ import '../../shared/helpers/logger_utils.dart';
 import '../../shared/helpers/my_completer.dart';
 import '../../shared/helpers/permission_util.dart';
 import '../../shared/helpers/shortcut_utils.dart';
-import '../../shared/widgets/custom_fade_in_image.dart';
+import '../../shared/widgets/app_mark.dart';
 import 'update_dialog.dart';
 
 @RoutePage()
@@ -89,19 +88,11 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomFadeInImage(
-                    image: Assets.images.logo.logo.provider(),
-                    width: 145.r,
-                    height: 145.r,
-                    fit: BoxFit.contain,
-                  ),
-                  16.verticalSpace,
+                  const AppMark(size: 96),
+                  24.verticalSpace,
                   Text(
                     AppConstants.appName,
-                    style: TextStyle(
-                      color: context.colorScheme.primary,
-                      fontSize: 22.sp,
-                    ),
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
               ),
@@ -118,9 +109,9 @@ class _SplashScreenState extends State<SplashScreen>
                       valueListenable: _progressPercent,
                       builder: (context, percent, _) => Text(
                         context.l10n.loading(percent.toString()),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
-                          color: Color(0xFF627689),
+                          color: context.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ),
@@ -136,9 +127,9 @@ class _SplashScreenState extends State<SplashScreen>
                           borderRadius: const BorderRadius.all(
                             Radius.circular(4),
                           ),
-                          color: Palette.primary,
+                          color: context.colorScheme.primary,
                           value: loadingController.value.clamp(0.0, 0.99),
-                          backgroundColor: const Color(0xffd1d1d1),
+                          backgroundColor: context.colorScheme.outlineVariant,
                         ),
                       ),
                     ),
@@ -148,7 +139,7 @@ class _SplashScreenState extends State<SplashScreen>
               15.verticalSpace,
               Text(
                 context.l10n.thisActionCanContainAds,
-                style: const TextStyle(color: Palette.primary),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),

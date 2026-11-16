@@ -64,15 +64,20 @@ class _SearchScreenState extends State<SearchScreen> {
                   builder: (context, lookups) => ListView(
                     keyboardDismissBehavior:
                         ScrollViewKeyboardDismissBehavior.onDrag,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     children: [
-                      for (final task in tasks)
-                        TaskTile(
-                          key: ValueKey(task.id),
-                          task: task,
-                          today: today,
-                          subtasks: lookups.subtasks[task.id],
-                          list: lookups.listOf(task),
-                        ),
+                      TaskGroup(
+                        children: [
+                          for (final task in tasks)
+                            TaskTile(
+                              key: ValueKey(task.id),
+                              task: task,
+                              today: today,
+                              subtasks: lookups.subtasks[task.id],
+                              list: lookups.listOf(task),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                 );

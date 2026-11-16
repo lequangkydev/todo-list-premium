@@ -24,15 +24,19 @@ class _PageActionState extends State<PageAction> {
       _ => context.l10n.start,
     };
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16).w,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpace.xl),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextButton(onPressed: widget.onNextTap, child: Text(text)),
-          16.verticalSpace,
           CustomIndicator(
             length: context.read<OnboardingController>().totalPage,
             currentIndex: widget.activeIndex,
+          ),
+          const SizedBox(height: AppSpace.xl),
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: FilledButton(onPressed: widget.onNextTap, child: Text(text)),
           ),
         ],
       ),

@@ -58,16 +58,18 @@ class _CompletedScreenState extends State<CompletedScreen> {
                       count: entry.value.length,
                     ),
                   ),
-                  SliverList.list(
-                    children: [
-                      for (final task in entry.value)
-                        TaskTile(
-                          key: ValueKey(task.id),
-                          task: task,
-                          today: today,
-                          list: lookups.listOf(task),
-                        ),
-                    ],
+                  SliverToBoxAdapter(
+                    child: TaskGroup(
+                      children: [
+                        for (final task in entry.value)
+                          TaskTile(
+                            key: ValueKey(task.id),
+                            task: task,
+                            today: today,
+                            list: lookups.listOf(task),
+                          ),
+                      ],
+                    ),
                   ),
                 ],
                 const SliverToBoxAdapter(child: SizedBox(height: 48)),

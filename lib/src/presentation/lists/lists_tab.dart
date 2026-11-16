@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../config/theme/app_theme.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../shared/extension/context_extension.dart';
 import 'list_form_sheet.dart';
@@ -25,19 +26,24 @@ class _ListsTabState extends State<ListsTab> {
   @override
   Widget build(BuildContext context) {
     final scheme = context.colorScheme;
+    final text = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.lists), actions: widget.actions),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => ListFormSheet.show(context),
-        icon: const Icon(Icons.add_rounded),
-        label: Text(context.l10n.newList),
+      appBar: AppBar(
+        toolbarHeight: 84,
+        title: Text(context.l10n.lists, style: text.headlineMedium),
+        actions: widget.actions,
       ),
       body: StreamBuilder<List<ListWithCount>>(
         stream: _lists,
         builder: (context, snapshot) {
           final lists = snapshot.data ?? const <ListWithCount>[];
           return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpace.gutter,
+              AppSpace.xs,
+              AppSpace.gutter,
+              AppSpace.xxl,
+            ),
             children: [
               Card(
                 child: Column(
@@ -48,17 +54,19 @@ class _ListsTabState extends State<ListsTab> {
                         leading: Icon(
                           Icons.inbox_rounded,
                           color: scheme.primary,
+                          size: AppIcon.lg,
                         ),
                         title: context.l10n.inbox,
                         count: count.data ?? 0,
                         onTap: () => context.pushRoute(ListDetailRoute()),
                       ),
                     ),
-                    const Divider(indent: 56),
+                    const Divider(indent: 60),
                     _ListRow(
                       leading: Icon(
-                        Icons.check_circle_outline_rounded,
+                        Icons.task_alt_rounded,
                         color: scheme.onSurfaceVariant,
+                        size: AppIcon.lg,
                       ),
                       title: context.l10n.completed,
                       onTap: () => context.pushRoute(const CompletedRoute()),
@@ -66,45 +74,72 @@ class _ListsTabState extends State<ListsTab> {
                   ],
                 ),
               ),
-              if (lists.isNotEmpty) ...[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpace.xs,
+                  AppSpace.xl,
+                  AppSpace.xs,
+                  AppSpace.sm,
+                ),
+                child: Semantics(
+                  header: true,
                   child: Text(
                     context.l10n.myLists,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    style: text.titleSmall?.copyWith(
                       color: scheme.onSurfaceVariant,
                     ),
                   ),
                 ),
-                Card(
-                  child: Column(
-                    children: [
-                      for (var i = 0; i < lists.length; i++) ...[
-                        if (i > 0) const Divider(indent: 56),
-                        _ListRow(
-                          leading: Icon(
-                            Icons.circle,
-                            size: 14,
-                            color: Color(lists[i].list.colorValue),
+              ),
+              Card(
+                child: Column(
+                  children: [
+                    for (final item in lists) ...[
+                      _ListRow(
+                        leading: Container(
+                          width: 14,
+                          height: 14,
+                          decoration: BoxDecoration(
+                            color: Color(item.list.colorValue),
+                            shape: BoxShape.circle,
                           ),
-                          title: lists[i].list.name,
-                          count: lists[i].openCount,
-                          onTap: () => context.pushRoute(
-                            ListDetailRoute(listId: lists[i].list.id),
-                          ),
-                          onLongPress: () =>
-                              ListFormSheet.show(context, list: lists[i].list),
                         ),
-                      ],
+                        title: item.list.name,
+                        count: item.openCount,
+                        onTap: () => context.pushRoute(
+                          ListDetailRoute(listId: item.list.id),
+                        ),
+                        onLongPress: () =>
+                            ListFormSheet.show(context, list: item.list),
+                      ),
+                      const Divider(indent: 60),
                     ],
-                  ),
+                    // Inline action — no FAB to collide with snackbars
+                    _ListRow(
+                      leading: Icon(
+                        Icons.add_rounded,
+                        color: scheme.primary,
+                        size: AppIcon.lg,
+                      ),
+                      title: context.l10n.newList,
+                      titleColor: scheme.primary,
+                      showChevron: false,
+                      onTap: () => ListFormSheet.show(context),
+                    ),
+                  ],
                 ),
-              ] else if (snapshot.hasData)
+              ),
+              if (snapshot.hasData && lists.isEmpty)
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 24, 8, 0),
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.xs,
+                    AppSpace.md,
+                    AppSpace.xs,
+                    0,
+                  ),
                   child: Text(
                     context.l10n.listsHint,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: text.bodyMedium?.copyWith(
                       color: scheme.onSurfaceVariant,
                     ),
                   ),
@@ -124,6 +159,8 @@ class _ListRow extends StatelessWidget {
     required this.onTap,
     this.count,
     this.onLongPress,
+    this.titleColor,
+    this.showChevron = true,
   });
 
   final Widget leading;
@@ -131,17 +168,39 @@ class _ListRow extends StatelessWidget {
   final int? count;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
+  final Color? titleColor;
+  final bool showChevron;
 
   @override
   Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    final text = Theme.of(context).textTheme;
     return ListTile(
-      leading: SizedBox(width: 24, child: Center(child: leading)),
-      title: Text(title),
-      trailing: count == null || count == 0
-          ? const Icon(Icons.chevron_right_rounded)
-          : Text(
-              '$count',
-              style: TextStyle(color: context.colorScheme.onSurfaceVariant),
+      minTileHeight: 56,
+      leading: ExcludeSemantics(
+        child: SizedBox(width: 28, child: Center(child: leading)),
+      ),
+      title: Text(title, style: text.bodyLarge?.copyWith(color: titleColor)),
+      trailing: !showChevron
+          ? null
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (count != null && count! > 0)
+                  Text(
+                    '$count',
+                    style: text.bodyMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+                const SizedBox(width: AppSpace.xs),
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: scheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
       onTap: onTap,
       onLongPress: onLongPress,

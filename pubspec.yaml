@@ -125,10 +125,19 @@ flutter:
     - assets/images/languages/
     - assets/lottie/
 
-#  fonts:
-#    - family: OpenSans
-#      fonts:
-#        - asset: assets/fonts/open_sans/OpenSans-Regular.ttf
+  # Plus Jakarta Sans (OFL, has Vietnamese glyphs) — bundled for offline use
+  fonts:
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Regular.ttf
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/plus_jakarta_sans/PlusJakartaSans-ExtraBold.ttf
+          weight: 800
 
 #generate
 flutter_gen:
