@@ -156,5 +156,14 @@
   "onbLocalOnly": "Tarefas salvas só neste celular",
   "permissionTitle": "Ative os lembretes",
   "permissionMessage": "As notificações servem só para os lembretes que você cria. Nada mais.",
-  "permissionNotificationsHint": "Necessário para te avisar na hora"
+  "permissionNotificationsHint": "Necessário para te avisar na hora",
+  "summaryRemaining": "{count, plural, =0{Nada pendente hoje} =1{Falta 1 tarefa} other{Faltam {count} tarefas}}",
+  "summaryStart": "Uma coisa de cada vez.",
+  "allDoneTitle": "Tudo pronto por hoje",
+  "allDoneMessage": "Bom trabalho. Respire — o resto pode esperar até amanhã.",
+  "recentSearches": "Recentes",
+  "clearRecent": "Limpar",
+  "suggestions": "Sugestões",
+  "filterHighPriority": "Prioridade alta",
+  "filterWithReminder": "Com lembrete"
 }

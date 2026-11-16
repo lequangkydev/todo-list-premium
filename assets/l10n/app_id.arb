@@ -156,5 +156,14 @@
   "onbLocalOnly": "Tugas hanya disimpan di ponsel ini",
   "permissionTitle": "Aktifkan pengingat",
   "permissionMessage": "Notifikasi hanya dipakai untuk pengingat yang kamu buat sendiri. Tidak untuk hal lain.",
-  "permissionNotificationsHint": "Diperlukan agar diingatkan tepat waktu"
+  "permissionNotificationsHint": "Diperlukan agar diingatkan tepat waktu",
+  "summaryRemaining": "{count, plural, =0{Tidak ada sisa hari ini} other{Sisa {count} tugas}}",
+  "summaryStart": "Satu per satu saja.",
+  "allDoneTitle": "Semua beres hari ini",
+  "allDoneMessage": "Kerja bagus. Tarik napas — sisanya bisa menunggu besok.",
+  "recentSearches": "Terbaru",
+  "clearRecent": "Hapus",
+  "suggestions": "Saran",
+  "filterHighPriority": "Prioritas tinggi",
+  "filterWithReminder": "Ada pengingat"
 }

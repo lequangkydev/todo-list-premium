@@ -156,5 +156,14 @@
   "onbLocalOnly": "Aufgaben nur auf diesem Handy gespeichert",
   "permissionTitle": "Erinnerungen einschalten",
   "permissionMessage": "Mitteilungen werden nur für deine eigenen Erinnerungen genutzt. Für nichts anderes.",
-  "permissionNotificationsHint": "Nötig, um dich pünktlich zu erinnern"
+  "permissionNotificationsHint": "Nötig, um dich pünktlich zu erinnern",
+  "summaryRemaining": "{count, plural, =0{Heute nichts mehr offen} =1{Noch 1 Aufgabe} other{Noch {count} Aufgaben}}",
+  "summaryStart": "Eins nach dem anderen.",
+  "allDoneTitle": "Alles erledigt für heute",
+  "allDoneMessage": "Gut gemacht. Durchatmen – der Rest kann bis morgen warten.",
+  "recentSearches": "Zuletzt",
+  "clearRecent": "Löschen",
+  "suggestions": "Vorschläge",
+  "filterHighPriority": "Hohe Priorität",
+  "filterWithReminder": "Mit Erinnerung"
 }

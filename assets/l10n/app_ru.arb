@@ -156,5 +156,14 @@
   "onbLocalOnly": "Задачи хранятся только на этом телефоне",
   "permissionTitle": "Включите напоминания",
   "permissionMessage": "Уведомления используются только для ваших напоминаний. И ни для чего больше.",
-  "permissionNotificationsHint": "Нужно, чтобы напоминать вовремя"
+  "permissionNotificationsHint": "Нужно, чтобы напоминать вовремя",
+  "summaryRemaining": "{count, plural, =0{На сегодня всё} other{Осталось: {count}}}",
+  "summaryStart": "По одному делу за раз.",
+  "allDoneTitle": "На сегодня всё готово",
+  "allDoneMessage": "Отличная работа. Передохните — остальное подождёт до завтра.",
+  "recentSearches": "Недавние",
+  "clearRecent": "Очистить",
+  "suggestions": "Подсказки",
+  "filterHighPriority": "Высокий приоритет",
+  "filterWithReminder": "С напоминанием"
 }

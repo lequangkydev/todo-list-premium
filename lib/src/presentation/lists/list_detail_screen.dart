@@ -99,7 +99,8 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                     if (tasks.isEmpty) {
                       return SingleChildScrollView(
                         child: CalmEmptyState(
-                          icon: Icons.check_circle_outline_rounded,
+                          icon: Icons.add_task_rounded,
+                          accent: list == null ? null : Color(list.colorValue),
                           title: context.l10n.listEmptyTitle,
                           message: context.l10n.listEmptyMessage,
                         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../config/di/di.dart';
+import '../../config/theme/app_theme.dart';
 import '../../core/date/dates.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
@@ -73,7 +74,8 @@ class _UpcomingTabState extends State<UpcomingTab> {
                     if (tasks != null && tasks.isEmpty)
                       SliverToBoxAdapter(
                         child: CalmEmptyState(
-                          icon: Icons.wb_sunny_outlined,
+                          icon: Icons.event_available_rounded,
+                          accent: context.taskColors.priorityLow,
                           title: context.l10n.upcomingEmptyTitle,
                           message: context.l10n.upcomingEmptyMessage,
                         ),

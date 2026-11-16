@@ -156,5 +156,14 @@
   "onbLocalOnly": "タスクはこのスマホにのみ保存",
   "permissionTitle": "リマインダーをオンに",
   "permissionMessage": "通知はあなたが設定したリマインダーにだけ使います。それ以外には使いません。",
-  "permissionNotificationsHint": "時間どおりにお知らせするために必要です"
+  "permissionNotificationsHint": "時間どおりにお知らせするために必要です",
+  "summaryRemaining": "{count, plural, =0{今日の残りはありません} other{残り {count} 件}}",
+  "summaryStart": "ひとつずつ。",
+  "allDoneTitle": "今日はすべて完了",
+  "allDoneMessage": "おつかれさまでした。ひと息つきましょう — 残りは明日で大丈夫。",
+  "recentSearches": "最近の検索",
+  "clearRecent": "消去",
+  "suggestions": "おすすめ",
+  "filterHighPriority": "優先度：高",
+  "filterWithReminder": "リマインダーあり"
 }

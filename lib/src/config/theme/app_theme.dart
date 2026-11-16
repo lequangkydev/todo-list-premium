@@ -48,6 +48,43 @@ class AppMotion {
 
 const String appFontFamily = 'PlusJakartaSans';
 
+/// Shadow colour tinted with the brand teal — never pure grey/black
+const _tintedShadow = Color(0x400F766E);
+
+/// Soft, tinted shadows for custom surfaces (light theme only)
+class AppShadow {
+  AppShadow._();
+
+  static List<BoxShadow> soft(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      return const [];
+    }
+    return const [
+      BoxShadow(color: Color(0x140F766E), blurRadius: 16, offset: Offset(0, 6)),
+      BoxShadow(color: Color(0x0A0F766E), blurRadius: 2, offset: Offset(0, 1)),
+    ];
+  }
+
+  /// Hairline border only where shadows don't read (dark theme)
+  static Border? hairline(BuildContext context) {
+    if (Theme.of(context).brightness != Brightness.dark) {
+      return null;
+    }
+    return Border.all(color: Theme.of(context).colorScheme.outlineVariant);
+  }
+}
+
+/// [color] as an icon on its own tinted fill: lightened in dark mode so it
+/// keeps ≥3:1 against the tint
+Color onTint(BuildContext context, Color color) =>
+    Theme.of(context).brightness == Brightness.dark
+    ? Color.lerp(color, Colors.white, .45)!
+    : color;
+
+/// A colour mixed onto a surface at [amount] — for soft tinted fills
+Color tint(Color color, Color surface, [double amount = .12]) =>
+    Color.alphaBlend(color.withValues(alpha: amount), surface);
+
 /// Semantic colours Material's scheme doesn't cover
 @immutable
 class TaskColors extends ThemeExtension<TaskColors> {
@@ -78,7 +115,7 @@ class TaskColors extends ThemeExtension<TaskColors> {
 
   static const light = TaskColors(
     priorityLow: Color(0xFF2563EB),
-    priorityMedium: Color(0xFFA16207),
+    priorityMedium: Color(0xFF92590A),
     priorityHigh: Color(0xFFC2410C),
     noPriority: Color(0xFF64748B),
     card: Color(0xFFFFFFFF),
@@ -299,14 +336,19 @@ ThemeData buildAppTheme(Brightness brightness) {
         ),
       ),
     ),
+    // Light: soft teal-tinted shadow instead of a border (depth without
+    // lines). Dark: shadows don't read, so keep a hairline border.
     cardTheme: CardThemeData(
       color: colors.card,
-      elevation: 0,
+      elevation: isDark ? 0 : 2,
+      shadowColor: isDark ? Colors.transparent : _tintedShadow,
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        side: BorderSide(color: scheme.outlineVariant),
+        side: isDark
+            ? BorderSide(color: scheme.outlineVariant)
+            : BorderSide.none,
       ),
     ),
     listTileTheme: ListTileThemeData(

@@ -156,5 +156,14 @@
   "onbLocalOnly": "تُحفظ المهام على هذا الهاتف فقط",
   "permissionTitle": "شغّل التذكيرات",
   "permissionMessage": "تُستخدم الإشعارات فقط للتذكيرات التي تضبطها بنفسك. لا شيء غير ذلك.",
-  "permissionNotificationsHint": "ضروري لتذكيرك في الوقت المناسب"
+  "permissionNotificationsHint": "ضروري لتذكيرك في الوقت المناسب",
+  "summaryRemaining": "{count, plural, =0{لا شيء متبقٍ اليوم} other{تبقّى {count} مهام}}",
+  "summaryStart": "شيء واحد في كل مرة.",
+  "allDoneTitle": "أنجزت كل مهام اليوم",
+  "allDoneMessage": "عمل رائع. خذ نفسًا — الباقي يمكنه انتظار الغد.",
+  "recentSearches": "الأخيرة",
+  "clearRecent": "مسح",
+  "suggestions": "اقتراحات",
+  "filterHighPriority": "أولوية عالية",
+  "filterWithReminder": "مع تذكير"
 }

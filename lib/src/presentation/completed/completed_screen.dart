@@ -38,7 +38,7 @@ class _CompletedScreenState extends State<CompletedScreen> {
           if (tasks.isEmpty) {
             return Center(
               child: CalmEmptyState(
-                icon: Icons.history_rounded,
+                icon: Icons.task_alt_rounded,
                 title: context.l10n.completedEmptyTitle,
               ),
             );

@@ -188,6 +188,14 @@ class TaskRepository {
         );
   }
 
+  /// Open top-level tasks with high priority
+  Stream<List<Task>> watchHighPriority() {
+    return (_db.select(_t)
+          ..where((t) => _openTopLevel(t) & t.priority.equals(3))
+          ..orderBy(_byDueThenOrder))
+        .watch();
+  }
+
   /// Open tasks that may need a notification
   Stream<List<Task>> watchWithReminders() {
     return (_db.select(_t)..where(

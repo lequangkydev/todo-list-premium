@@ -156,5 +156,14 @@
   "onbLocalOnly": "任务只保存在这部手机上",
   "permissionTitle": "开启提醒",
   "permissionMessage": "通知只用于你自己设置的提醒，不做他用。",
-  "permissionNotificationsHint": "用于准时提醒你"
+  "permissionNotificationsHint": "用于准时提醒你",
+  "summaryRemaining": "{count, plural, =0{今天没有剩余任务} other{还剩 {count} 项}}",
+  "summaryStart": "一次做一件事。",
+  "allDoneTitle": "今天全部完成",
+  "allDoneMessage": "做得好。歇口气吧——剩下的明天再说。",
+  "recentSearches": "最近搜索",
+  "clearRecent": "清除",
+  "suggestions": "建议",
+  "filterHighPriority": "高优先级",
+  "filterWithReminder": "有提醒"
 }

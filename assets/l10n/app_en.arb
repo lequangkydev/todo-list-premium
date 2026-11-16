@@ -287,5 +287,21 @@
   "onbLocalOnly": "Tasks are stored only on this phone",
   "permissionTitle": "Turn on reminders",
   "permissionMessage": "Notifications are only used for reminders you set yourself. Nothing else.",
-  "permissionNotificationsHint": "Needed to remind you on time"
+  "permissionNotificationsHint": "Needed to remind you on time",
+  "summaryRemaining": "{count, plural, =0{Nothing left today} =1{1 task left} other{{count} tasks left}}",
+  "summaryStart": "One thing at a time.",
+  "allDoneTitle": "All done for today",
+  "allDoneMessage": "Nice work. Take a breath — the rest can wait for tomorrow.",
+  "recentSearches": "Recent",
+  "clearRecent": "Clear",
+  "suggestions": "Suggestions",
+  "filterHighPriority": "High priority",
+  "filterWithReminder": "With reminder",
+  "@summaryRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

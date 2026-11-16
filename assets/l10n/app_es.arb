@@ -156,5 +156,14 @@
   "onbLocalOnly": "Las tareas se guardan solo en este teléfono",
   "permissionTitle": "Activa los recordatorios",
   "permissionMessage": "Las notificaciones solo se usan para los recordatorios que tú pones. Nada más.",
-  "permissionNotificationsHint": "Necesario para avisarte a tiempo"
+  "permissionNotificationsHint": "Necesario para avisarte a tiempo",
+  "summaryRemaining": "{count, plural, =0{Nada pendiente hoy} =1{Queda 1 tarea} other{Quedan {count} tareas}}",
+  "summaryStart": "Una cosa a la vez.",
+  "allDoneTitle": "Todo listo por hoy",
+  "allDoneMessage": "Buen trabajo. Respira: lo demás puede esperar a mañana.",
+  "recentSearches": "Recientes",
+  "clearRecent": "Borrar",
+  "suggestions": "Sugerencias",
+  "filterHighPriority": "Prioridad alta",
+  "filterWithReminder": "Con recordatorio"
 }

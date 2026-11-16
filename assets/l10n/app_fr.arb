@@ -156,5 +156,14 @@
   "onbLocalOnly": "Tâches stockées uniquement sur ce téléphone",
   "permissionTitle": "Activez les rappels",
   "permissionMessage": "Les notifications servent uniquement aux rappels que vous créez. Rien d’autre.",
-  "permissionNotificationsHint": "Nécessaire pour vous rappeler à temps"
+  "permissionNotificationsHint": "Nécessaire pour vous rappeler à temps",
+  "summaryRemaining": "{count, plural, =0{Plus rien aujourd'hui} =1{Il reste 1 tâche} other{Il reste {count} tâches}}",
+  "summaryStart": "Une chose à la fois.",
+  "allDoneTitle": "Tout est fait pour aujourd'hui",
+  "allDoneMessage": "Beau travail. Respirez — le reste peut attendre demain.",
+  "recentSearches": "Récentes",
+  "clearRecent": "Effacer",
+  "suggestions": "Suggestions",
+  "filterHighPriority": "Priorité haute",
+  "filterWithReminder": "Avec rappel"
 }

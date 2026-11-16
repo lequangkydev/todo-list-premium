@@ -174,42 +174,41 @@ class SectionHeader extends StatelessWidget {
   }
 }
 
-/// Calm empty state: icon, one line, optional hint
+/// Empty state with a small composed illustration (tinted circle, a tilted
+/// mini task card and an icon badge in [accent]) instead of a bare icon.
 class CalmEmptyState extends StatelessWidget {
   const CalmEmptyState({
     super.key,
     required this.icon,
     required this.title,
     this.message,
+    this.accent,
   });
 
   final IconData icon;
   final String title;
   final String? message;
 
+  /// Defaults to the brand primary
+  final Color? accent;
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
+    final color = accent ?? scheme.primary;
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpace.xxl + 8,
-        vertical: AppSpace.xxl + 16,
+        vertical: AppSpace.xxl,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ExcludeSemantics(
-            child: Container(
-              padding: const EdgeInsets.all(AppSpace.xl - 4),
-              decoration: BoxDecoration(
-                color: scheme.secondaryContainer,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, size: 36, color: scheme.primary),
-            ),
+            child: _EmptyIllustration(icon: icon, color: color),
           ),
-          const SizedBox(height: AppSpace.lg),
+          const SizedBox(height: AppSpace.xl),
           Text(title, style: text.titleMedium, textAlign: TextAlign.center),
           if (message != null) ...[
             const SizedBox(height: AppSpace.xs + 2),
@@ -219,6 +218,96 @@ class CalmEmptyState extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyIllustration extends StatelessWidget {
+  const _EmptyIllustration({required this.icon, required this.color});
+
+  final IconData icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final card = context.taskColors.card;
+    Widget line(double width, {bool strong = false}) => Container(
+      width: width,
+      height: 8,
+      decoration: BoxDecoration(
+        color: strong
+            ? color.withValues(alpha: .35)
+            : scheme.outlineVariant.withValues(alpha: .9),
+        borderRadius: BorderRadius.circular(4),
+      ),
+    );
+    return SizedBox(
+      width: 168,
+      height: 140,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 132,
+            height: 132,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: tint(color, scheme.surface, .14),
+            ),
+          ),
+          Transform.rotate(
+            angle: -.08,
+            child: Container(
+              width: 112,
+              padding: const EdgeInsets.all(AppSpace.md),
+              decoration: BoxDecoration(
+                color: card,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                boxShadow: AppShadow.soft(context),
+                border: AppShadow.hairline(context),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var i = 0; i < 3; i++) ...[
+                    if (i > 0) const SizedBox(height: AppSpace.sm),
+                    Row(
+                      children: [
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: i == 0 ? color : null,
+                            border: Border.all(color: color, width: 2),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpace.sm),
+                        line(i == 1 ? 44 : 60, strong: i == 0),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+          PositionedDirectional(
+            end: 10,
+            bottom: 6,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+                border: Border.all(color: scheme.surface, width: 3),
+              ),
+              child: Icon(icon, size: 22, color: scheme.surface),
+            ),
+          ),
         ],
       ),
     );

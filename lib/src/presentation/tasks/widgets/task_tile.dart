@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../../../config/theme/app_theme.dart';
@@ -214,10 +216,24 @@ class _Details extends StatelessWidget {
     }
     if (task.priority > 0) {
       // Text + shape, not colour alone
-      add(
-        Icons.flag_rounded,
-        text: TaskFormat.priority(l10n, task.priority),
-        color: context.taskColors.priority(task.priority),
+      final c = context.taskColors.priority(task.priority);
+      items.add(
+        _Pill(
+          color: c,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ExcludeSemantics(
+                child: Icon(Icons.flag_rounded, size: 13, color: c),
+              ),
+              const SizedBox(width: 3),
+              Text(
+                TaskFormat.priority(l10n, task.priority),
+                style: style?.copyWith(color: c, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
       );
     }
     if (task.rrule != null) {
@@ -235,21 +251,28 @@ class _Details extends StatelessWidget {
     }
     final l = list;
     if (l != null) {
+      final c = Color(l.colorValue);
       items.add(
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(
-                color: Color(l.colorValue),
-                shape: BoxShape.circle,
+        _Pill(
+          color: c,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 7,
+                height: 7,
+                decoration: BoxDecoration(color: c, shape: BoxShape.circle),
               ),
-            ),
-            const SizedBox(width: AppSpace.xs + 2),
-            Text(l.name, style: style),
-          ],
+              const SizedBox(width: AppSpace.xs + 1),
+              Text(
+                l.name,
+                style: style?.copyWith(
+                  color: scheme.onSurface,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -264,6 +287,27 @@ class _Details extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: items,
       ),
+    );
+  }
+}
+
+/// Small pill with a soft fill of [color]
+class _Pill extends StatelessWidget {
+  const _Pill({required this.color, required this.child});
+
+  final Color color;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+      decoration: BoxDecoration(
+        color: tint(color, context.taskColors.card, isDark ? .14 : .08),
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: child,
     );
   }
 }
@@ -290,9 +334,16 @@ class CheckCircle extends StatefulWidget {
   State<CheckCircle> createState() => _CheckCircleState();
 }
 
-class _CheckCircleState extends State<CheckCircle> {
+class _CheckCircleState extends State<CheckCircle>
+    with SingleTickerProviderStateMixin {
   late bool _checked = widget.checked;
   bool _busy = false;
+
+  /// Drives the bounce + spark burst when a task gets completed
+  late final AnimationController _burst = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 520),
+  );
 
   @override
   void didUpdateWidget(covariant CheckCircle oldWidget) {
@@ -302,15 +353,25 @@ class _CheckCircleState extends State<CheckCircle> {
     }
   }
 
+  @override
+  void dispose() {
+    _burst.dispose();
+    super.dispose();
+  }
+
   Future<void> _tap() async {
     if (_busy) {
       return;
     }
     _busy = true;
+    final completing = !_checked;
     setState(() => _checked = !_checked);
-    final delay = AppMotion.of(context, const Duration(milliseconds: 220));
-    if (delay > Duration.zero) {
-      await Future<void>.delayed(delay);
+    final reduced = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    if (completing && !reduced) {
+      // Peak moment: a short, celebratory burst before the row leaves
+      await _burst.forward(from: 0);
+    } else if (!reduced) {
+      await Future<void>.delayed(const Duration(milliseconds: 220));
     }
     _busy = false;
     widget.onChanged();
@@ -331,7 +392,22 @@ class _CheckCircleState extends State<CheckCircle> {
         child: InkResponse(
           onTap: _tap,
           radius: 24,
-          child: Center(
+          child: AnimatedBuilder(
+            animation: _burst,
+            builder: (context, child) {
+              final t = _burst.value;
+              // 1 → 1.25 → 1 over the first half
+              final bounce = t < .5 ? 1 + .5 * t : 1.25 - .5 * (t - .5);
+              return CustomPaint(
+                painter: _SparkPainter(progress: t, color: color),
+                child: Center(
+                  child: Transform.scale(
+                    scale: _burst.isAnimating ? bounce : 1,
+                    child: child,
+                  ),
+                ),
+              );
+            },
             child: AnimatedContainer(
               duration: duration,
               curve: AppMotion.curve,
@@ -345,15 +421,10 @@ class _CheckCircleState extends State<CheckCircle> {
               child: AnimatedOpacity(
                 duration: duration,
                 opacity: _checked ? 1 : 0,
-                child: AnimatedScale(
-                  duration: duration,
-                  curve: Curves.easeOutBack,
-                  scale: _checked ? 1 : .6,
-                  child: Icon(
-                    Icons.check_rounded,
-                    size: widget.size - 6,
-                    color: context.colorScheme.surface,
-                  ),
+                child: Icon(
+                  Icons.check_rounded,
+                  size: widget.size - 6,
+                  color: context.colorScheme.surface,
                 ),
               ),
             ),
@@ -362,4 +433,37 @@ class _CheckCircleState extends State<CheckCircle> {
       ),
     );
   }
+}
+
+/// Eight short rays that fly out and fade — the "done!" sparkle
+class _SparkPainter extends CustomPainter {
+  _SparkPainter({required this.progress, required this.color});
+
+  final double progress;
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (progress <= 0 || progress >= 1) {
+      return;
+    }
+    final center = size.center(Offset.zero);
+    final eased = Curves.easeOutCubic.transform(progress);
+    final paint = Paint()
+      ..color = color.withValues(alpha: (1 - progress).clamp(0, 1))
+      ..strokeWidth = 2.2
+      ..strokeCap = StrokeCap.round;
+    const rays = 8;
+    for (var i = 0; i < rays; i++) {
+      final angle = i * 2 * math.pi / rays;
+      final dir = Offset(math.cos(angle), math.sin(angle));
+      final start = 12 + 8 * eased;
+      final end = start + 6 * (1 - eased) + 2;
+      canvas.drawLine(center + dir * start, center + dir * end, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_SparkPainter old) =>
+      old.progress != progress || old.color != color;
 }

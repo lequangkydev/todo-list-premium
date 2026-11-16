@@ -156,5 +156,14 @@
   "onbLocalOnly": "Việc chỉ lưu trên điện thoại này",
   "permissionTitle": "Bật nhắc việc",
   "permissionMessage": "Thông báo chỉ dùng cho những lời nhắc bạn tự đặt. Không gì khác.",
-  "permissionNotificationsHint": "Cần để nhắc bạn đúng giờ"
+  "permissionNotificationsHint": "Cần để nhắc bạn đúng giờ",
+  "summaryRemaining": "{count, plural, =0{Hôm nay đã xong} other{Còn {count} việc}}",
+  "summaryStart": "Từng việc một thôi.",
+  "allDoneTitle": "Xong hết việc hôm nay",
+  "allDoneMessage": "Làm tốt lắm. Nghỉ ngơi chút nhé — phần còn lại để mai.",
+  "recentSearches": "Gần đây",
+  "clearRecent": "Xoá",
+  "suggestions": "Gợi ý",
+  "filterHighPriority": "Ưu tiên cao",
+  "filterWithReminder": "Có nhắc nhở"
 }

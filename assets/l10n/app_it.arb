@@ -156,5 +156,14 @@
   "onbLocalOnly": "Attività salvate solo su questo telefono",
   "permissionTitle": "Attiva i promemoria",
   "permissionMessage": "Le notifiche servono solo per i promemoria che imposti tu. Nient’altro.",
-  "permissionNotificationsHint": "Serve per avvisarti in tempo"
+  "permissionNotificationsHint": "Serve per avvisarti in tempo",
+  "summaryRemaining": "{count, plural, =0{Niente da fare oggi} =1{Resta 1 attività} other{Restano {count} attività}}",
+  "summaryStart": "Una cosa alla volta.",
+  "allDoneTitle": "Tutto fatto per oggi",
+  "allDoneMessage": "Ottimo lavoro. Respira: il resto può aspettare domani.",
+  "recentSearches": "Recenti",
+  "clearRecent": "Cancella",
+  "suggestions": "Suggerimenti",
+  "filterHighPriority": "Priorità alta",
+  "filterWithReminder": "Con promemoria"
 }

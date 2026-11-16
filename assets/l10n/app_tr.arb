@@ -156,5 +156,14 @@
   "onbLocalOnly": "Görevler yalnızca bu telefonda saklanır",
   "permissionTitle": "Hatırlatıcıları aç",
   "permissionMessage": "Bildirimler yalnızca senin kurduğun hatırlatıcılar için kullanılır. Başka hiçbir şey için değil.",
-  "permissionNotificationsHint": "Zamanında hatırlatmak için gerekli"
+  "permissionNotificationsHint": "Zamanında hatırlatmak için gerekli",
+  "summaryRemaining": "{count, plural, =0{Bugün kalan yok} other{{count} görev kaldı}}",
+  "summaryStart": "Her seferinde bir şey.",
+  "allDoneTitle": "Bugünlük hepsi tamam",
+  "allDoneMessage": "Harika iş. Biraz nefes al — gerisi yarını bekleyebilir.",
+  "recentSearches": "Son aramalar",
+  "clearRecent": "Temizle",
+  "suggestions": "Öneriler",
+  "filterHighPriority": "Yüksek öncelik",
+  "filterWithReminder": "Hatırlatıcılı"
 }

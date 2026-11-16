@@ -156,5 +156,14 @@
   "onbLocalOnly": "งานเก็บไว้บนโทรศัพท์นี้เท่านั้น",
   "permissionTitle": "เปิดการเตือน",
   "permissionMessage": "การแจ้งเตือนใช้สำหรับการเตือนที่คุณตั้งเองเท่านั้น ไม่มีอย่างอื่น",
-  "permissionNotificationsHint": "จำเป็นเพื่อเตือนคุณตรงเวลา"
+  "permissionNotificationsHint": "จำเป็นเพื่อเตือนคุณตรงเวลา",
+  "summaryRemaining": "{count, plural, =0{วันนี้ไม่มีงานเหลือ} other{เหลือ {count} งาน}}",
+  "summaryStart": "ทำทีละอย่าง",
+  "allDoneTitle": "วันนี้เสร็จหมดแล้ว",
+  "allDoneMessage": "เก่งมาก พักหายใจสักหน่อย — ที่เหลือรอพรุ่งนี้ได้",
+  "recentSearches": "ล่าสุด",
+  "clearRecent": "ล้าง",
+  "suggestions": "คำแนะนำ",
+  "filterHighPriority": "ความสำคัญสูง",
+  "filterWithReminder": "มีการเตือน"
 }

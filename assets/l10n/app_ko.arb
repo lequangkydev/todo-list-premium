@@ -156,5 +156,14 @@
   "onbLocalOnly": "할 일은 이 휴대폰에만 저장",
   "permissionTitle": "알림 켜기",
   "permissionMessage": "알림은 직접 설정한 리마인더에만 사용해요. 다른 용도는 없어요.",
-  "permissionNotificationsHint": "제시간에 알려 드리려면 필요해요"
+  "permissionNotificationsHint": "제시간에 알려 드리려면 필요해요",
+  "summaryRemaining": "{count, plural, =0{오늘 남은 일 없음} other{{count}개 남음}}",
+  "summaryStart": "하나씩 차근차근.",
+  "allDoneTitle": "오늘 할 일 모두 완료",
+  "allDoneMessage": "잘했어요. 잠시 쉬어 가세요 — 나머지는 내일 해도 돼요.",
+  "recentSearches": "최근 검색",
+  "clearRecent": "지우기",
+  "suggestions": "추천",
+  "filterHighPriority": "높은 우선순위",
+  "filterWithReminder": "알림 있음"
 }

@@ -156,5 +156,14 @@
   "onbLocalOnly": "काम केवल इसी फ़ोन पर सहेजे जाते हैं",
   "permissionTitle": "रिमाइंडर चालू करें",
   "permissionMessage": "सूचनाएँ केवल आपके खुद लगाए रिमाइंडर के लिए हैं। और कुछ नहीं।",
-  "permissionNotificationsHint": "समय पर याद दिलाने के लिए ज़रूरी"
+  "permissionNotificationsHint": "समय पर याद दिलाने के लिए ज़रूरी",
+  "summaryRemaining": "{count, plural, =0{आज कुछ बाकी नहीं} other{{count} काम बाकी}}",
+  "summaryStart": "एक समय में एक काम।",
+  "allDoneTitle": "आज के सारे काम पूरे",
+  "allDoneMessage": "बढ़िया। थोड़ा आराम करें — बाकी कल तक इंतज़ार कर सकता है।",
+  "recentSearches": "हाल के",
+  "clearRecent": "साफ़ करें",
+  "suggestions": "सुझाव",
+  "filterHighPriority": "ऊँची प्राथमिकता",
+  "filterWithReminder": "रिमाइंडर वाले"
 }
