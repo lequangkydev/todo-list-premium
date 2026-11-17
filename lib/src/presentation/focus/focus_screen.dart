@@ -6,8 +6,11 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
+import '../../core/date/dates.dart';
 import '../../core/focus/focus_service.dart';
 import '../../core/focus/focus_timer.dart';
+import '../../data/local/database/app_database.dart';
+import '../../data/repositories/focus_repository.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
@@ -26,16 +29,28 @@ class FocusScreen extends StatefulWidget {
   State<FocusScreen> createState() => _FocusScreenState();
 }
 
-class _FocusScreenState extends State<FocusScreen> {
+class _FocusScreenState extends State<FocusScreen>
+    with SingleTickerProviderStateMixin {
   final _service = getIt<FocusService>();
   Timer? _second;
   String? _offeredTitle;
+
+  /// A slow "breath" of the ring's centre while a block is running
+  late final _breath = AnimationController(
+    vsync: this,
+    duration: const Duration(seconds: 4),
+  );
+
+  /// Today's focus blocks, for the line under the ring
+  late final _todaySessions = getIt<FocusRepository>().watchSince(
+    Dates.today(),
+  );
 
   @override
   void initState() {
     super.initState();
     _service.state.addListener(_onState);
-    _onState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _onState());
     final id = widget.taskId;
     if (id != null) {
       getIt<TaskRepository>().getTask(id).then((task) {
@@ -50,18 +65,28 @@ class _FocusScreenState extends State<FocusScreen> {
   void dispose() {
     _service.state.removeListener(_onState);
     _second?.cancel();
+    _breath.dispose();
     super.dispose();
   }
 
   /// Repaint every second only while something counts down
   void _onState() {
     _second?.cancel();
-    _second = _service.state.value.running
+    final running = _service.state.value.running;
+    _second = running
         ? Timer.periodic(const Duration(seconds: 1), (_) => setState(() {}))
         : null;
-    if (mounted) {
-      setState(() {});
+    if (!mounted) {
+      return;
     }
+    if (running && AppMotion.enabled(context)) {
+      _breath.repeat(reverse: true);
+    } else {
+      _breath
+        ..stop()
+        ..value = 0;
+    }
+    setState(() {});
   }
 
   Future<void> _finishTask() async {
@@ -166,12 +191,21 @@ class _FocusScreenState extends State<FocusScreen> {
               const Spacer(),
               Center(
                 child: SizedBox.square(
-                  dimension: 240,
+                  dimension: 256,
                   child: CustomPaint(
                     painter: _RingPainter(
                       progress: idle ? 0 : state.progressAt(now),
                       track: scheme.surfaceContainerHighest,
                       color: resting ? scheme.tertiary : scheme.primary,
+                      // A soft disc inside the ring, breathing while it runs
+                      fill: tint(
+                        resting ? scheme.tertiary : scheme.primary,
+                        scheme.surface,
+                        Theme.of(context).brightness == Brightness.dark
+                            ? .16
+                            : .08,
+                      ),
+                      breath: _breath,
                     ),
                     child: Center(
                       child: Column(
@@ -180,6 +214,8 @@ class _FocusScreenState extends State<FocusScreen> {
                           Text(
                             _clock(remaining),
                             style: textTheme.displayMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -1,
                               fontFeatures: const [
                                 FontFeature.tabularFigures(),
                               ],
@@ -214,7 +250,40 @@ class _FocusScreenState extends State<FocusScreen> {
                       )
                     : textTheme.titleMedium,
               ),
+              if (idle) ...[
+                const SizedBox(height: AppSpace.lg),
+                // The common lengths one tap away; the rest under the
+                // tune button
+                Center(
+                  child: _Choices(
+                    values: {15, 25, 50, settings.focus}.toList()..sort(),
+                    selected: settings.focus,
+                    onSelected: (m) => _service.setSettings(focus: m),
+                  ),
+                ),
+              ],
               const Spacer(),
+              StreamBuilder<List<FocusSession>>(
+                stream: _todaySessions,
+                builder: (context, snapshot) {
+                  final sessions = snapshot.data ?? const <FocusSession>[];
+                  if (sessions.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  final minutes = sessions.fold(
+                    0,
+                    (sum, s) => sum + s.focusMinutes,
+                  );
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpace.md),
+                    child: Text(
+                      '${l10n.today} · ${l10n.statsFocusTotal(sessions.length, TaskFormat.duration(l10n, minutes))}',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodySmall,
+                    ),
+                  );
+                },
+              ),
               ..._controls(context, state, settings),
             ],
           ),
@@ -342,17 +411,28 @@ class _RingPainter extends CustomPainter {
     required this.progress,
     required this.track,
     required this.color,
-  });
+    required this.fill,
+    required this.breath,
+  }) : super(repaint: breath);
 
   final double progress;
   final Color track;
   final Color color;
+  final Color fill;
+  final Animation<double> breath;
 
   @override
   void paint(Canvas canvas, Size size) {
-    const stroke = 12.0;
+    const stroke = 14.0;
     final rect = Offset.zero & size;
     final arc = rect.deflate(stroke / 2);
+    // Inner disc: grows a few pixels and back while a block is running
+    final eased = Curves.easeInOut.transform(breath.value);
+    canvas.drawCircle(
+      rect.center,
+      size.width / 2 - stroke - 14 + 6 * eased,
+      Paint()..color = fill,
+    );
     final paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
@@ -371,5 +451,8 @@ class _RingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_RingPainter old) =>
-      old.progress != progress || old.track != track || old.color != color;
+      old.progress != progress ||
+      old.track != track ||
+      old.color != color ||
+      old.fill != fill;
 }

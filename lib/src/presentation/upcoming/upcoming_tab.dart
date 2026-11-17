@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
@@ -168,8 +169,12 @@ class _UpcomingTabState extends State<UpcomingTab> {
 
   /// "Tomorrow · Sat, 14 Nov"
   String _dayTitle(BuildContext context, DateTime day, DateTime today) {
+    // "Ngày mai · 18 thg 11", "Thứ Sáu · 20 thg 11": the relative name (or
+    // weekday), then just the date
     final label = TaskFormat.day(context, day, today);
-    final long = TaskFormat.shortDay(context, day);
-    return label == long ? label : '$label · $long';
+    final date = DateFormat.MMMd(
+      Localizations.localeOf(context).toLanguageTag(),
+    ).format(day);
+    return label == date ? label : '$label · $date';
   }
 }

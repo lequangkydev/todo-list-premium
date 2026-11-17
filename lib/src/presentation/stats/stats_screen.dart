@@ -14,6 +14,7 @@ import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../../shared/helpers/task_format.dart';
+import '../../shared/widgets/motion.dart';
 import '../tasks/widgets/task_sources.dart';
 
 /// What got done lately: the week, an activity heatmap, how each list is
@@ -105,22 +106,167 @@ class _StatsScreenState extends State<StatsScreen> {
                   AppSpace.xxl,
                 ),
                 children: [
-                  _Section(
-                    title: l10n.statsWeek,
-                    child: _Week(stats: stats),
-                  ),
-                  _Section(
-                    title: l10n.statsActivity,
-                    child: _Heatmap(stats: stats, today: _today),
-                  ),
-                  if (stats.lists.isNotEmpty)
+                  // Sections arrive one after another, top to bottom
+                  for (final (i, section) in [
+                    _Hero(stats: stats),
                     _Section(
-                      title: l10n.statsLists,
-                      child: _Lists(stats: stats, lists: lookups.lists),
+                      title: l10n.statsWeek,
+                      child: _Week(stats: stats),
+                    ),
+                    _Section(
+                      title: l10n.statsActivity,
+                      child: _Heatmap(stats: stats, today: _today),
+                    ),
+                    if (stats.lists.isNotEmpty)
+                      _Section(
+                        title: l10n.statsLists,
+                        child: _Lists(stats: stats, lists: lookups.lists),
+                      ),
+                  ].indexed)
+                    Entrance(
+                      key: ValueKey(i),
+                      delay: Duration(milliseconds: 60 * i),
+                      offset: 12,
+                      child: section,
                     ),
                 ],
               ),
             ),
+    );
+  }
+}
+
+/// Three numbers at a glance: done this week, focus time, active days
+class _Hero extends StatelessWidget {
+  const _Hero({required this.stats});
+
+  final TaskStats stats;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final scheme = context.colorScheme;
+    final colors = context.taskColors;
+    final focus = stats.weekFocusMinutes;
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpace.sm),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: _HeroTile(
+                color: scheme.primary,
+                icon: Icons.task_alt_rounded,
+                label: l10n.completed,
+                value: stats.weekDone,
+                format: (v) => '$v',
+              ),
+            ),
+            const SizedBox(width: AppSpace.sm),
+            Expanded(
+              child: _HeroTile(
+                color: colors.priorityHigh,
+                icon: Icons.timer_outlined,
+                label: l10n.focus,
+                value: focus,
+                // Hours:minutes reads the same in every language
+                format: (v) =>
+                    '${v ~/ 60}:${(v % 60).toString().padLeft(2, '0')}',
+                semantics: TaskFormat.duration(l10n, focus),
+              ),
+            ),
+            const SizedBox(width: AppSpace.sm),
+            Expanded(
+              child: _HeroTile(
+                color: colors.priorityLow,
+                icon: Icons.local_fire_department_outlined,
+                label: l10n.statsActivity,
+                value: stats.activeDays,
+                format: (v) => '$v',
+                suffix: '/${TaskStats.periodDays}',
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HeroTile extends StatelessWidget {
+  const _HeroTile({
+    required this.color,
+    required this.icon,
+    required this.label,
+    required this.value,
+    required this.format,
+    this.suffix,
+    this.semantics,
+  });
+
+  final Color color;
+  final IconData icon;
+  final String label;
+  final int value;
+  final String Function(int value) format;
+  final String? suffix;
+  final String? semantics;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    final text = Theme.of(context).textTheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Semantics(
+      label: '$label: ${semantics ?? '${format(value)}${suffix ?? ''}'}',
+      excludeSemantics: true,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpace.md),
+        decoration: BoxDecoration(
+          color: tint(color, context.taskColors.card, isDark ? .22 : .12),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, size: AppIcon.md, color: onTint(context, color)),
+            const SizedBox(height: AppSpace.sm),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Flexible(
+                  child: CountUp(
+                    value: value,
+                    builder: (context, v) => Text(
+                      format(v),
+                      maxLines: 1,
+                      style: text.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontFeatures: const [FontFeature.tabularFigures()],
+                      ),
+                    ),
+                  ),
+                ),
+                if (suffix != null)
+                  Text(
+                    suffix!,
+                    style: text.labelMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                  ),
+              ],
+            ),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: text.bodySmall,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -176,14 +322,12 @@ class _Week extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.recapDone(stats.weekDone), style: text.titleLarge),
-        const SizedBox(height: AppSpace.lg),
         SizedBox(
           height: 132,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              for (final day in stats.week)
+              for (final (i, day) in stats.week.indexed)
                 Expanded(
                   child: Semantics(
                     label:
@@ -198,14 +342,21 @@ class _Week extends StatelessWidget {
                           style: text.labelSmall,
                         ),
                         const SizedBox(height: 4),
-                        Container(
-                          height: day.done == 0 ? 4 : 8 + 80 * day.done / max,
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
-                          decoration: BoxDecoration(
-                            color: day.done == 0
-                                ? scheme.surfaceContainerHighest
-                                : scheme.primary,
-                            borderRadius: BorderRadius.circular(6),
+                        GrowIn(
+                          delay: Duration(milliseconds: 40 * i),
+                          child: Container(
+                            height: day.done == 0 ? 4 : 8 + 80 * day.done / max,
+                            margin: const EdgeInsets.symmetric(horizontal: 6),
+                            decoration: BoxDecoration(
+                              // Today in full colour, the days before it
+                              // a step back
+                              color: day.done == 0
+                                  ? scheme.surfaceContainerHighest
+                                  : i == stats.week.length - 1
+                                  ? scheme.primary
+                                  : scheme.primary.withValues(alpha: .45),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
                           ),
                         ),
                         const SizedBox(height: 6),
@@ -214,7 +365,12 @@ class _Week extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.clip,
                           style: text.labelSmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
+                            color: i == stats.week.length - 1
+                                ? scheme.primary
+                                : scheme.onSurfaceVariant,
+                            fontWeight: i == stats.week.length - 1
+                                ? FontWeight.w700
+                                : null,
                           ),
                         ),
                       ],
@@ -307,11 +463,9 @@ class _Heatmap extends StatelessWidget {
           excludeSemantics: true,
           child: LayoutBuilder(
             builder: (context, box) {
-              const gap = 3.0;
-              final cell = ((box.maxWidth - gap * (weeks - 1)) / weeks).clamp(
-                6.0,
-                18.0,
-              );
+              // Square cells that exactly fill the width, with even gaps
+              const gap = 4.0;
+              final cell = (box.maxWidth - gap * (weeks - 1)) / weeks;
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -336,7 +490,7 @@ class _Heatmap extends StatelessWidget {
                                       : scheme.primary.withValues(
                                           alpha: amount,
                                         ),
-                                  borderRadius: BorderRadius.circular(3),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
                               );
                             },
@@ -408,11 +562,19 @@ class _Lists extends StatelessWidget {
                     const SizedBox(height: 6),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(4),
-                      child: LinearProgressIndicator(
-                        value: stat.rate,
-                        minHeight: 6,
-                        color: color,
-                        backgroundColor: scheme.surfaceContainerHighest,
+                      child: TweenAnimationBuilder<double>(
+                        tween: Tween(begin: 0, end: stat.rate),
+                        duration: AppMotion.of(
+                          context,
+                          const Duration(milliseconds: 600),
+                        ),
+                        curve: AppMotion.enter,
+                        builder: (context, value, _) => LinearProgressIndicator(
+                          value: value,
+                          minHeight: 8,
+                          color: color,
+                          backgroundColor: scheme.surfaceContainerHighest,
+                        ),
                       ),
                     ),
                   ],

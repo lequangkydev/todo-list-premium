@@ -144,3 +144,70 @@ class _PressScaleState extends State<PressScale>
     );
   }
 }
+
+/// A number that counts up to [value] when it appears, and rolls to the new
+/// value when it changes. With reduced motion it just shows the value.
+class CountUp extends StatelessWidget {
+  const CountUp({
+    super.key,
+    required this.value,
+    required this.builder,
+    this.duration = const Duration(milliseconds: 700),
+  });
+
+  final int value;
+  final Widget Function(BuildContext context, int value) builder;
+  final Duration duration;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!AppMotion.enabled(context)) {
+      return builder(context, value);
+    }
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: value.toDouble()),
+      duration: duration,
+      curve: AppMotion.enter,
+      builder: (context, v, _) => builder(context, v.round()),
+    );
+  }
+}
+
+/// Grows from nothing to its size along [axis] when it appears (chart bars,
+/// progress fills). [delay] staggers a row of them.
+class GrowIn extends StatelessWidget {
+  const GrowIn({
+    super.key,
+    required this.child,
+    this.delay = Duration.zero,
+    this.axis = Axis.vertical,
+    this.alignment = Alignment.bottomCenter,
+  });
+
+  final Widget child;
+  final Duration delay;
+  final Axis axis;
+  final Alignment alignment;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!AppMotion.enabled(context)) {
+      return child;
+    }
+    const grow = Duration(milliseconds: 450);
+    final total = grow + delay;
+    final start = delay.inMilliseconds / total.inMilliseconds;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: total,
+      curve: Interval(start, 1, curve: AppMotion.enter),
+      builder: (context, t, child) => Align(
+        alignment: alignment,
+        heightFactor: axis == Axis.vertical ? t : null,
+        widthFactor: axis == Axis.horizontal ? t : null,
+        child: child,
+      ),
+      child: child,
+    );
+  }
+}

@@ -13,6 +13,7 @@ class TodaySummaryCard extends StatelessWidget {
     required this.open,
     required this.done,
     this.onPlan,
+    this.onTimeline,
   });
 
   final int open;
@@ -20,6 +21,9 @@ class TodaySummaryCard extends StatelessWidget {
 
   /// Shows "Plan my day" when set
   final VoidCallback? onPlan;
+
+  /// Shows "Day plan" (the day by the hour) when set
+  final VoidCallback? onTimeline;
 
   @override
   Widget build(BuildContext context) {
@@ -31,72 +35,102 @@ class TodaySummaryCard extends StatelessWidget {
     final allDone = open == 0 && done > 0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Semantics(
-      container: true,
-      label: '${l10n.summaryRemaining(open)}. ${l10n.doneToday(done)}',
-      excludeSemantics: true,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpace.lg + 4),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.lg + 4),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isDark
-                ? [scheme.primaryContainer, scheme.surfaceContainerHigh]
-                : [const Color(0xFFD7F5EE), const Color(0xFFEAF6FF)],
+    return Container(
+      padding: const EdgeInsetsDirectional.only(
+        start: AppSpace.lg + 4,
+        top: AppSpace.lg,
+        bottom: AppSpace.lg,
+        end: AppSpace.xs,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.lg + 4),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? [scheme.primaryContainer, scheme.surfaceContainerHigh]
+              : [const Color(0xFFD7F5EE), const Color(0xFFEAF6FF)],
+        ),
+        boxShadow: AppShadow.soft(context),
+      ),
+      child: Row(
+        children: [
+          // The numbers are read out once, as a sentence; the buttons stay
+          // reachable on their own
+          ExcludeSemantics(
+            child: _ProgressRing(progress: progress, done: done, total: total),
           ),
-          boxShadow: AppShadow.soft(context),
-        ),
-        child: Row(
-          children: [
-            _ProgressRing(progress: progress, done: done, total: total),
-            const SizedBox(width: AppSpace.lg + 4),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AnimatedSwitcher(
-                    duration: AppMotion.of(context, AppMotion.medium),
-                    layoutBuilder: (current, previous) => Stack(
-                      alignment: AlignmentDirectional.centerStart,
-                      children: [...previous, ?current],
-                    ),
-                    child: Text(
-                      allDone ? l10n.allDoneTitle : l10n.summaryRemaining(open),
-                      key: ValueKey(allDone ? -1 : open),
-                      style: text.titleLarge?.copyWith(
-                        color: scheme.onPrimaryContainer,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: AppSpace.xs),
-                  Text(
-                    done > 0 ? l10n.doneToday(done) : l10n.summaryStart,
-                    style: text.bodyMedium?.copyWith(
-                      color: scheme.onPrimaryContainer.withValues(alpha: .8),
-                    ),
-                  ),
-                  if (onPlan != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpace.xs),
-                      child: TextButton.icon(
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpace.sm,
-                          ),
-                          visualDensity: VisualDensity.compact,
+          const SizedBox(width: AppSpace.lg + 4),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Semantics(
+                  container: true,
+                  label:
+                      '${l10n.summaryRemaining(open)}. ${l10n.doneToday(done)}',
+                  excludeSemantics: true,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AnimatedSwitcher(
+                        duration: AppMotion.of(context, AppMotion.medium),
+                        layoutBuilder: (current, previous) => Stack(
+                          alignment: AlignmentDirectional.centerStart,
+                          children: [...previous, ?current],
                         ),
-                        onPressed: onPlan,
-                        icon: const Icon(Icons.auto_awesome_rounded, size: 18),
-                        label: Text(l10n.planMyDay),
+                        child: Text(
+                          allDone
+                              ? l10n.allDoneTitle
+                              : l10n.summaryRemaining(open),
+                          key: ValueKey(allDone ? -1 : open),
+                          style: text.titleLarge?.copyWith(
+                            color: scheme.onPrimaryContainer,
+                          ),
+                        ),
                       ),
+                      const SizedBox(height: AppSpace.xs),
+                      Text(
+                        done > 0 ? l10n.doneToday(done) : l10n.summaryStart,
+                        style: text.bodyMedium?.copyWith(
+                          color: scheme.onPrimaryContainer.withValues(
+                            alpha: .8,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (onPlan != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppSpace.xs),
+                    child: TextButton.icon(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpace.sm,
+                        ),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                      onPressed: onPlan,
+                      icon: const Icon(Icons.auto_awesome_rounded, size: 18),
+                      label: Text(l10n.planMyDay),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
-          ],
-        ),
+          ),
+          // The day by the hour
+          if (onTimeline != null)
+            IconButton(
+              tooltip: l10n.dayPlan,
+              color: scheme.onPrimaryContainer,
+              icon: const Icon(Icons.view_timeline_outlined),
+              onPressed: onTimeline,
+            )
+          else
+            const SizedBox(width: AppSpace.md),
+        ],
       ),
     );
   }

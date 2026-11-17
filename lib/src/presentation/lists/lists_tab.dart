@@ -3,11 +3,15 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
+import '../../core/date/dates.dart';
 import '../../data/local/database/app_database.dart';
+import '../../data/repositories/focus_repository.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
 import '../completed/completed_screen.dart';
+import '../focus/focus_screen.dart';
+import '../stats/stats_screen.dart';
 import 'list_detail_screen.dart';
 import 'list_form_sheet.dart';
 
@@ -27,6 +31,10 @@ class _ListsTabState extends State<ListsTab> {
   late final _lists = _repo.watchLists();
   late final _inbox = _repo.watchInboxCount();
   late final _completed = getIt<TaskRepository>().watchCompleted();
+  late final _weekDone = getIt<TaskRepository>().watchDoneSince(
+    Dates.addDays(Dates.today(), -6),
+  );
+  late final _focusToday = getIt<FocusRepository>().watchSince(Dates.today());
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +84,48 @@ class _ListsTabState extends State<ListsTab> {
                         count: done.data?.length ?? 0,
                         page: const CompletedScreen(),
                       ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpace.md),
+              // Stats and the focus timer, with a number that makes them
+              // worth a tap
+              Row(
+                children: [
+                  Expanded(
+                    child: StreamBuilder<List<Task>>(
+                      stream: _weekDone,
+                      builder: (context, done) => _ColorTile(
+                        color: colors.priorityMedium,
+                        icon: Icons.insights_rounded,
+                        label: context.l10n.stats,
+                        count: done.data?.length ?? 0,
+                        page: const StatsScreen(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpace.md),
+                  Expanded(
+                    child: StreamBuilder<List<FocusSession>>(
+                      stream: _focusToday,
+                      builder: (context, sessions) {
+                        final minutes = (sessions.data ?? const []).fold<int>(
+                          0,
+                          (sum, s) => sum + s.focusMinutes,
+                        );
+                        return _ColorTile(
+                          color: colors.priorityHigh,
+                          icon: Icons.timer_outlined,
+                          label: context.l10n.focus,
+                          count: minutes,
+                          // Hours:minutes focused today
+                          value:
+                              '${minutes ~/ 60}:'
+                              '${(minutes % 60).toString().padLeft(2, '0')}',
+                          page: const FocusScreen(),
+                        );
+                      },
                     ),
                   ),
                 ],
@@ -155,12 +205,16 @@ class _ColorTile extends StatelessWidget {
     required this.label,
     required this.count,
     required this.page,
+    this.value,
   });
 
   final Color color;
   final IconData icon;
   final String label;
   final int count;
+
+  /// Shown instead of [count] when it needs its own format
+  final String? value;
 
   /// Opened with a container transform from this tile
   final Widget page;
@@ -177,7 +231,7 @@ class _ColorTile extends StatelessWidget {
       radius: AppRadius.lg,
       builder: (context, open) => Semantics(
         button: true,
-        label: '$label, $count',
+        label: '$label, ${value ?? count}',
         onTap: open,
         excludeSemantics: true,
         child: InkWell(
@@ -204,9 +258,10 @@ class _ColorTile extends StatelessWidget {
                     ),
                     const Spacer(),
                     Text(
-                      '$count',
+                      value ?? '$count',
                       style: text.headlineMedium?.copyWith(
                         fontWeight: FontWeight.w800,
+                        fontFeatures: const [FontFeature.tabularFigures()],
                       ),
                     ),
                   ],

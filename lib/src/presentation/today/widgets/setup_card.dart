@@ -63,11 +63,91 @@ class _Card extends StatelessWidget {
     );
   }
 
+  /// The steps as (step, title, hint, button, action)
+  List<(SetupStep, String, String, String, VoidCallback)> _steps(
+    BuildContext context,
+  ) {
+    final l10n = context.l10n;
+    return [
+      (
+        SetupStep.task,
+        l10n.setupTask,
+        l10n.setupTaskHint,
+        l10n.setupAdd,
+        () => QuickAddSheet.show(context),
+      ),
+      (
+        SetupStep.notifications,
+        l10n.setupNotifications,
+        l10n.setupNotificationsHint,
+        l10n.turnOn,
+        () {
+          MyAds.instance.appLifecycleReactor?.setIsExcludeScreen(true);
+          guide.turnOnNotifications();
+        },
+      ),
+      (
+        SetupStep.widget,
+        l10n.setupWidget,
+        l10n.setupWidgetHint,
+        l10n.setupAdd,
+        () => _addWidget(context),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final scheme = context.colorScheme;
     final text = Theme.of(context).textTheme;
+    final steps = _steps(context);
+    // Once there are tasks, they come first: the card shrinks to one row
+    // with only the next step
+    if (state.hasTask) {
+      final (_, title, _, action, onTap) = steps.firstWhere(
+        (s) => !state.isDone(s.$1),
+      );
+      return Padding(
+        padding: const EdgeInsets.only(bottom: AppSpace.md),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsetsDirectional.only(
+              start: AppSpace.lg,
+              top: AppSpace.xs,
+              bottom: AppSpace.xs,
+            ),
+            child: Row(
+              children: [
+                _StepsDots(done: state.doneCount),
+                const SizedBox(width: AppSpace.md),
+                Expanded(
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: text.bodyMedium,
+                  ),
+                ),
+                const SizedBox(width: AppSpace.sm),
+                FilledButton.tonal(
+                  onPressed: () {
+                    AppHaptics.selection();
+                    onTap();
+                  },
+                  child: Text(action),
+                ),
+                IconButton(
+                  tooltip: l10n.setupHide,
+                  icon: const Icon(Icons.close_rounded),
+                  onPressed: guide.dismiss,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpace.md),
       child: Card(
@@ -102,33 +182,47 @@ class _Card extends StatelessWidget {
                   ),
                 ],
               ),
-              _Step(
-                done: state.hasTask,
-                title: l10n.setupTask,
-                hint: l10n.setupTaskHint,
-                action: l10n.setupAdd,
-                onTap: () => QuickAddSheet.show(context),
-              ),
-              _Step(
-                done: state.notificationsOn,
-                title: l10n.setupNotifications,
-                hint: l10n.setupNotificationsHint,
-                action: l10n.turnOn,
-                onTap: () {
-                  MyAds.instance.appLifecycleReactor?.setIsExcludeScreen(true);
-                  guide.turnOnNotifications();
-                },
-              ),
-              _Step(
-                done: state.hasWidget,
-                title: l10n.setupWidget,
-                hint: l10n.setupWidgetHint,
-                action: l10n.setupAdd,
-                onTap: () => _addWidget(context),
-              ),
+              for (final (step, title, hint, action, onTap) in steps)
+                _Step(
+                  done: state.isDone(step),
+                  title: title,
+                  hint: hint,
+                  action: action,
+                  onTap: onTap,
+                ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Three dots, filled for the steps already done
+class _StepsDots extends StatelessWidget {
+  const _StepsDots({required this.done});
+
+  final int done;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    return Semantics(
+      label: '$done/${SetupStep.values.length}',
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (var i = 0; i < SetupStep.values.length; i++)
+            Container(
+              width: 8,
+              height: 8,
+              margin: const EdgeInsetsDirectional.only(end: 4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: i < done ? scheme.primary : scheme.outlineVariant,
+              ),
+            ),
+        ],
       ),
     );
   }

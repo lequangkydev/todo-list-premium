@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart' show DateFormat;
+import 'package:intl/intl.dart' show DateFormat, toBeginningOfSentenceCase;
 import 'package:material_ui/material_ui.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -345,7 +345,9 @@ class _MonthHeader extends StatelessWidget {
               header: true,
               liveRegion: true,
               child: Text(
-                DateFormat.yMMMM(locale).format(month),
+                toBeginningOfSentenceCase(
+                  DateFormat.yMMMM(locale).format(month),
+                ),
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -434,6 +436,11 @@ class _DayCell extends StatelessWidget {
           child: AnimatedContainer(
             duration: AppMotion.of(context, AppMotion.fast),
             margin: const EdgeInsets.all(3),
+            // Fill the day's slot: sized to the text, the highlight was a
+            // thin pill
+            width: double.infinity,
+            height: double.infinity,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: selected
                   ? scheme.primary
@@ -446,7 +453,7 @@ class _DayCell extends StatelessWidget {
                   : null,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   '${day.day}',
@@ -477,8 +484,9 @@ class _DayCell extends StatelessWidget {
                           : FontWeight.w400,
                     ),
                   ),
-                // Room for the task dots
-                if (count > 0) const SizedBox(height: 8),
+                // Room for the task dots, on every day, so the numbers of
+                // a week line up whether or not a day has tasks
+                const SizedBox(height: 8),
               ],
             ),
           ),

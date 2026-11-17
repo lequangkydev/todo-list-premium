@@ -50,34 +50,43 @@ class _TodayTabState extends State<TodayTab> {
         final repo = getIt<TaskRepository>();
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 84,
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  context.l10n.today,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  [
-                    TaskFormat.longDay(context, today),
-                    // "· 24/9 âm lịch · Tết Trung Thu" when the lunar
-                    // calendar is on
-                    if (context.watch<LunarCubit>().showFor(
-                      context.watch<LanguageCubit>().state,
-                    )) ...[
-                      TaskFormat.lunar(context.l10n, today),
-                      if (LunarFestival.of(LunarDate.fromSolar(today))
-                          case final f?)
-                        TaskFormat.festival(context.l10n, f),
-                    ],
-                  ].join(' · '),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: context.colorScheme.onSurfaceVariant,
+            title: Text(
+              context.l10n.today,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            // The date line sits under the title, across the full width:
+            // beside the action icons it was cut off ("9/10 âm lị…")
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(34),
+              child: Align(
+                alignment: AlignmentDirectional.topStart,
+                child: Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    start: AppSpace.gutter + 4,
+                    end: AppSpace.gutter,
+                  ),
+                  child: Text(
+                    [
+                      TaskFormat.longDay(context, today),
+                      // "· 24/9 âm lịch · Tết Trung Thu" when the lunar
+                      // calendar is on
+                      if (context.watch<LunarCubit>().showFor(
+                        context.watch<LanguageCubit>().state,
+                      )) ...[
+                        TaskFormat.lunar(context.l10n, today),
+                        if (LunarFestival.of(LunarDate.fromSolar(today))
+                            case final f?)
+                          TaskFormat.festival(context.l10n, f),
+                      ],
+                    ].join(' · '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: context.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
             actions: widget.actions,
           ),
@@ -129,6 +138,8 @@ class _TodayTabState extends State<TodayTab> {
                                         ...dueToday,
                                       ])
                                     : null,
+                                onTimeline: () =>
+                                    context.pushRoute(DayPlanRoute()),
                               ),
                             ),
                           ),
@@ -141,25 +152,6 @@ class _TodayTabState extends State<TodayTab> {
                           ),
                           sliver: SliverToBoxAdapter(
                             child: QuickAddField(defaultDate: today),
-                          ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: Align(
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.only(
-                                end: AppSpace.sm,
-                              ),
-                              child: TextButton.icon(
-                                onPressed: () =>
-                                    context.pushRoute(DayPlanRoute()),
-                                icon: const Icon(
-                                  Icons.view_timeline_outlined,
-                                  size: 18,
-                                ),
-                                label: Text(context.l10n.dayPlan),
-                              ),
-                            ),
                           ),
                         ),
                         // Getting started: first task, notifications, widget

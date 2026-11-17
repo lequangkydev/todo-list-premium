@@ -12,7 +12,6 @@ import '../config/navigation/app_router.dart';
 import '../config/observer/route_observer.dart';
 import '../config/theme/app_theme.dart';
 import '../gen/l18n/app_localizations.dart';
-import '../shared/l10n/app_delegates.dart';
 import '../shared/cubit/ad_visibility_cubit.dart';
 import '../shared/cubit/haptics_cubit.dart';
 import '../shared/cubit/language_cubit.dart';
@@ -23,6 +22,7 @@ import '../shared/cubit/theme_mode_cubit.dart';
 import '../shared/enum/language.dart';
 import '../shared/helpers/permission_util.dart';
 import '../shared/helpers/shortcut_utils.dart';
+import '../shared/l10n/app_delegates.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 

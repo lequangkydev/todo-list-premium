@@ -137,3 +137,6 @@ coverage/
 lib/src/gen/l18n/
 # Local credentials for private git packages
 pubspec_overrides.yaml
+
+# Screenshots from the UI review harness (test/screens/)
+test/screens/out/
