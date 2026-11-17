@@ -11,22 +11,25 @@ pub-upgrade-major:
 	fvm flutter pub upgrade --major-versions
 
 build-runner:
-	fvm flutter pub run build_runner build
+	fvm dart run build_runner build
 
 watch-runner:
-	fvm flutter pub run build_runner watch
+	fvm dart run build_runner watch
 
 build-runner-delete:
-	fvm flutter pub run build_runner build --delete-conflicting-outputs
+	fvm dart run build_runner build --delete-conflicting-outputs
 
 watch-runner-delete:
-	fvm flutter pub run build_runner watch --delete-conflicting-outputs
+	fvm dart run build_runner watch --delete-conflicting-outputs
 
 gen-l10n:
 	fvm flutter gen-l10n
 
+make-migrations:
+	fvm dart run drift_dev make-migrations
+
 gen-flavor:
-	fvm flutter pub run flutter_flavorizr
+	fvm dart run flutter_flavorizr
 
 gen-assets:
 	fluttergen -c pubspec.yaml
@@ -34,7 +37,7 @@ reset:
 	fvm flutter clean
 	fvm flutter pub get
 	fvm flutter gen-l10n
-	fvm flutter pub run build_runner build --delete-conflicting-outputs
+	fvm dart run build_runner build --delete-conflicting-outputs
 
 
 build_apk_dev_normal:

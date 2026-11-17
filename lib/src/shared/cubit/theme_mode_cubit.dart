@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:material_ui/material_ui.dart';
 
 @lazySingleton
 class ThemeModeCubit extends HydratedCubit<ThemeMode> {

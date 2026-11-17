@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 
 import '../../../../module/admob/utils/inter_ad_util.dart';

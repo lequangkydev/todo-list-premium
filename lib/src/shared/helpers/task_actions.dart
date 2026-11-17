@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
 import '../extension/context_extension.dart';
+import 'app_haptics.dart';
 
 /// Task actions that show an Undo snackbar
 class TaskActions {
@@ -18,6 +21,7 @@ class TaskActions {
   static Future<void> complete(BuildContext context, Task task) async {
     final messenger = ScaffoldMessenger.maybeOf(context);
     final l10n = context.l10n;
+    unawaited(AppHaptics.light());
     final undo = await _repo.complete(task);
     if (task.parentId != null) {
       return;

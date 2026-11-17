@@ -28,6 +28,13 @@ class AppDatabase extends _$AppDatabase {
 
   AppDatabase.forTesting(super.executor);
 
+  /// Changing the schema:
+  /// 1. Edit the tables and bump this number.
+  /// 2. Run `dart run drift_dev make-migrations`. It snapshots the new schema
+  ///    in `drift_schemas/`, generates `app_database.steps.dart` and
+  ///    migration tests in `test/drift/`.
+  /// 3. Add an `onUpgrade: stepByStep(from1To2: ...)` to [migration] below
+  ///    and make the generated tests pass.
   @override
   int get schemaVersion => 1;
 

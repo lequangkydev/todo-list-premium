@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Design tokens — "Productivity Tool" palette (ui-ux-pro-max) in a flat,
 /// minimal style: teal for focus, warm orange only for high priority,
@@ -35,15 +35,43 @@ class AppIcon {
 }
 
 /// Motion tokens. Use [AppMotion.of] so reduced-motion turns them off.
+///
+/// Durations: [fast] for state flips (press, toggle), [medium] for small
+/// moves (chips, rows), [slow] for larger surfaces (sheets, page content).
+/// Springs are for things the finger drives or that "land" (drag, counters).
 class AppMotion {
   AppMotion._();
 
   static const fast = Duration(milliseconds: 120);
   static const medium = Duration(milliseconds: 200);
+  static const slow = Duration(milliseconds: 400);
+
+  /// Default for elements already on screen changing state
   static const curve = Curves.easeOutCubic;
 
+  /// Elements entering the screen
+  static const enter = Easing.emphasizedDecelerate;
+
+  /// Elements leaving the screen
+  static const exit = Easing.emphasizedAccelerate;
+
+  /// Settles without overshoot — counters, progress
+  static final springCalm = SpringDescription.withDurationAndBounce(
+    duration: medium,
+  );
+
+  /// A small overshoot — things the finger lets go of
+  static final springBouncy = SpringDescription.withDurationAndBounce(
+    duration: const Duration(milliseconds: 300),
+    bounce: 0.15,
+  );
+
+  /// Whether the user allows animations (reduced-motion is off)
+  static bool enabled(BuildContext context) =>
+      !(MediaQuery.maybeDisableAnimationsOf(context) ?? false);
+
   static Duration of(BuildContext context, Duration d) =>
-      MediaQuery.maybeDisableAnimationsOf(context) ?? false ? Duration.zero : d;
+      enabled(context) ? d : Duration.zero;
 }
 
 const String appFontFamily = 'PlusJakartaSans';

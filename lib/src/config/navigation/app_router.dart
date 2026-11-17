@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_ads/ads_flutter.dart';
 import 'package:injectable/injectable.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../presentation/completed/completed_screen.dart';
 import '../../presentation/home/home_screen.dart';

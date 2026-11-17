@@ -4,11 +4,11 @@ import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../global.dart';
 import '../../presentation/permission/cubit/cubit.dart';
 import '../../service/notification_service.dart';
 import '../cubit/ad_visibility_cubit.dart';
 import '../cubit/value_cubit.dart';
+import '../global.dart';
 import 'method_channel/permission_channel.dart';
 import 'utils.dart';
 

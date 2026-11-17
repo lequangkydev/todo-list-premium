@@ -135,3 +135,5 @@ coverage/
 .fvm/
 !.fvm/fvm_config.json
 lib/src/gen/l18n/
+# Local credentials for private git packages
+pubspec_overrides.yaml

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../module/admob/model/ad_config/ad_config.dart';
 import '../../../../module/admob/widget/ads/auto_reload_native_ad.dart';

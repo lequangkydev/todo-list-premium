@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_iap/flutter_iap.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../src/shared/cubit/ad_visibility_cubit.dart';
 import '../../model/ad_config/ad_config.dart';

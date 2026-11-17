@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 
 import '../../../src/shared/helpers/logger_utils.dart';

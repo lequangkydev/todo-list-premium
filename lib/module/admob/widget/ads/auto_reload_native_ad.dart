@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../remote_config/remote_config.dart';
 import '../../model/ad_config/ad_config.dart';

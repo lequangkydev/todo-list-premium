@@ -47,8 +47,6 @@ class ShortcutUtils {
   /// Thêm short cut item
   void setShortcutItems() {
     quickActions.setShortcutItems(<ShortcutItem>[
-      // TODO(all): item home test, xóa item này
-      const ShortcutItem(type: 'home', localizedTitle: 'Home', icon: 'home'),
       ShortcutItem(
         type: 'uninstall',
         localizedTitle: appContext.l10n.uninstall,
@@ -60,7 +58,6 @@ class ShortcutUtils {
   ///Thực hiện các hành động dựa trên shortcut
   void handleShortcut() {
     final PageRouteInfo? route = switch (shortcutType) {
-      'home' => const HomeRoute(),
       'uninstall' => const UninstallRoute(),
       _ => null,
     };

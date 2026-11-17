@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:marquee/marquee.dart';
+import 'package:material_ui/material_ui.dart';
 
 class MarqueeText extends StatelessWidget {
   const MarqueeText({

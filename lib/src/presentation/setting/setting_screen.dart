@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,9 +14,11 @@ import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
 import '../../core/notifications/reminder_service.dart';
 import '../../shared/constants/app_constants.dart';
+import '../../shared/cubit/haptics_cubit.dart';
 import '../../shared/cubit/language_cubit.dart';
 import '../../shared/cubit/theme_mode_cubit.dart';
 import '../../shared/extension/context_extension.dart';
+import '../../shared/helpers/app_haptics.dart';
 import '../../shared/widgets/dialog/rate_dialog.dart';
 
 @RoutePage()
@@ -115,6 +117,7 @@ class _SettingScreenState extends State<SettingScreen>
     final scheme = context.colorScheme;
     final language = context.watch<LanguageCubit>().state;
     final themeMode = context.watch<ThemeModeCubit>().state;
+    final haptics = context.watch<HapticsCubit>().state;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.setting)),
       body: ListView(
@@ -184,9 +187,24 @@ class _SettingScreenState extends State<SettingScreen>
                     ),
                   ],
                   selected: {themeMode},
-                  onSelectionChanged: (s) =>
-                      context.read<ThemeModeCubit>().update(s.first),
+                  onSelectionChanged: (s) {
+                    AppHaptics.selection();
+                    context.read<ThemeModeCubit>().update(s.first);
+                  },
                 ),
+              ),
+              const Divider(indent: 56),
+              SwitchListTile(
+                secondary: const Icon(Icons.vibration_rounded),
+                title: Text(l10n.haptics),
+                subtitle: Text(l10n.hapticsHint),
+                value: haptics,
+                onChanged: (on) {
+                  context.read<HapticsCubit>().update(on);
+                  if (on) {
+                    AppHaptics.selection();
+                  }
+                },
               ),
               const Divider(indent: 56),
               ListTile(
@@ -204,7 +222,10 @@ class _SettingScreenState extends State<SettingScreen>
               ListTile(
                 leading: const Icon(Icons.lock_outline_rounded),
                 title: Text(l10n.privacyTitle),
-                subtitle: Text(l10n.privacyMessage),
+                subtitle: Text(
+                  '${l10n.privacyMessage}\n${l10n.privacyDiagnostics}',
+                ),
+                isThreeLine: true,
               ),
               const Divider(indent: 56),
               Builder(

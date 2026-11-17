@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_iap/flutter_iap.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'flavors.dart';
@@ -19,6 +19,7 @@ import 'module/remote_config/remote_config.dart';
 import 'src/config/di/di.dart';
 import 'src/core/notifications/reminder_service.dart';
 import 'src/data/local/shared_preferences_manager.dart';
+import 'src/shared/constants/app_constants.dart';
 import 'src/shared/global.dart';
 import 'src/shared/helpers/method_channel/notification_channel.dart';
 import 'src/shared/helpers/utils.dart';
@@ -136,7 +137,7 @@ class AppInitializer {
       return;
     }
     await PurchasesManager.instance.init(
-      productId: 'smartremote.sub.weekly',
+      productId: AppConstants.premiumWeeklyProductId,
 
       /// đăt enableDebugMode = false nếu muốn load sản phẩm thật ở chế độ prod debug
       /// ở chế độ release thì tự động load sản phẩm thật

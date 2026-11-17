@@ -13,6 +13,10 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  # Material / Cupertino moved out of the framework in Flutter 3.47
+  material_ui: ^1.11.1
+  cupertino_ui: ^1.1.7
+  vector_graphics: ^1.2.3
 
   # AAA
   auto_route: 11.1.0
@@ -22,7 +26,9 @@ dependencies:
   collection: ^1.19.1
   # DDD
   device_info_plus: ^13.1.0
-  drift: ^2.34.4
+  # Must match drift_dev (its CLI breaks on newer drift); bump both together
+  # once freezed allows analyzer 13+, which newer drift_dev needs
+  drift: 2.34.0
   drift_flutter: ^0.3.1
 
   # EEE
@@ -42,11 +48,11 @@ dependencies:
   fluttertoast: ^9.0.0
   flutter_ads:
     git:
-      url: https://x-token-auth:ATCTT3xFfGN07e4k-OChWV1tX33bFsgTMvRA0stzGmtseFhDmM5nDHyAbzxT_4Ms7tal7WZyYqTqmY7YHSGKzI76vIAxq-v7IJ5ra8N75Ly4IbZgrRK6PSD4IsKi9eifSLkNUH-MNrxJQj2VTf_0O9JXIfMLgDtx_LVCvNQ6Vr9jaNhGHDLW5UY=7A4576D6@bitbucket.org/innofyapp/flutter_ads.git
+      url: https://bitbucket.org/innofyapp/flutter_ads.git
       ref: version/2.1.7
   flutter_iap:
     git:
-      url: https://x-token-auth:ATCTT3xFfGN0DiswFD0uH2-YqG18Su3vQW19WdESXPdmzjGdcqX_T4WzjZf3qu8eztJDOOUTNeLdtzonxXFM2WOUvQQms1sqguEdS6u41D6qPpVaaXsveQlH4a648XKnXuFLf2nfCvfqGq89g73xDcKoR1E4wUP6GF42zVcn-0_gHcgGzZzZQbs=518954B2@bitbucket.org/innofyapp/flutter_iap.git
+      url: https://bitbucket.org/innofyapp/flutter_iap.git
       ref: version/2.0.5
 
   # ggg

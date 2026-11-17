@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../module/admob/utils/inter_ad_util.dart';
@@ -22,9 +22,7 @@ import '../../shared/widgets/custom_radio.dart';
 import '../../shared/widgets/marquee_text.dart';
 
 part 'widget/item_card.dart';
-
 part 'widget/problem_page.dart';
-
 part 'widget/uninstall_page.dart';
 
 @RoutePage()

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// App mark drawn in code (teal tile + check) — scales crisply and follows
 /// the theme. Replace with the final brand logo when it exists.

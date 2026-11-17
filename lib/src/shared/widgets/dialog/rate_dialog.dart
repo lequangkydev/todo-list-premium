@@ -2,20 +2,20 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../config/di/di.dart';
 import '../../../config/navigation/app_router.dart';
 import '../../../gen/assets.gen.dart';
-import '../../global.dart';
 import '../../constants/app_constants.dart';
 import '../../cubit/rate_status_cubit.dart';
 import '../../extension/context_extension.dart';
+import '../../global.dart';
 import '../../helpers/logger_utils.dart';
 import 'rate_success_dialog.dart';
 import 'rating_bar.dart';

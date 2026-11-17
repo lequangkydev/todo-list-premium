@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_iap/flutter_iap.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../module/remote_config/remote_config.dart';
 import '../config/di/di.dart';
@@ -12,6 +12,7 @@ import '../config/observer/route_observer.dart';
 import '../config/theme/app_theme.dart';
 import '../gen/l18n/app_localizations.dart';
 import '../shared/cubit/ad_visibility_cubit.dart';
+import '../shared/cubit/haptics_cubit.dart';
 import '../shared/cubit/language_cubit.dart';
 import '../shared/cubit/rate_status_cubit.dart';
 import '../shared/cubit/theme_mode_cubit.dart';
@@ -36,6 +37,7 @@ class _MyAppState extends State<MyApp> {
         // Same instance as getIt so services (reminders) see language changes
         BlocProvider.value(value: getIt<LanguageCubit>()),
         BlocProvider.value(value: getIt<ThemeModeCubit>()),
+        BlocProvider.value(value: getIt<HapticsCubit>()),
         BlocProvider(create: (context) => AdVisibilityCubit()),
         BlocProvider(create: (context) => RateStatusCubit()),
         BlocProvider(

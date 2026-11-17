@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../model/native_all_config/native_all_config.dart';
 import '../../utils/native_all_util.dart';

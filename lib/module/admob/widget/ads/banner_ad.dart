@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_ads/ads_flutter.dart';
 import 'package:flutter_iap/flutter_iap.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../model/ad_config/ad_config.dart';
 import '../loading/ad_loading.dart';
