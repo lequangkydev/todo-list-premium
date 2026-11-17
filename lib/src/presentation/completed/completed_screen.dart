@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
+import '../../config/theme/app_theme.dart';
+import '../../core/ai/weekly_recap.dart';
 import '../../core/date/dates.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
@@ -51,6 +54,20 @@ class _CompletedScreenState extends State<CompletedScreen> {
           return TaskLookupsBuilder(
             builder: (context, lookups) => CustomScrollView(
               slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.gutter,
+                    AppSpace.sm,
+                    AppSpace.gutter,
+                    0,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: _WeeklyRecapCard(
+                      recap: WeeklyRecap.of(tasks, today),
+                      lists: lookups.lists,
+                    ),
+                  ),
+                ),
                 for (final entry in byDay.entries) ...[
                   SliverToBoxAdapter(
                     child: SectionHeader(
@@ -77,6 +94,58 @@ class _CompletedScreenState extends State<CompletedScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+/// The last 7 days in one calm card: how much got done, and where
+class _WeeklyRecapCard extends StatelessWidget {
+  const _WeeklyRecapCard({required this.recap, required this.lists});
+
+  final WeeklyRecap recap;
+  final Map<String, TaskList> lists;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final scheme = context.colorScheme;
+    final text = Theme.of(context).textTheme;
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    final best = recap.bestDay;
+    final top = lists[recap.topListId];
+    final lines = [
+      if (best != null) l10n.recapBestDay(DateFormat.EEEE(locale).format(best)),
+      if (top != null) l10n.recapTopList(top.name),
+    ];
+    return Semantics(
+      container: true,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpace.lg),
+        decoration: BoxDecoration(
+          color: tint(scheme.primary, context.taskColors.card, .1),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.recapTitle,
+              style: text.labelLarge?.copyWith(color: scheme.onSurfaceVariant),
+            ),
+            const SizedBox(height: AppSpace.xs),
+            Text(l10n.recapDone(recap.done), style: text.titleLarge),
+            for (final line in lines) ...[
+              const SizedBox(height: AppSpace.xs),
+              Text(
+                line,
+                style: text.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

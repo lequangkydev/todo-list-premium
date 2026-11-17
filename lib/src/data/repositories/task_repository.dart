@@ -22,6 +22,7 @@ class TaskDraft {
     this.priority = 0,
     this.rrule,
     this.remindOffset,
+    this.estimateMinutes,
   });
 
   final String title;
@@ -33,6 +34,7 @@ class TaskDraft {
   final int priority;
   final String? rrule;
   final int? remindOffset;
+  final int? estimateMinutes;
 }
 
 /// Subtask progress for a parent task
@@ -208,6 +210,15 @@ class TaskRepository {
         .watch();
   }
 
+  /// Top-level tasks, newest first — what the suggestion engine learns from
+  Stream<List<Task>> watchHistory({int limit = 2000}) {
+    return (_db.select(_t)
+          ..where((t) => _alive(t) & t.parentId.isNull())
+          ..orderBy([(t) => OrderingTerm.desc(t.updatedAt)])
+          ..limit(limit))
+        .watch();
+  }
+
   Future<Task?> getTask(String id) =>
       (_db.select(_t)..where((t) => t.id.equals(id))).getSingleOrNull();
 
@@ -235,6 +246,7 @@ class TaskRepository {
             priority: Value(draft.priority),
             rrule: Value(rule?.toRule()),
             remindOffset: Value(due == null ? null : draft.remindOffset),
+            estimateMinutes: Value(draft.estimateMinutes),
             sortOrder: await _nextSortOrder(draft.listId, draft.parentId),
             createdAt: now,
             updatedAt: now,
@@ -395,6 +407,29 @@ class TaskRepository {
           TasksCompanion(sortOrder: Value(i.toDouble())),
           where: (t) => t.id.equals(ordered[i].id),
         );
+      }
+    });
+  }
+
+  /// Gives each task its planned day and time in one transaction. Undo
+  /// puts the tasks back exactly as they were.
+  Future<Undo> schedule(Map<Task, ({DateTime date, int time})> slots) async {
+    final now = DateTime.now();
+    await _db.transaction(() async {
+      for (final MapEntry(key: task, value: slot) in slots.entries) {
+        await (_db.update(_t)..where((t) => t.id.equals(task.id))).write(
+          TasksCompanion(
+            dueDate: Value(Dates.dateOnly(slot.date)),
+            dueTime: Value(slot.time),
+            snoozedUntil: const Value(null),
+            updatedAt: Value(now),
+          ),
+        );
+      }
+    });
+    return () => _db.transaction(() async {
+      for (final task in slots.keys) {
+        await _db.update(_t).replace(task);
       }
     });
   }

@@ -12,6 +12,7 @@ import '../../shared/helpers/task_format.dart';
 import '../tasks/widgets/quick_add_field.dart';
 import '../tasks/widgets/task_sources.dart';
 import '../tasks/widgets/task_tile.dart';
+import 'plan_day_sheet.dart';
 import 'widgets/today_summary_card.dart';
 
 /// Today: only what's due today. Overdue work waits quietly in "Still open"
@@ -93,6 +94,21 @@ class _TodayTabState extends State<TodayTab> {
                               child: TodaySummaryCard(
                                 open: dueToday.length,
                                 done: doneCount,
+                                // Worth planning once 2+ tasks need a slot
+                                onPlan:
+                                    [...overdue, ...dueToday]
+                                            .where(
+                                              (t) =>
+                                                  t.dueTime == null ||
+                                                  t.dueDate!.isBefore(today),
+                                            )
+                                            .length >=
+                                        2
+                                    ? () => PlanDaySheet.show(context, [
+                                        ...overdue,
+                                        ...dueToday,
+                                      ])
+                                    : null,
                               ),
                             ),
                           ),

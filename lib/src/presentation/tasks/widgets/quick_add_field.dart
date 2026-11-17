@@ -2,14 +2,22 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../../config/di/di.dart';
 import '../../../config/theme/app_theme.dart';
+import '../../../core/ai/smart_suggestions.dart';
+import '../../../core/ai/suggestion_engine.dart';
 import '../../../core/date/dates.dart';
 import '../../../core/date_parser/quick_add_parser.dart';
 import '../../../core/notifications/reminder_service.dart';
+import '../../../data/local/database/app_database.dart';
+import '../../../data/repositories/list_repository.dart';
 import '../../../data/repositories/task_repository.dart';
 import '../../../shared/extension/context_extension.dart';
+import '../../../shared/helpers/app_haptics.dart';
 import '../../../shared/helpers/day_clock.dart';
 import '../../../shared/helpers/task_format.dart';
 import '../../../shared/widgets/motion.dart';
+import '../brain_dump_sheet.dart';
+import '../quick_add_draft.dart';
+import '../task_editor_sheet.dart';
 
 /// Always-visible "add a task" field with natural-language dates.
 ///
@@ -37,31 +45,91 @@ class QuickAddField extends StatefulWidget {
 class _QuickAddFieldState extends State<QuickAddField> {
   late final _controller = _HighlightController();
   final _focus = FocusNode();
+  late final _lists = getIt<ListRepository>().watchLists();
   QuickAddResult? _result;
   bool _ignoreParsing = false;
   bool _saving = false;
+  String _last = '';
 
-  QuickAddParser _parser(BuildContext context) {
-    final locale = Localizations.localeOf(context);
-    final monthFirst =
-        locale.languageCode == 'en' &&
-        (locale.countryCode == null || locale.countryCode == 'US');
-    return QuickAddParser(dayFirst: !monthFirst);
-  }
+  /// Suggestions for what's typed, and which ones the user tapped to use
+  TaskHints _hints = TaskHints.none;
+  bool _useList = false;
+  bool _usePriority = false;
+  bool _useTime = false;
+
+  /// The text read as several tasks (empty unless there are 2+)
+  List<String> _pieces = const [];
+
+  SmartSuggestions get _smart => getIt<SmartSuggestions>();
 
   void _onChanged(String text) {
+    // A hardware Enter at the end submits, like the keyboard's Done
+    if (text.length == _last.length + 1 &&
+        text.endsWith('\n') &&
+        text.startsWith(_last) &&
+        !_last.contains('\n')) {
+      _controller.value = TextEditingValue(
+        text: _last,
+        selection: TextSelection.collapsed(offset: _last.length),
+      );
+      _submit();
+      return;
+    }
+    _last = text;
     if (text.trim().isEmpty) {
       _ignoreParsing = false;
     }
     final result = text.trim().isEmpty
         ? null
-        : _parser(context).parse(text, DateTime.now());
+        : quickAddParserFor(context).parse(text, DateTime.now());
+    final parsed = _ignoreParsing ? null : result;
+    final date = parsed?.date ?? widget.defaultDate;
+    final hints = text.trim().length < 3 || text.contains('\n')
+        ? TaskHints.none
+        : _smart.hints(
+            parsed?.title ?? text,
+            listId: widget.listId,
+            // Typed time wins; with no day there's nothing to time
+            hasTime: parsed?.time != null || date == null,
+          );
     setState(() {
       _result = result;
-      _controller.spans = _ignoreParsing || result == null
-          ? const []
-          : result.spans;
+      _controller.spans = parsed?.spans ?? const [];
+      // A changed suggestion has to be accepted again
+      if (hints.listId != _hints.listId) {
+        _useList = false;
+      }
+      if (hints.priority != _hints.priority) {
+        _usePriority = false;
+      }
+      if (hints.time != _hints.time) {
+        _useTime = false;
+      }
+      _hints = hints;
+      if (text.trim().isEmpty) {
+        _pieces = const [];
+      }
     });
+    if (text.trim().isNotEmpty) {
+      _smart.provider.splitTasks(text).then((pieces) {
+        if (mounted && _controller.text == text) {
+          setState(() => _pieces = pieces.length > 1 ? pieces : const []);
+        }
+      });
+    }
+  }
+
+  Future<void> _openBrainDump(String initial) async {
+    final added = await BrainDumpSheet.show(
+      context,
+      initialText: initial,
+      defaultDate: widget.defaultDate,
+      listId: widget.listId,
+    );
+    if ((added ?? false) && mounted) {
+      _controller.clear();
+      _onChanged('');
+    }
   }
 
   Future<void> _submit() async {
@@ -70,25 +138,26 @@ class _QuickAddFieldState extends State<QuickAddField> {
       _focus.unfocus();
       return;
     }
+    if (text.contains('\n')) {
+      // Pasted lines: review them as separate tasks
+      return _openBrainDump(text);
+    }
     _saving = true;
     final parsed = _ignoreParsing
         ? null
-        : _parser(context).parse(text, DateTime.now());
-    final date = parsed?.date ?? widget.defaultDate;
-    final time = parsed?.date == null ? null : parsed?.time;
+        : quickAddParserFor(context).parse(text, DateTime.now());
+    final hints = _hints;
+    final draft = draftFromText(
+      text,
+      parsed,
+      defaultDate: widget.defaultDate,
+      listId: widget.listId,
+      list: _useList ? hints.listId : null,
+      priority: _usePriority ? hints.priority : null,
+      time: _useTime ? hints.time : null,
+    );
     try {
-      await getIt<TaskRepository>().create(
-        TaskDraft(
-          title: parsed?.title ?? text,
-          listId: widget.listId,
-          dueDate: date,
-          dueTime: time,
-          rrule: parsed?.recurrence?.toRule(),
-          priority: parsed?.priority ?? 0,
-          // A time typed in = "remind me then"
-          remindOffset: time == null ? null : 0,
-        ),
-      );
+      await getIt<TaskRepository>().create(draft);
     } finally {
       _saving = false;
     }
@@ -98,7 +167,8 @@ class _QuickAddFieldState extends State<QuickAddField> {
     _controller.clear();
     _onChanged('');
     widget.onSubmitted?.call();
-    if (time != null) {
+    final date = draft.dueDate;
+    if (draft.dueTime != null) {
       await getIt<ReminderService>().ensurePermission(context);
     }
     if (!mounted) {
@@ -130,8 +200,18 @@ class _QuickAddFieldState extends State<QuickAddField> {
   @override
   Widget build(BuildContext context) {
     final scheme = context.colorScheme;
-    final result = _result;
-    final showChips = !_ignoreParsing && result != null && !result.isEmpty;
+    final l10n = context.l10n;
+    final result = _ignoreParsing ? null : _result;
+    final hasText = _controller.text.trim().isNotEmpty;
+    final showParsed = result != null && !result.isEmpty;
+    final duplicate = _hints.duplicate;
+    final showChips =
+        hasText &&
+        (showParsed ||
+            _hints.listId != null ||
+            _hints.priority != null ||
+            _hints.time != null ||
+            _pieces.isNotEmpty);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -140,6 +220,10 @@ class _QuickAddFieldState extends State<QuickAddField> {
           controller: _controller,
           focusNode: _focus,
           autofocus: widget.autofocus,
+          // Multi-line so pasted lines survive (a single-line field drops
+          // the breaks); the keyboard still shows Done
+          maxLines: null,
+          keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           textCapitalization: TextCapitalization.sentences,
           onChanged: _onChanged,
@@ -150,19 +234,26 @@ class _QuickAddFieldState extends State<QuickAddField> {
             }
           },
           decoration: InputDecoration(
-            labelText: context.l10n.addTask,
-            hintText: context.l10n.quickAddHint,
+            labelText: l10n.addTask,
+            hintText: l10n.quickAddHint,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             prefixIcon: Icon(Icons.add_rounded, color: scheme.primary),
-            suffixIcon: _controller.text.trim().isEmpty
-                ? null
-                : IconButton(
-                    tooltip: context.l10n.addTask,
+            suffixIcon: hasText
+                ? IconButton(
+                    tooltip: l10n.addTask,
                     icon: Icon(
                       Icons.arrow_upward_rounded,
                       color: scheme.primary,
                     ),
                     onPressed: _submit,
+                  )
+                : IconButton(
+                    tooltip: l10n.addMany,
+                    icon: Icon(
+                      Icons.playlist_add_rounded,
+                      color: scheme.onSurfaceVariant,
+                    ),
+                    onPressed: () => _openBrainDump(''),
                   ),
           ),
         ),
@@ -170,37 +261,90 @@ class _QuickAddFieldState extends State<QuickAddField> {
           duration: AppMotion.of(context, AppMotion.medium),
           curve: AppMotion.curve,
           alignment: Alignment.topCenter,
-          child: showChips
-              ? Padding(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (showChips)
+                Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: _ParsedChips(
-                    result: result,
-                    onIgnore: () => setState(() {
-                      _ignoreParsing = true;
-                      _controller.spans = const [];
-                    }),
+                  child: StreamBuilder<List<ListWithCount>>(
+                    stream: _lists,
+                    builder: (context, lists) => _Chips(
+                      result: showParsed ? result : null,
+                      hints: _hints,
+                      lists: {
+                        for (final l in lists.data ?? const <ListWithCount>[])
+                          l.list.id: l.list,
+                      },
+                      useList: _useList,
+                      usePriority: _usePriority,
+                      useTime: _useTime,
+                      onToggleList: () => setState(() => _useList = !_useList),
+                      onTogglePriority: () =>
+                          setState(() => _usePriority = !_usePriority),
+                      onToggleTime: () => setState(() => _useTime = !_useTime),
+                      pieces: _pieces.length,
+                      onSplit: () => _openBrainDump(_pieces.join('\n')),
+                      onIgnore: () => setState(() {
+                        _ignoreParsing = true;
+                        _controller.spans = const [];
+                      }),
+                    ),
                   ),
-                )
-              : const SizedBox(width: double.infinity),
+                ),
+              if (hasText && duplicate != null)
+                Entrance(
+                  key: ValueKey(duplicate.id),
+                  child: _DuplicateNote(task: duplicate),
+                ),
+            ],
+          ),
         ),
       ],
     );
   }
 }
 
-class _ParsedChips extends StatelessWidget {
-  const _ParsedChips({required this.result, required this.onIgnore});
+/// Recognised schedule (filled chips), suggestions (tap to use), and a
+/// shortcut to split the text into several tasks
+class _Chips extends StatelessWidget {
+  const _Chips({
+    required this.result,
+    required this.hints,
+    required this.lists,
+    required this.useList,
+    required this.usePriority,
+    required this.useTime,
+    required this.onToggleList,
+    required this.onTogglePriority,
+    required this.onToggleTime,
+    required this.pieces,
+    required this.onSplit,
+    required this.onIgnore,
+  });
 
-  final QuickAddResult result;
+  final QuickAddResult? result;
+  final TaskHints hints;
+  final Map<String, TaskList> lists;
+  final bool useList;
+  final bool usePriority;
+  final bool useTime;
+  final VoidCallback onToggleList;
+  final VoidCallback onTogglePriority;
+  final VoidCallback onToggleTime;
+  final int pieces;
+  final VoidCallback onSplit;
   final VoidCallback onIgnore;
 
   @override
   Widget build(BuildContext context) {
     final scheme = context.colorScheme;
+    final l10n = context.l10n;
     final today = getIt<DayClock>().value;
-    final date = result.date;
-    final time = result.time;
-    final rec = result.recurrence;
+    final parsed = result;
+    final date = parsed?.date;
+    final time = parsed?.time;
+    final rec = parsed?.recurrence;
     // Keyed by kind so a chip animates in once, not on every keystroke
     final labels = <(String, IconData, String, Color?)>[
       if (date != null)
@@ -219,23 +363,53 @@ class _ParsedChips extends StatelessWidget {
           TaskFormat.recurrence(context, rec),
           null,
         ),
-      if (result.priority > 0)
+      if (parsed != null && parsed.priority > 0)
         (
           'priority',
           Icons.flag_rounded,
-          TaskFormat.priority(context.l10n, result.priority),
-          context.taskColors.priority(result.priority),
+          TaskFormat.priority(l10n, parsed.priority),
+          context.taskColors.priority(parsed.priority),
+        ),
+    ];
+    final suggestedList = lists[hints.listId];
+    final suggestedPriority = hints.priority;
+    final suggestedTime = hints.time;
+    final suggestions = <(String, String, Color, bool, VoidCallback)>[
+      if (suggestedList != null)
+        (
+          's-list',
+          suggestedList.name,
+          Color(suggestedList.colorValue),
+          useList,
+          onToggleList,
+        ),
+      if (suggestedPriority != null && (parsed?.priority ?? 0) == 0)
+        (
+          's-priority',
+          TaskFormat.priority(l10n, suggestedPriority),
+          context.taskColors.priority(suggestedPriority),
+          usePriority,
+          onTogglePriority,
+        ),
+      if (suggestedTime != null)
+        (
+          's-time',
+          TaskFormat.time(context, suggestedTime),
+          scheme.primary,
+          useTime,
+          onToggleTime,
         ),
     ];
     const stagger = Duration(milliseconds: 40);
+    var i = 0;
     return Wrap(
       spacing: 6,
       runSpacing: 6,
       children: [
-        for (final (i, (kind, icon, label, color)) in labels.indexed)
+        for (final (kind, icon, label, color) in labels)
           Entrance(
             key: ValueKey(kind),
-            delay: stagger * i,
+            delay: stagger * i++,
             scale: .92,
             child: Chip(
               visualDensity: VisualDensity.compact,
@@ -243,18 +417,100 @@ class _ParsedChips extends StatelessWidget {
               label: Text(label),
             ),
           ),
-        Entrance(
-          key: const ValueKey('ignore'),
-          delay: stagger * labels.length,
-          scale: .92,
-          child: ActionChip(
-            visualDensity: VisualDensity.compact,
-            avatar: const Icon(Icons.close_rounded, size: 16),
-            label: Text(context.l10n.keepAsText),
-            onPressed: onIgnore,
+        // Suggestions only apply when tapped
+        for (final (kind, label, color, selected, onTap) in suggestions)
+          Entrance(
+            key: ValueKey(kind),
+            delay: stagger * i++,
+            scale: .92,
+            child: FilterChip(
+              visualDensity: VisualDensity.compact,
+              tooltip: l10n.suggestion,
+              avatar: selected
+                  ? null
+                  : Icon(
+                      Icons.auto_awesome_rounded,
+                      size: 16,
+                      color: onTint(context, color),
+                    ),
+              label: Text(label),
+              selected: selected,
+              onSelected: (_) {
+                AppHaptics.selection();
+                onTap();
+              },
+            ),
           ),
-        ),
+        if (pieces > 1)
+          Entrance(
+            key: const ValueKey('split'),
+            delay: stagger * i++,
+            scale: .92,
+            child: ActionChip(
+              visualDensity: VisualDensity.compact,
+              avatar: Icon(
+                Icons.call_split_rounded,
+                size: 16,
+                color: scheme.primary,
+              ),
+              label: Text(l10n.splitIntoTasks(pieces)),
+              onPressed: onSplit,
+            ),
+          ),
+        if (labels.isNotEmpty)
+          Entrance(
+            key: const ValueKey('ignore'),
+            delay: stagger * i++,
+            scale: .92,
+            child: ActionChip(
+              visualDensity: VisualDensity.compact,
+              avatar: const Icon(Icons.close_rounded, size: 16),
+              label: Text(l10n.keepAsText),
+              onPressed: onIgnore,
+            ),
+          ),
       ],
+    );
+  }
+}
+
+/// "You already have …" with a way to open that task instead
+class _DuplicateNote extends StatelessWidget {
+  const _DuplicateNote({required this.task});
+
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = context.colorScheme;
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(start: AppSpace.xs, top: 4),
+      child: Row(
+        children: [
+          ExcludeSemantics(
+            child: Icon(
+              Icons.info_outline_rounded,
+              size: AppIcon.sm,
+              color: scheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(width: AppSpace.sm),
+          Expanded(
+            child: Text(
+              context.l10n.duplicateHint(task.title),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant),
+            ),
+          ),
+          TextButton(
+            onPressed: () => TaskEditorSheet.show(context, task.id),
+            child: Text(context.l10n.open),
+          ),
+        ],
+      ),
     );
   }
 }

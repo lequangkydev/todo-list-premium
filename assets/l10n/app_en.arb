@@ -307,5 +307,100 @@
         "type": "int"
       }
     }
+  },
+  "smartSuggestions": "Smart suggestions",
+  "smartSuggestionsHint": "Learns from your own tasks, only on this phone",
+  "suggestion": "Suggestion",
+  "duplicateHint": "You already have “{title}”",
+  "@duplicateHint": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "open": "Open",
+  "addMany": "Add several tasks",
+  "brainDumpHint": "One task per line. Dates work too: call mom tomorrow 9am",
+  "splitIntoTasks": "{count, plural, other{Split into {count} tasks}}",
+  "@splitIntoTasks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addTasks": "{count, plural, =1{Add 1 task} other{Add {count} tasks}}",
+  "@addTasks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasksAdded": "{count, plural, =1{1 task added} other{{count} tasks added}}",
+  "@tasksAdded": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "remove": "Remove",
+  "planMyDay": "Plan my day",
+  "planIntro": "Timed tasks stay where they are. The rest are fitted in by priority, then length.",
+  "planApply": "Schedule",
+  "planApplied": "{count, plural, =1{1 task scheduled} other{{count} tasks scheduled}}",
+  "@planApplied": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "planLater": "Won’t fit today",
+  "planNothing": "Every task today already has a time.",
+  "duration": "Duration",
+  "noDuration": "No duration",
+  "durationMinutes": "{count} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "durationHours": "{count, plural, =1{1 hour} other{{count} hours}}",
+  "@durationHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recapTitle": "Last 7 days",
+  "recapDone": "{count, plural, =0{Nothing completed yet} =1{1 task completed} other{{count} tasks completed}}",
+  "@recapDone": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recapBestDay": "Most done on {day}",
+  "@recapBestDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "recapTopList": "Mostly in “{list}”",
+  "@recapTopList": {
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -117,6 +117,16 @@ class TaskFormat {
     return l10n.reminderMinutesBefore(offset);
   }
 
+  /// "45 min", "2 hours", "1 hour 30 min"
+  static String duration(AppLocalizations l10n, int minutes) {
+    if (minutes < 60) {
+      return l10n.durationMinutes(minutes);
+    }
+    final hours = l10n.durationHours(minutes ~/ 60);
+    final rest = minutes % 60;
+    return rest == 0 ? hours : '$hours ${l10n.durationMinutes(rest)}';
+  }
+
   static String priority(AppLocalizations l10n, int priority) =>
       switch (priority) {
         1 => l10n.priorityLow,

@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
+import '../../core/ai/smart_suggestions.dart';
 import '../../core/date/dates.dart';
 import '../../core/notifications/reminder_service.dart';
 import '../../core/recurrence/recurrence.dart';
@@ -289,8 +290,52 @@ class _Properties extends StatelessWidget {
           active: task.priority > 0,
           onTap: () => _pickPriority(context),
         ),
+        _PropertyChip(
+          icon: Icons.hourglass_empty_rounded,
+          label: task.estimateMinutes == null
+              ? l10n.duration
+              : TaskFormat.duration(l10n, task.estimateMinutes!),
+          active: task.estimateMinutes != null,
+          onTap: () => _pickDuration(context),
+        ),
         if (task.parentId == null) _ListChip(task: task),
       ],
+    );
+  }
+
+  Future<void> _pickDuration(BuildContext context) async {
+    final l10n = context.l10n;
+    // Offer what similar tasks took, when the task has no duration yet
+    final learned = task.estimateMinutes == null
+        ? getIt<SmartSuggestions>().estimateFor(task.title)
+        : null;
+    const presets = [15, 30, 45, 60, 120, 180];
+    final choice = await _choose<int>(context, [
+      if (learned != null && !presets.contains(learned))
+        (
+          learned,
+          Icons.auto_awesome_rounded,
+          '${l10n.suggestion}: ${TaskFormat.duration(l10n, learned)}',
+        ),
+      for (final m in presets)
+        (
+          m,
+          m == learned
+              ? Icons.auto_awesome_rounded
+              : Icons.hourglass_empty_rounded,
+          m == learned
+              ? '${TaskFormat.duration(l10n, m)} · ${l10n.suggestion}'
+              : TaskFormat.duration(l10n, m),
+        ),
+      if (task.estimateMinutes != null)
+        (0, Icons.hourglass_disabled_rounded, l10n.noDuration),
+    ]);
+    if (choice == null) {
+      return;
+    }
+    await _repo.patch(
+      task.id,
+      TasksCompanion(estimateMinutes: Value(choice == 0 ? null : choice)),
     );
   }
 

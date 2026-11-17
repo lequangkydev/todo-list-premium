@@ -59,6 +59,10 @@ class Tasks extends Table {
   /// Minutes before the due moment to remind; null = no reminder
   IntColumn get remindOffset => integer().nullable()();
 
+  /// How long the task takes, in minutes; null = unknown. Used to plan the
+  /// day (schema v2).
+  IntColumn get estimateMinutes => integer().nullable()();
+
   /// Set by "Snooze" on a notification; overrides the computed fire time
   DateTimeColumn get snoozedUntil => dateTime().nullable()();
 

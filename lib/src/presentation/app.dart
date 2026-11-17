@@ -16,6 +16,7 @@ import '../shared/cubit/ad_visibility_cubit.dart';
 import '../shared/cubit/haptics_cubit.dart';
 import '../shared/cubit/language_cubit.dart';
 import '../shared/cubit/rate_status_cubit.dart';
+import '../shared/cubit/smart_suggestions_cubit.dart';
 import '../shared/cubit/theme_mode_cubit.dart';
 import '../shared/enum/language.dart';
 import '../shared/helpers/permission_util.dart';
@@ -39,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider.value(value: getIt<LanguageCubit>()),
         BlocProvider.value(value: getIt<ThemeModeCubit>()),
         BlocProvider.value(value: getIt<HapticsCubit>()),
+        BlocProvider.value(value: getIt<SmartSuggestionsCubit>()),
         BlocProvider(create: (context) => AdVisibilityCubit()),
         BlocProvider(create: (context) => RateStatusCubit()),
         BlocProvider(

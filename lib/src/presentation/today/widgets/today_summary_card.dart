@@ -8,10 +8,18 @@ import '../../../shared/helpers/app_haptics.dart';
 /// Today at a glance: a progress ring (done / planned) and one calm line.
 /// No streaks, no scores — just where the day stands.
 class TodaySummaryCard extends StatelessWidget {
-  const TodaySummaryCard({super.key, required this.open, required this.done});
+  const TodaySummaryCard({
+    super.key,
+    required this.open,
+    required this.done,
+    this.onPlan,
+  });
 
   final int open;
   final int done;
+
+  /// Shows "Plan my day" when set
+  final VoidCallback? onPlan;
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +77,21 @@ class TodaySummaryCard extends StatelessWidget {
                       color: scheme.onPrimaryContainer.withValues(alpha: .8),
                     ),
                   ),
+                  if (onPlan != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: AppSpace.xs),
+                      child: TextButton.icon(
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpace.sm,
+                          ),
+                          visualDensity: VisualDensity.compact,
+                        ),
+                        onPressed: onPlan,
+                        icon: const Icon(Icons.auto_awesome_rounded, size: 18),
+                        label: Text(l10n.planMyDay),
+                      ),
+                    ),
                 ],
               ),
             ),
