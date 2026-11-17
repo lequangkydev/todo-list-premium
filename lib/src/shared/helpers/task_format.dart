@@ -129,6 +129,15 @@ class TaskFormat {
     return l.leap ? l10n.lunarLeapDate(short) : l10n.lunarDate(short);
   }
 
+  /// "No reminder", "At time of task", "15 min before +2"
+  static String reminders(AppLocalizations l10n, List<int> offsets) {
+    if (offsets.isEmpty) {
+      return l10n.noReminder;
+    }
+    final first = reminder(l10n, offsets.first);
+    return offsets.length == 1 ? first : '$first +${offsets.length - 1}';
+  }
+
   static String reminder(AppLocalizations l10n, int offset) {
     if (offset == 0) {
       return l10n.reminderAtTime;

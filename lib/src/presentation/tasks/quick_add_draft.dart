@@ -40,6 +40,6 @@ TaskDraft draftFromText(
     dueTime: dueTime,
     rrule: parsed?.recurrence?.toRule(),
     priority: typedPriority > 0 ? typedPriority : priority ?? 0,
-    remindOffset: dueTime == null ? null : 0,
+    reminders: dueTime == null ? const [] : const [0],
   );
 }

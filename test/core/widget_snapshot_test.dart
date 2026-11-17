@@ -17,6 +17,8 @@ Task t(String title, {DateTime? due, int? time, int priority = 0}) => Task(
   dueTime: time,
   priority: priority,
   isDone: false,
+  reminders: const [],
+  alarm: false,
   sortOrder: 1,
   createdAt: today,
   updatedAt: today,
@@ -43,7 +45,10 @@ void main() {
       // CLDR puts a narrow no-break space before AM/PM
       expect(items[0]['time'], '9:00\u202fAM');
       expect(items[0]['p'], 3);
-      expect(items[0]['nid'], ReminderPlanner.notificationIdOf(call.id));
+      // Every id its notifications may have, for the iOS widget to cancel
+      expect(items[0]['nids'], [
+        ReminderPlanner.notificationIdOf('${call.id}:snooze'),
+      ]);
       // An overdue task's time belongs to another day
       expect(items[2]['time'], isNull);
       expect(items[2]['late'], isTrue);

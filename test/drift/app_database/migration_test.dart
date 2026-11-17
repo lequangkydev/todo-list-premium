@@ -8,6 +8,7 @@ import 'generated/schema.dart';
 
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -129,6 +130,57 @@ void main() {
           expectedNewActivityDaysData,
           await newDb.select(newDb.activityDays).get(),
         );
+      },
+    );
+  });
+  test('migration from v2 to v3 turns each reminder into a list', () async {
+    v2.TasksData old(String id, int? offset) => v2.TasksData(
+      id: id,
+      title: id,
+      dueDate: '2026-11-14',
+      dueTime: 540,
+      priority: 0,
+      isDone: 0,
+      remindOffset: offset,
+      estimateMinutes: 30,
+      sortOrder: 1,
+      createdAt: 1763000000,
+      updatedAt: 1763000000,
+    );
+    v3.TasksData migrated(String id, String reminders) => v3.TasksData(
+      id: id,
+      title: id,
+      dueDate: '2026-11-14',
+      dueTime: 540,
+      priority: 0,
+      isDone: 0,
+      reminders: reminders,
+      alarm: 0,
+      estimateMinutes: 30,
+      sortOrder: 1,
+      createdAt: 1763000000,
+      updatedAt: 1763000000,
+    );
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 2,
+      newVersion: 3,
+      createOld: v2.DatabaseAtV2.new,
+      createNew: v3.DatabaseAtV3.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insertAll(oldDb.tasks, [
+          old('at-time', 0),
+          old('day-before', 1440),
+          old('none', null),
+        ]);
+      },
+      validateItems: (newDb) async {
+        expect(await newDb.select(newDb.tasks).get(), [
+          migrated('at-time', '0'),
+          migrated('day-before', '1440'),
+          migrated('none', ''),
+        ]);
       },
     );
   });

@@ -84,7 +84,8 @@ class WidgetSnapshot {
                 : time.format(Dates.atMinutes(today, t.dueTime!)),
             'p': t.priority,
             'late': t.dueDate!.isBefore(today),
-            'nid': ReminderPlanner.notificationIdOf(t.id),
+            // Ticking it on the iOS widget cancels these
+            'nids': ReminderPlanner.notificationIdsOf(t),
           },
       ],
       'l': {
@@ -231,22 +232,28 @@ class WidgetSync with WidgetsBindingObserver {
   }
 }
 
-/// Runs in a background isolate when a task is ticked on an Android widget
-/// (`todolist://complete?id=…`), while the app may be closed.
+/// Runs in a background isolate, while the app may be closed:
+/// - `todolist://complete?id=…` — a task ticked on an Android widget
+/// - `todolist://resync` — time zone or clock changed, phone rebooted, app
+///   updated (Android `TimeChangeReceiver`): re-plan reminders, and the
+///   widget's "today" may have moved too
 @pragma('vm:entry-point')
 Future<void> widgetInteraction(Uri? uri) async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   final id = uri?.queryParameters['id'];
-  if (uri?.host != 'complete' || id == null) {
+  final complete = uri?.host == 'complete' && id != null;
+  if (!complete && uri?.host != 'resync') {
     return;
   }
   final db = AppDatabase();
   try {
     final repo = TaskRepository(db);
-    final task = await repo.getTask(id);
-    if (task != null && !task.isDone) {
-      await repo.complete(task);
+    if (complete) {
+      final task = await repo.getTask(id);
+      if (task != null && !task.isDone) {
+        await repo.complete(task);
+      }
     }
     final code = await resyncRemindersInBackground(repo);
     await configureWidgetStorage();

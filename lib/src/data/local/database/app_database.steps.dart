@@ -337,8 +337,156 @@ i1.GeneratedColumn<int> _column_21(String aliasedName) =>
       $customConstraints: 'NOT NULL DEFAULT 0',
       defaultValue: const i1.CustomExpression('0'),
     );
+
+final class Schema3 extends i0.VersionedSchema {
+  Schema3({required super.database}) : super(version: 3);
+  @override
+  late final List<i1.DatabaseSchemaEntity> entities = [
+    taskLists,
+    tasks,
+    activityDays,
+    idxTasksDue,
+    idxTasksList,
+    idxTasksParent,
+  ];
+  late final Shape0 taskLists = Shape0(
+    source: i0.VersionedTable(
+      entityName: 'task_lists',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_1,
+        _column_2,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape3 tasks = Shape3(
+    source: i0.VersionedTable(
+      entityName: 'tasks',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(id)'],
+      columns: [
+        _column_0,
+        _column_7,
+        _column_8,
+        _column_9,
+        _column_10,
+        _column_11,
+        _column_12,
+        _column_13,
+        _column_14,
+        _column_15,
+        _column_16,
+        _column_22,
+        _column_23,
+        _column_18,
+        _column_19,
+        _column_3,
+        _column_4,
+        _column_5,
+        _column_6,
+      ],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  late final Shape2 activityDays = Shape2(
+    source: i0.VersionedTable(
+      entityName: 'activity_days',
+      withoutRowId: false,
+      isStrict: false,
+      tableConstraints: ['PRIMARY KEY(day)'],
+      columns: [_column_20, _column_21],
+      attachedDatabase: database,
+    ),
+    alias: null,
+  );
+  final i1.Index idxTasksDue = i1.Index(
+    'idx_tasks_due',
+    'CREATE INDEX idx_tasks_due ON tasks (due_date, is_done, deleted_at)',
+  );
+  final i1.Index idxTasksList = i1.Index(
+    'idx_tasks_list',
+    'CREATE INDEX idx_tasks_list ON tasks (list_id)',
+  );
+  final i1.Index idxTasksParent = i1.Index(
+    'idx_tasks_parent',
+    'CREATE INDEX idx_tasks_parent ON tasks (parent_id)',
+  );
+}
+
+class Shape3 extends i0.VersionedTable {
+  Shape3({required super.source, required super.alias}) : super.aliased();
+  i1.GeneratedColumn<String> get id =>
+      columnsByName['id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get listId =>
+      columnsByName['list_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get parentId =>
+      columnsByName['parent_id']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get title =>
+      columnsByName['title']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get note =>
+      columnsByName['note']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get dueDate =>
+      columnsByName['due_date']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get dueTime =>
+      columnsByName['due_time']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get priority =>
+      columnsByName['priority']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get isDone =>
+      columnsByName['is_done']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get doneAt =>
+      columnsByName['done_at']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<String> get rrule =>
+      columnsByName['rrule']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<String> get reminders =>
+      columnsByName['reminders']! as i1.GeneratedColumn<String>;
+  i1.GeneratedColumn<int> get alarm =>
+      columnsByName['alarm']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get estimateMinutes =>
+      columnsByName['estimate_minutes']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get snoozedUntil =>
+      columnsByName['snoozed_until']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<double> get sortOrder =>
+      columnsByName['sort_order']! as i1.GeneratedColumn<double>;
+  i1.GeneratedColumn<int> get createdAt =>
+      columnsByName['created_at']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get updatedAt =>
+      columnsByName['updated_at']! as i1.GeneratedColumn<int>;
+  i1.GeneratedColumn<int> get deletedAt =>
+      columnsByName['deleted_at']! as i1.GeneratedColumn<int>;
+}
+
+i1.GeneratedColumn<String> _column_22(String aliasedName) =>
+    i1.GeneratedColumn<String>(
+      'reminders',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.string,
+      $customConstraints: 'NOT NULL DEFAULT \'\'',
+      defaultValue: const i1.CustomExpression('\'\''),
+    );
+i1.GeneratedColumn<int> _column_23(String aliasedName) =>
+    i1.GeneratedColumn<int>(
+      'alarm',
+      aliasedName,
+      false,
+      type: i1.DriftSqlType.int,
+      $customConstraints: 'NOT NULL DEFAULT 0 CHECK (alarm IN (0, 1))',
+      defaultValue: const i1.CustomExpression('0'),
+    );
 i0.MigrationStepWithVersion migrationSteps({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
 }) {
   return (currentVersion, database) async {
     switch (currentVersion) {
@@ -347,6 +495,11 @@ i0.MigrationStepWithVersion migrationSteps({
         final migrator = i1.Migrator(database, schema);
         await from1To2(migrator, schema);
         return 2;
+      case 2:
+        final schema = Schema3(database: database);
+        final migrator = i1.Migrator(database, schema);
+        await from2To3(migrator, schema);
+        return 3;
       default:
         throw ArgumentError.value('Unknown migration from $currentVersion');
     }
@@ -355,6 +508,7 @@ i0.MigrationStepWithVersion migrationSteps({
 
 i1.OnUpgrade stepByStep({
   required Future<void> Function(i1.Migrator m, Schema2 schema) from1To2,
+  required Future<void> Function(i1.Migrator m, Schema3 schema) from2To3,
 }) => i0.VersionedSchema.stepByStepHelper(
-  step: migrationSteps(from1To2: from1To2),
+  step: migrationSteps(from1To2: from1To2, from2To3: from2To3),
 );

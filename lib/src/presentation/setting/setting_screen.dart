@@ -12,7 +12,9 @@ import '../../../module/remote_config/remote_config.dart';
 import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../core/notifications/reminder_health.dart';
 import '../../core/notifications/reminder_service.dart';
+import '../../core/notifications/reminder_settings.dart';
 import '../../shared/constants/app_constants.dart';
 import '../../shared/cubit/haptics_cubit.dart';
 import '../../shared/cubit/language_cubit.dart';
@@ -21,6 +23,7 @@ import '../../shared/cubit/smart_suggestions_cubit.dart';
 import '../../shared/cubit/theme_mode_cubit.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
+import '../../shared/helpers/task_format.dart';
 import '../../shared/widgets/dialog/rate_dialog.dart';
 
 @RoutePage()
@@ -34,9 +37,11 @@ class SettingScreen extends StatefulLoggableWidget {
 class _SettingScreenState extends State<SettingScreen>
     with WidgetsBindingObserver {
   final _reminders = getIt<ReminderService>();
+  final _settings = getIt<ReminderSettings>();
   bool isSharing = false;
   bool? _notificationsOn;
   bool? _exactOn;
+  bool _batteryOptimized = false;
 
   @override
   void initState() {
@@ -62,11 +67,34 @@ class _SettingScreenState extends State<SettingScreen>
   Future<void> _refreshPermissions() async {
     final notifications = await _reminders.notificationsEnabled();
     final exact = await _reminders.exactAlarmsAllowed();
+    final device = await ReminderHealth.read();
     if (mounted) {
       setState(() {
         _notificationsOn = notifications;
         _exactOn = exact;
+        _batteryOptimized = device.batteryOptimized;
       });
+    }
+  }
+
+  /// Same count as the reminder check screen shows
+  int get _reminderIssues => [
+    _notificationsOn == false,
+    _exactOn == false,
+    _batteryOptimized,
+  ].where((bad) => bad).length;
+
+  Future<void> _pickDigestTime() async {
+    final minutes = _settings.digest.value.minutes;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60),
+    );
+    if (picked != null) {
+      await _settings.setDigest(
+        on: true,
+        minutes: picked.hour * 60 + picked.minute,
+      );
     }
   }
 
@@ -151,23 +179,48 @@ class _SettingScreenState extends State<SettingScreen>
                       )
                     : const Icon(Icons.check_rounded),
               ),
-              if (Platform.isAndroid && _exactOn == false) ...[
-                const Divider(indent: 56),
-                ListTile(
-                  leading: const Icon(Icons.alarm_rounded),
-                  title: Text(l10n.exactAlarmTitle),
-                  subtitle: Text(l10n.exactAlarmOffHint),
-                  trailing: FilledButton.tonal(
-                    onPressed: () async {
-                      MyAds.instance.appLifecycleReactor?.setIsExcludeScreen(
-                        true,
-                      );
-                      await _reminders.requestExactAlarms();
+              const Divider(indent: 56),
+              ValueListenableBuilder(
+                valueListenable: _settings.digest,
+                builder: (context, digest, _) => ListTile(
+                  leading: const Icon(Icons.wb_sunny_outlined),
+                  title: Text(l10n.morningSummary),
+                  subtitle: Text(
+                    l10n.morningSummaryHint(
+                      TaskFormat.time(context, digest.minutes),
+                    ),
+                  ),
+                  onTap: _pickDigestTime,
+                  trailing: Switch(
+                    value: digest.on,
+                    onChanged: (on) {
+                      AppHaptics.selection();
+                      _settings.setDigest(on: on);
                     },
-                    child: Text(l10n.allowExactAlarms),
                   ),
                 ),
-              ],
+              ),
+              const Divider(indent: 56),
+              ListTile(
+                leading: Icon(
+                  Icons.fact_check_outlined,
+                  color: _reminderIssues > 0 ? scheme.error : null,
+                ),
+                title: Text(l10n.reminderCheck),
+                subtitle: Text(
+                  _reminderIssues > 0
+                      ? l10n.reminderCheckIssues(_reminderIssues)
+                      : l10n.reminderCheckHint,
+                  style: _reminderIssues > 0
+                      ? TextStyle(color: scheme.error)
+                      : null,
+                ),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () async {
+                  await context.pushRoute(const ReminderCheckRoute());
+                  await _refreshPermissions();
+                },
+              ),
             ],
           ),
           _Group(

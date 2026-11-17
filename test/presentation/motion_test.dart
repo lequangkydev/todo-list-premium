@@ -44,6 +44,8 @@ Task _task({bool done = false}) => Task(
   title: 'Water the plants',
   priority: 0,
   isDone: done,
+  reminders: const [],
+  alarm: false,
   sortOrder: 1,
   createdAt: DateTime(2026, 11, 13),
   updatedAt: DateTime(2026, 11, 13),

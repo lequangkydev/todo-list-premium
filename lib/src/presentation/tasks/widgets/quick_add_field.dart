@@ -6,7 +6,6 @@ import '../../../core/ai/smart_suggestions.dart';
 import '../../../core/ai/suggestion_engine.dart';
 import '../../../core/date/dates.dart';
 import '../../../core/date_parser/quick_add_parser.dart';
-import '../../../core/notifications/reminder_service.dart';
 import '../../../data/local/database/app_database.dart';
 import '../../../data/repositories/list_repository.dart';
 import '../../../data/repositories/task_repository.dart';
@@ -15,6 +14,7 @@ import '../../../shared/helpers/app_haptics.dart';
 import '../../../shared/helpers/day_clock.dart';
 import '../../../shared/helpers/task_format.dart';
 import '../../../shared/widgets/motion.dart';
+import '../../reminders/reminder_nudge.dart';
 import '../brain_dump_sheet.dart';
 import '../quick_add_draft.dart';
 import '../task_editor_sheet.dart';
@@ -169,7 +169,7 @@ class _QuickAddFieldState extends State<QuickAddField> {
     widget.onSubmitted?.call();
     final date = draft.dueDate;
     if (draft.dueTime != null) {
-      await getIt<ReminderService>().ensurePermission(context);
+      await afterReminderSet(context);
     }
     if (!mounted) {
       return;

@@ -52,14 +52,14 @@ enum Store {
     }
 
     /// Ticked on the widget: drop the row now and remember it for the app,
-    /// which completes it the next time it runs. Returns the reminder's id.
-    static func markDone(_ id: String) -> Int? {
+    /// which completes it the next time it runs. Returns its reminders' ids.
+    static func markDone(_ id: String) -> [Int] {
         guard let defaults,
               let json = defaults.string(forKey: snapshotKey),
               var root = try? JSONSerialization.jsonObject(with: Data(json.utf8)) as? [String: Any],
               let items = root["items"] as? [[String: Any]],
               let item = items.first(where: { $0["id"] as? String == id })
-        else { return nil }
+        else { return [] }
         root["items"] = items.filter { $0["id"] as? String != id }
         root["open"] = max(0, (root["open"] as? Int ?? 1) - 1)
         root["done"] = (root["done"] as? Int ?? 0) + 1
@@ -74,7 +74,9 @@ enum Store {
         if let data = try? JSONSerialization.data(withJSONObject: pending) {
             defaults.set(String(data: data, encoding: .utf8), forKey: pendingKey)
         }
-        return item["nid"] as? Int
+        // "nids" since a task can have several reminders; "nid" before that
+        if let ids = item["nids"] as? [Int] { return ids }
+        return (item["nid"] as? Int).map { [$0] } ?? []
     }
 }
 
@@ -93,10 +95,11 @@ struct CompleteTaskIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult {
-        if let nid = Store.markDone(taskId) {
-            // Its reminder shouldn't ring for a task that's done
+        let ids = Store.markDone(taskId)
+        if !ids.isEmpty {
+            // Its reminders shouldn't ring for a task that's done
             UNUserNotificationCenter.current()
-                .removePendingNotificationRequests(withIdentifiers: ["\(nid)"])
+                .removePendingNotificationRequests(withIdentifiers: ids.map { "\($0)" })
         }
         return .result()
     }

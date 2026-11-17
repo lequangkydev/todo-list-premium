@@ -9,6 +9,7 @@ import '../../presentation/language/language_screen.dart';
 import '../../presentation/lists/list_detail_screen.dart';
 import '../../presentation/onboarding/onboarding_screen.dart';
 import '../../presentation/permission/permission_screen.dart';
+import '../../presentation/reminders/reminder_check_screen.dart';
 import '../../presentation/search/search_screen.dart';
 import '../../presentation/setting/setting_screen.dart';
 import '../../presentation/splash/splash_screen.dart';
@@ -33,6 +34,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: UninstallRoute.page),
     AutoRoute(page: ListDetailRoute.page),
     AutoRoute(page: CompletedRoute.page),
+    AutoRoute(page: ReminderCheckRoute.page),
     // Search replaces the current view rather than going deeper
     CustomRoute<void>(
       page: SearchRoute.page,

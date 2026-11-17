@@ -489,8 +489,11 @@ class _Details extends StatelessWidget {
     if (task.rrule != null) {
       add(Icons.repeat_rounded, label: l10n.repeats);
     }
-    if (task.remindOffset != null && !task.isDone) {
-      add(Icons.notifications_none_rounded, label: l10n.hasReminder);
+    if (task.reminders.isNotEmpty && !task.isDone) {
+      add(
+        task.alarm ? Icons.alarm_rounded : Icons.notifications_none_rounded,
+        label: task.alarm ? l10n.alarmStyle : l10n.hasReminder,
+      );
     }
     final count = subtasks;
     if (count != null && count.total > 0) {

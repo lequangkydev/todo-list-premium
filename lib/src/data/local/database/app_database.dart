@@ -39,7 +39,7 @@ class AppDatabase extends _$AppDatabase {
   /// 3. Add the step to `onUpgrade: stepByStep(...)` in [migration] below
   ///    and make the generated tests pass.
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -47,6 +47,21 @@ class AppDatabase extends _$AppDatabase {
     onUpgrade: stepByStep(
       from1To2: (m, schema) async {
         await m.addColumn(schema.tasks, schema.tasks.estimateMinutes);
+      },
+      from2To3: (m, schema) async {
+        // One reminder per task (remind_offset) becomes a list, plus the
+        // alarm flag. Rebuilding the table drops the old column.
+        await m.alterTable(
+          TableMigration(
+            schema.tasks,
+            columnTransformer: {
+              schema.tasks.reminders: const CustomExpression<String>(
+                "COALESCE(CAST(remind_offset AS TEXT), '')",
+              ),
+            },
+            newColumns: [schema.tasks.alarm],
+          ),
+        );
       },
     ),
     beforeOpen: (details) async {

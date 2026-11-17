@@ -56,8 +56,16 @@ class Tasks extends Table {
   /// RFC 5545 subset, e.g. `FREQ=WEEKLY;BYDAY=MO,WE` (see Recurrence)
   TextColumn get rrule => text().nullable()();
 
-  /// Minutes before the due moment to remind; null = no reminder
-  IntColumn get remindOffset => integer().nullable()();
+  /// When to remind, as minutes before the due moment (all-day tasks: before
+  /// 9:00 on the day), e.g. `[0, 60]`; empty = no reminder. Replaced the
+  /// single `remind_offset` in schema v3.
+  TextColumn get reminders => text()
+      .withDefault(const Constant(''))
+      .map(const ReminderOffsetsConverter())();
+
+  /// Remind like an alarm clock: alarm sound until handled, full screen on
+  /// a locked Android phone, breaks through Focus on iOS (schema v3)
+  BoolColumn get alarm => boolean().withDefault(const Constant(false))();
 
   /// How long the task takes, in minutes; null = unknown. Used to plan the
   /// day (schema v2).

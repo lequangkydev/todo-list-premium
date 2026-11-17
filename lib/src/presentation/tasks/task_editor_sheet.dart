@@ -8,7 +8,6 @@ import '../../config/theme/app_theme.dart';
 import '../../core/ai/smart_suggestions.dart';
 import '../../core/date/dates.dart';
 import '../../core/lunar/lunar_calendar.dart';
-import '../../core/notifications/reminder_service.dart';
 import '../../core/recurrence/recurrence.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/list_repository.dart';
@@ -19,6 +18,8 @@ import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../../shared/helpers/task_actions.dart';
 import '../../shared/helpers/task_format.dart';
+import '../reminders/reminder_nudge.dart';
+import '../reminders/reminder_sheet.dart';
 import 'widgets/task_tile.dart';
 
 /// Edits a task in place: every change is saved immediately.
@@ -277,12 +278,12 @@ class _Properties extends StatelessWidget {
           onTap: () => _pickRepeat(context),
         ),
         _PropertyChip(
-          icon: Icons.notifications_none_rounded,
-          label: task.remindOffset == null
-              ? l10n.noReminder
-              : TaskFormat.reminder(l10n, task.remindOffset!),
-          active: task.remindOffset != null,
-          onTap: () => _pickReminder(context),
+          icon: task.alarm && task.reminders.isNotEmpty
+              ? Icons.alarm_rounded
+              : Icons.notifications_none_rounded,
+          label: TaskFormat.reminders(l10n, task.reminders),
+          active: task.reminders.isNotEmpty,
+          onTap: () => ReminderSheet.show(context, task),
         ),
         _PropertyChip(
           icon: Icons.flag_rounded,
@@ -413,13 +414,13 @@ class _Properties extends StatelessWidget {
         dueTime: Value(picked.hour * 60 + picked.minute),
         snoozedUntil: const Value(null),
         // Picking a time usually means "remind me then"
-        remindOffset: task.remindOffset == null
-            ? const Value(0)
+        reminders: task.reminders.isEmpty
+            ? const Value([0])
             : const Value.absent(),
       ),
     );
     if (context.mounted) {
-      await getIt<ReminderService>().ensurePermission(context);
+      await afterReminderSet(context);
     }
   }
 
@@ -466,43 +467,6 @@ class _Properties extends StatelessWidget {
             : Value(rec.firstOnOrAfter(base)),
       ),
     );
-  }
-
-  Future<void> _pickReminder(BuildContext context) async {
-    final l10n = context.l10n;
-    const offsets = [0, 5, 15, 30, 60, 1440];
-    final choice = await _choose<int>(context, [
-      (-1, Icons.notifications_off_outlined, l10n.noReminder),
-      for (final o in offsets)
-        (o, Icons.notifications_none_rounded, TaskFormat.reminder(l10n, o)),
-    ], footer: task.dueTime == null ? l10n.reminderAllDayHint : null);
-    if (choice == null || !context.mounted) {
-      return;
-    }
-    if (choice == -1) {
-      await _repo.patch(
-        task.id,
-        const TasksCompanion(
-          remindOffset: Value(null),
-          snoozedUntil: Value(null),
-        ),
-      );
-      return;
-    }
-    await _repo.patch(
-      task.id,
-      TasksCompanion(
-        remindOffset: Value(choice),
-        snoozedUntil: const Value(null),
-        // A reminder needs a day; default to today
-        dueDate: task.dueDate == null
-            ? Value(getIt<DayClock>().value)
-            : const Value.absent(),
-      ),
-    );
-    if (context.mounted) {
-      await getIt<ReminderService>().ensurePermission(context);
-    }
   }
 
   Future<void> _pickPriority(BuildContext context) async {

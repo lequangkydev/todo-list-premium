@@ -456,5 +456,131 @@
   "festDoanNgo": "Đoan Ngọ Festival",
   "festVuLan": "Vu Lan Festival",
   "festMidAutumn": "Mid-Autumn Festival",
-  "festKitchenGods": "Kitchen Gods’ Day"
+  "festKitchenGods": "Kitchen Gods’ Day",
+  "snoozeTenMinutes": "10 min",
+  "snoozeOneHour": "1 hour",
+  "snoozeTonight": "Tonight",
+  "snoozeTomorrowMorning": "Tomorrow morning",
+  "snoozeMore": "Snooze…",
+  "snoozeTitle": "Remind me again",
+  "snoozePickTime": "Pick a time",
+  "snoozedUntil": "Snoozed until {when}",
+  "@snoozedUntil": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "alarmStyle": "Ring like an alarm",
+  "alarmStyleHintAndroid": "Your alarm sound repeats until you respond, full screen on a locked phone",
+  "alarmStyleHintIos": "Gets through Focus modes",
+  "alarmChannelName": "Alarm-style reminders",
+  "alarmChannelDescription": "Important tasks that ring like an alarm",
+  "fullScreenTitle": "Full-screen alarms",
+  "fullScreenHint": "Lets alarm-style reminders fill the screen when the phone is locked",
+  "morningSummary": "Morning summary",
+  "morningSummaryHint": "Every morning at {time}: what's due today",
+  "@morningSummaryHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "digestChannelDescription": "Your tasks for the day, once each morning",
+  "digestTitle": "{count, plural, =1{1 task today} other{{count} tasks today}}",
+  "@digestTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "digestMore": "+{count} more",
+  "@digestMore": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "digestOverdue": "{count, plural, =1{1 overdue} other{{count} overdue}}",
+  "@digestOverdue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reminderCheck": "Reminder check",
+  "reminderCheckHint": "Make sure reminders arrive on time",
+  "reminderCheckAllGood": "Reminders are good to go",
+  "reminderCheckIssues": "{count, plural, =1{1 thing to fix} other{{count} things to fix}}",
+  "@reminderCheckIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "exactAlarmOnHint": "On — reminders ring on time",
+  "batteryTitle": "Battery optimization",
+  "batteryOnHint": "On — the system may delay or block reminders",
+  "batteryOffHint": "Off for this app",
+  "batteryStep": "Find this app and choose “Unrestricted” or “Don’t optimize”.",
+  "openSettings": "Open settings",
+  "autostartTitle": "Auto-start on {brand}",
+  "@autostartTitle": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "autostartHint": "Allow this app to start by itself so reminders still come after a restart",
+  "lockRecentsTitle": "Lock the app in recents",
+  "lockRecentsHint": "In recent apps, long-press or pull down this app’s card and tap the lock, so clearing recents doesn’t stop reminders",
+  "brandGuide": "Step-by-step guide for {brand}",
+  "@brandGuide": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "brandGuideHint": "dontkillmyapp.com, with pictures",
+  "scheduledInfo": "{count, plural, =1{1 notification scheduled} other{{count} notifications scheduled}} · {zone}",
+  "@scheduledInfo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "zone": {
+        "type": "String"
+      }
+    }
+  },
+  "sendTest": "Send a test notification",
+  "testSent": "Arriving in 5 seconds — try locking your phone",
+  "testNotificationTitle": "Test reminder",
+  "testNotificationBody": "If you can see this, reminders work on this phone.",
+  "oemNudgeTitle": "Reminders on {brand}",
+  "@oemNudgeTitle": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "oemNudgeMessage": "{brand} phones often stop background apps to save battery, so reminders can come late or not at all. It takes a minute to fix.",
+  "@oemNudgeMessage": {
+    "placeholders": {
+      "brand": {
+        "type": "String"
+      }
+    }
+  },
+  "checkNow": "Check now",
+  "openTask": "Open task"
 }

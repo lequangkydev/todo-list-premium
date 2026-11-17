@@ -11,12 +11,13 @@ import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
-import '../../core/notifications/reminder_service.dart';
 import '../../core/widgets/launch_links.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../lists/lists_tab.dart';
+import '../reminders/alarm_screen.dart';
+import '../reminders/snooze_sheet.dart';
 import '../tasks/quick_add_sheet.dart';
 import '../tasks/task_editor_sheet.dart';
 import '../today/today_tab.dart';
@@ -32,25 +33,19 @@ class HomeScreen extends StatefulLoggableWidget {
 
 class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   int _tab = 0;
-  final _reminders = getIt<ReminderService>();
 
   @override
   void initState() {
     super.initState();
     NativeAllUtil.instance.preloadSlots();
     WidgetsBinding.instance.addObserver(this);
-    _reminders.openTaskRequest.addListener(_openRequestedTask);
     LaunchLinks.instance.pending.addListener(_openLink);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _openRequestedTask();
-      _openLink();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _openLink());
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _reminders.openTaskRequest.removeListener(_openRequestedTask);
     LaunchLinks.instance.pending.removeListener(_openLink);
     super.dispose();
   }
@@ -62,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     }
   }
 
-  /// Widget, Quick Settings tile or app shortcut → go where it points
+  /// Widget, Quick Settings tile, app shortcut or notification → go where it
+  /// points
   void _openLink() {
     if (!mounted || LaunchLinks.instance.pending.value == null) {
       return;
@@ -72,25 +68,17 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final home = ModalRoute.of(context);
     Navigator.of(context).popUntil((route) => route == home || route.isFirst);
     setState(() => _tab = 0);
+    final id = uri.queryParameters['id'];
     switch (uri.host) {
       case 'quickadd':
         unawaited(QuickAddSheet.show(context));
-      case 'task':
-        final id = uri.queryParameters['id'];
-        if (id != null) {
-          unawaited(TaskEditorSheet.show(context, id));
-        }
+      case 'task' when id != null:
+        unawaited(TaskEditorSheet.show(context, id));
+      case 'alarm' when id != null:
+        unawaited(AlarmScreen.show(context, id));
+      case 'snooze' when id != null:
+        unawaited(SnoozeSheet.show(context, id));
     }
-  }
-
-  /// Notification tapped → open that task
-  void _openRequestedTask() {
-    final id = _reminders.openTaskRequest.value;
-    if (id == null || !mounted) {
-      return;
-    }
-    _reminders.openTaskRequest.value = null;
-    unawaited(TaskEditorSheet.show(context, id));
   }
 
   List<Widget> _actions(BuildContext context) => [

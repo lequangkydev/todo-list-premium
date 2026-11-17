@@ -12,6 +12,8 @@ import '../../shared/helpers/logger_utils.dart';
 /// - `todolist://quickadd` — open the quick-add sheet
 /// - `todolist://task?id=…` — open that task
 /// - `todolist://today` — show the Today tab
+/// - `todolist://alarm?id=…` — an alarm-style reminder rang: full screen
+/// - `todolist://snooze?id=…` — "Snooze…" on a notification: pick when
 class LaunchLinks {
   LaunchLinks._();
 
@@ -20,6 +22,12 @@ class LaunchLinks {
   static const scheme = 'todolist';
   static final quickAdd = Uri.parse('$scheme://quickadd');
   static final today = Uri.parse('$scheme://today');
+
+  static Uri task(String id) => Uri.parse('$scheme://task?id=$id');
+
+  static Uri alarm(String id) => Uri.parse('$scheme://alarm?id=$id');
+
+  static Uri snooze(String id) => Uri.parse('$scheme://snooze?id=$id');
 
   final pending = ValueNotifier<Uri?>(null);
   StreamSubscription<Uri?>? _sub;

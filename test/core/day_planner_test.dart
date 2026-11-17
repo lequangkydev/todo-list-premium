@@ -26,6 +26,8 @@ Task t(
   estimateMinutes: estimate,
   isDone: done,
   doneAt: doneAt,
+  reminders: const [],
+  alarm: false,
   sortOrder: _id.toDouble(),
   createdAt: today,
   updatedAt: today,

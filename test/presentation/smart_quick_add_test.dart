@@ -54,7 +54,7 @@ void main() {
       expect(d.dueTime, 540);
       expect(d.priority, 2);
       expect(d.listId, 'work');
-      expect(d.remindOffset, 0);
+      expect(d.reminders, [0]);
     });
 
     test('accepted time needs a day', () {
@@ -67,7 +67,7 @@ void main() {
       );
       expect(d.dueDate, today);
       expect(d.dueTime, 360);
-      expect(d.remindOffset, 0);
+      expect(d.reminders, [0]);
     });
 
     test('the field list beats a suggested list', () {

@@ -21,7 +21,8 @@ class TaskDraft {
     this.dueTime,
     this.priority = 0,
     this.rrule,
-    this.remindOffset,
+    this.reminders = const [],
+    this.alarm = false,
     this.estimateMinutes,
   });
 
@@ -33,7 +34,10 @@ class TaskDraft {
   final int? dueTime;
   final int priority;
   final String? rrule;
-  final int? remindOffset;
+
+  /// Minutes before the due moment (see `Tasks.reminders`)
+  final List<int> reminders;
+  final bool alarm;
   final int? estimateMinutes;
 }
 
@@ -211,14 +215,25 @@ class TaskRepository {
         .watch();
   }
 
-  /// Open tasks that may need a notification
+  /// Open tasks with at least one reminder (search filter)
   Stream<List<Task>> watchWithReminders() {
+    return (_db.select(_t)
+          ..where(
+            (t) =>
+                _alive(t) &
+                t.isDone.equals(false) &
+                t.dueDate.isNotNull() &
+                t.reminders.equalsValue(const []).not(),
+          )
+          ..orderBy(_byDueThenOrder))
+        .watch();
+  }
+
+  /// Open tasks with a due date: what reminders, snoozes and the morning
+  /// summary are planned from
+  Stream<List<Task>> watchForNotifications() {
     return (_db.select(_t)..where(
-          (t) =>
-              _alive(t) &
-              t.isDone.equals(false) &
-              t.dueDate.isNotNull() &
-              t.remindOffset.isNotNull(),
+          (t) => _alive(t) & t.isDone.equals(false) & t.dueDate.isNotNull(),
         ))
         .watch();
   }
@@ -258,7 +273,8 @@ class TaskRepository {
             dueTime: Value(due == null ? null : draft.dueTime),
             priority: Value(draft.priority),
             rrule: Value(rule?.toRule()),
-            remindOffset: Value(due == null ? null : draft.remindOffset),
+            reminders: Value(due == null ? const [] : draft.reminders),
+            alarm: Value(draft.alarm),
             estimateMinutes: Value(draft.estimateMinutes),
             sortOrder: await _nextSortOrder(draft.listId, draft.parentId),
             createdAt: now,
@@ -302,7 +318,7 @@ class TaskRepository {
         dueTime: Value(date == null ? null : time),
         snoozedUntil: const Value(null),
         // A reminder without a date makes no sense
-        remindOffset: date == null ? const Value(null) : const Value.absent(),
+        reminders: date == null ? const Value([]) : const Value.absent(),
         rrule: date == null ? const Value(null) : const Value.absent(),
       ),
     );
@@ -327,7 +343,8 @@ class TaskRepository {
                     isDone: true,
                     doneAt: Value(at),
                     rrule: const Value(null),
-                    remindOffset: const Value(null),
+                    reminders: const [],
+                    alarm: false,
                     snoozedUntil: const Value(null),
                     updatedAt: at,
                   )
@@ -447,10 +464,21 @@ class TaskRepository {
     });
   }
 
-  Future<void> snooze(String id, Duration duration) {
+  /// Rings the task's reminder again at [until]
+  Future<void> snoozeUntil(String id, DateTime until) {
+    return patch(id, TasksCompanion(snoozedUntil: Value(until)));
+  }
+
+  /// Replaces the task's reminders (minutes before it is due) and, when
+  /// given, whether they ring like an alarm
+  Future<void> setReminders(String id, List<int> offsets, {bool? alarm}) {
     return patch(
       id,
-      TasksCompanion(snoozedUntil: Value(DateTime.now().add(duration))),
+      TasksCompanion(
+        reminders: Value(offsets),
+        alarm: alarm == null ? const Value.absent() : Value(alarm),
+        snoozedUntil: const Value(null),
+      ),
     );
   }
 

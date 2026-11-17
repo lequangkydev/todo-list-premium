@@ -6,6 +6,8 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.bindinghelper.BindingNotificationManager
 import com.example.bindinghelper.NotificationCallHandler
+import com.vtn.todolist.reminders.AlarmLaunch
+import com.vtn.todolist.reminders.ReminderChannel
 import com.vtn.todolist.util.method_handler.PermissionHandler
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -17,6 +19,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AlarmLaunch.applyIfAlarm(this, intent)
         BindingNotificationManager.init(
             this,
             MainActivity::class.java,
@@ -36,6 +39,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        AlarmLaunch.applyIfAlarm(this, intent)
         BindingNotificationManager.onRestart(this, intent, onNotificationClicked = {
             notificationCallHandler?.channel?.invokeMethod(
                 "openNotify",
@@ -58,6 +62,7 @@ class MainActivity : FlutterActivity() {
             context = this,
             messenger = flutterEngine.dartExecutor.binaryMessenger
         )
+        ReminderChannel(this, flutterEngine.dartExecutor.binaryMessenger)
 
         RegularNativeFactories.register(flutterEngine, applicationContext)
     }
