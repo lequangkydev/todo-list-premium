@@ -351,5 +351,15 @@
   "weeklyRecapHint": "रविवार शाम: इस हफ़्ते आपने क्या पूरा किया",
   "weeklyTitle": "{count, plural, =1{इस हफ़्ते आपने 1 काम पूरा किया} other{इस हफ़्ते आपने {count} काम पूरे किए}}",
   "weeklyBody": "अपना हफ़्ता देखने के लिए टैप करें।",
-  "summariesChannel": "सारांश"
+  "summariesChannel": "सारांश",
+  "dayPlan": "दिन की योजना",
+  "unscheduled": "अभी समय तय नहीं",
+  "unscheduledHint": "समय चुनने के लिए टैप करें, या दबाकर रखें और टाइमलाइन पर खींचें",
+  "arrangeForMe": "मेरे लिए व्यवस्थित करें",
+  "leftoverCount": "{count, plural, =1{पहले का 1 काम अभी बाकी है} other{पहले के {count} काम अभी बाकी हैं}}",
+  "moveHere": "यहाँ ले आएँ",
+  "movedCount": "{count, plural, =1{1 काम ले जाया गया} other{{count} काम ले जाए गए}}",
+  "timeSet": "{time} पर तय किया",
+  "dayPlanEmpty": "इस दिन के लिए कुछ तय नहीं",
+  "dayPlanEmptyHint": "एक काम जोड़ें, फिर उसका समय तय करें।"
 }

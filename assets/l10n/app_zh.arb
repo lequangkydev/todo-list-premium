@@ -351,5 +351,15 @@
   "weeklyRecapHint": "周日晚上:你这一周完成了什么",
   "weeklyTitle": "{count, plural, other{本周你完成了 {count} 项任务}}",
   "weeklyBody": "轻点查看你的一周。",
-  "summariesChannel": "摘要"
+  "summariesChannel": "摘要",
+  "dayPlan": "按时间安排",
+  "unscheduled": "尚未安排时间",
+  "unscheduledHint": "轻点选择时间,或长按后拖到时间轴上",
+  "arrangeForMe": "帮我安排",
+  "leftoverCount": "{count, plural, other{之前还有 {count} 项任务未完成}}",
+  "moveHere": "移到这一天",
+  "movedCount": "{count, plural, other{已移动 {count} 项任务}}",
+  "timeSet": "已安排在 {time}",
+  "dayPlanEmpty": "这一天还没有安排",
+  "dayPlanEmptyHint": "添加一个任务,然后为它安排时间。"
 }

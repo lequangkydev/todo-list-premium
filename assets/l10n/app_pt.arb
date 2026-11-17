@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Domingo à noite: o que você fez esta semana",
   "weeklyTitle": "{count, plural, =1{Você concluiu 1 tarefa esta semana} other{Você concluiu {count} tarefas esta semana}}",
   "weeklyBody": "Toque para ver sua semana.",
-  "summariesChannel": "Resumos"
+  "summariesChannel": "Resumos",
+  "dayPlan": "Plano do dia",
+  "unscheduled": "Ainda sem horário",
+  "unscheduledHint": "Toque para escolher um horário, ou toque e segure para arrastar até a grade",
+  "arrangeForMe": "Organizar para mim",
+  "leftoverCount": "{count, plural, =1{1 tarefa ainda em aberto de antes} other{{count} tarefas ainda em aberto de antes}}",
+  "moveHere": "Mover para cá",
+  "movedCount": "{count, plural, =1{1 tarefa movida} other{{count} tarefas movidas}}",
+  "timeSet": "Marcada para {time}",
+  "dayPlanEmpty": "Nada planejado para este dia",
+  "dayPlanEmptyHint": "Adicione uma tarefa e dê um horário a ela."
 }

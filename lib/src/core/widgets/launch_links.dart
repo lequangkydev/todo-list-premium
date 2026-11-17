@@ -17,6 +17,7 @@ import '../../shared/helpers/logger_utils.dart';
 /// - `todolist://focus` — the focus timer
 /// - `todolist://upcoming` — show the Upcoming tab
 /// - `todolist://stats` — the stats screen
+/// - `todolist://plan?day=yyyy-MM-dd` — that day by the hour
 class LaunchLinks {
   LaunchLinks._();
 
@@ -28,6 +29,8 @@ class LaunchLinks {
   static final focus = Uri.parse('$scheme://focus');
   static final upcoming = Uri.parse('$scheme://upcoming');
   static final stats = Uri.parse('$scheme://stats');
+
+  static Uri plan(String day) => Uri.parse('$scheme://plan?day=$day');
 
   static Uri task(String id) => Uri.parse('$scheme://task?id=$id');
 

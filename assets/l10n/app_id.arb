@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Minggu malam: apa yang Anda selesaikan minggu ini",
   "weeklyTitle": "{count, plural, other{Anda menyelesaikan {count} tugas minggu ini}}",
   "weeklyBody": "Ketuk untuk melihat minggu Anda.",
-  "summariesChannel": "Ringkasan"
+  "summariesChannel": "Ringkasan",
+  "dayPlan": "Rencana hari",
+  "unscheduled": "Belum ada jam",
+  "unscheduledHint": "Ketuk untuk memilih jam, atau tekan lama lalu seret ke linimasa",
+  "arrangeForMe": "Aturkan untuk saya",
+  "leftoverCount": "{count, plural, other{{count} tugas masih terbuka dari sebelumnya}}",
+  "moveHere": "Pindahkan ke sini",
+  "movedCount": "{count, plural, other{{count} tugas dipindahkan}}",
+  "timeSet": "Dijadwalkan pukul {time}",
+  "dayPlanEmpty": "Belum ada rencana untuk hari ini",
+  "dayPlanEmptyHint": "Tambahkan tugas, lalu beri jam."
 }

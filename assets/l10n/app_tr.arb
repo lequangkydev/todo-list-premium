@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Pazar akşamı: bu hafta tamamladıklarınız",
   "weeklyTitle": "{count, plural, other{Bu hafta {count} görev tamamladınız}}",
   "weeklyBody": "Haftanızı görmek için dokunun.",
-  "summariesChannel": "Özetler"
+  "summariesChannel": "Özetler",
+  "dayPlan": "Gün planı",
+  "unscheduled": "Henüz saati yok",
+  "unscheduledHint": "Saat seçmek için dokunun ya da basılı tutup zaman çizelgesine sürükleyin",
+  "arrangeForMe": "Benim için düzenle",
+  "leftoverCount": "{count, plural, other{Öncesinden {count} görev hâlâ açık}}",
+  "moveHere": "Buraya taşı",
+  "movedCount": "{count, plural, other{{count} görev taşındı}}",
+  "timeSet": "{time} olarak ayarlandı",
+  "dayPlanEmpty": "Bu gün için plan yok",
+  "dayPlanEmptyHint": "Bir görev ekleyin, sonra ona bir saat verin."
 }

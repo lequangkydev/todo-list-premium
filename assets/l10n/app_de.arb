@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Sonntagabend: was du diese Woche geschafft hast",
   "weeklyTitle": "{count, plural, =1{Du hast diese Woche 1 Aufgabe erledigt} other{Du hast diese Woche {count} Aufgaben erledigt}}",
   "weeklyBody": "Tippe, um deine Woche zu sehen.",
-  "summariesChannel": "Zusammenfassungen"
+  "summariesChannel": "Zusammenfassungen",
+  "dayPlan": "Tagesplan",
+  "unscheduled": "Noch ohne Uhrzeit",
+  "unscheduledHint": "Tippen, um eine Uhrzeit zu wählen, oder gedrückt halten und in den Zeitplan ziehen",
+  "arrangeForMe": "Für mich einteilen",
+  "leftoverCount": "{count, plural, =1{1 Aufgabe von vorher noch offen} other{{count} Aufgaben von vorher noch offen}}",
+  "moveHere": "Hierher verschieben",
+  "movedCount": "{count, plural, =1{1 Aufgabe verschoben} other{{count} Aufgaben verschoben}}",
+  "timeSet": "Auf {time} gelegt",
+  "dayPlanEmpty": "An diesem Tag ist nichts geplant",
+  "dayPlanEmptyHint": "Füge eine Aufgabe hinzu und gib ihr eine Uhrzeit."
 }

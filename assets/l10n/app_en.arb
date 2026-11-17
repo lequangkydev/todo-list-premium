@@ -785,5 +785,36 @@
     }
   },
   "weeklyBody": "Tap to see your week.",
-  "summariesChannel": "Summaries"
+  "summariesChannel": "Summaries",
+  "dayPlan": "Day plan",
+  "unscheduled": "No time yet",
+  "unscheduledHint": "Tap to pick a time, or touch and hold to drag onto the timeline",
+  "arrangeForMe": "Arrange for me",
+  "leftoverCount": "{count, plural, =1{1 task still open from before} other{{count} tasks still open from before}}",
+  "@leftoverCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moveHere": "Move here",
+  "movedCount": "{count, plural, =1{1 task moved} other{{count} tasks moved}}",
+  "@movedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeSet": "Set for {time}",
+  "@timeSet": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "dayPlanEmpty": "Nothing planned this day",
+  "dayPlanEmptyHint": "Add a task, then give it a time."
 }

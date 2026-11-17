@@ -16,6 +16,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../../config/theme/palette.dart';
 import '../../data/local/database/app_database.dart';
+import '../../data/local/database/converters.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../gen/l18n/app_localizations.dart';
 import '../../shared/cubit/language_cubit.dart';
@@ -146,6 +147,11 @@ class ReminderService with WidgetsBindingObserver {
         return;
       case 'upcoming':
         LaunchLinks.instance.open(LaunchLinks.upcoming);
+        return;
+      case 'plan':
+        LaunchLinks.instance.open(
+          LaunchLinks.plan(payload['day'] as String? ?? ''),
+        );
         return;
       case 'stats':
         LaunchLinks.instance.open(LaunchLinks.stats);
@@ -505,7 +511,7 @@ Future<void> syncReminders(
               ? l10n.eveningLeftTitle(digest.overdue.length)
               : l10n.eveningTitle(digest.due.length),
           _eveningBody(digest, l10n, localeCode),
-          'upcoming',
+          'plan',
         ),
         DigestKind.weekly => (
           l10n.weeklyTitle(digest.done),
@@ -518,7 +524,14 @@ Future<void> syncReminders(
         scheduledDate: tz.TZDateTime.from(digest.fireAt, tz.local),
         title: title,
         body: body,
-        payload: jsonEncode({'open': open}),
+        payload: jsonEncode({
+          'open': open,
+          // The evening look opens tomorrow's plan, whenever it is tapped
+          if (digest.kind == DigestKind.evening)
+            'day': const LocalDateConverter().toSql(
+              Dates.addDays(digest.day, 1),
+            ),
+        }),
         notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             _digestChannelId,

@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_ui/material_ui.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../config/di/di.dart';
+import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/date/dates.dart';
 import '../../core/lunar/festivals.dart';
@@ -545,28 +547,40 @@ class _DayHeader extends StatelessWidget {
         AppSpace.gutter,
         AppSpace.sm,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Semantics(
-            header: true,
-            child: Text(
-              relative == long ? long : '$relative · $long',
-              style: text.titleSmall,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Semantics(
+                  header: true,
+                  child: Text(
+                    relative == long ? long : '$relative · $long',
+                    style: text.titleSmall,
+                  ),
+                ),
+                if (lunar)
+                  Text(
+                    [
+                      TaskFormat.lunar(l10n, day),
+                      if (festival != null) TaskFormat.festival(l10n, festival),
+                    ].join(' · '),
+                    style: text.bodySmall?.copyWith(
+                      color: festival != null
+                          ? context.taskColors.priorityHigh
+                          : scheme.onSurfaceVariant,
+                    ),
+                  ),
+              ],
             ),
           ),
-          if (lunar)
-            Text(
-              [
-                TaskFormat.lunar(l10n, day),
-                if (festival != null) TaskFormat.festival(l10n, festival),
-              ].join(' · '),
-              style: text.bodySmall?.copyWith(
-                color: festival != null
-                    ? context.taskColors.priorityHigh
-                    : scheme.onSurfaceVariant,
-              ),
-            ),
+          // The same day, by the hour
+          IconButton(
+            tooltip: l10n.dayPlan,
+            icon: const Icon(Icons.view_timeline_outlined),
+            onPressed: () => context.pushRoute(DayPlanRoute(day: day)),
+          ),
         ],
       ),
     );

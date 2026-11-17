@@ -351,5 +351,15 @@
   "weeklyRecapHint": "مساء الأحد: ما أنجزته هذا الأسبوع",
   "weeklyTitle": "{count, plural, =1{أنجزت مهمة واحدة هذا الأسبوع} other{أنجزت {count} مهام هذا الأسبوع}}",
   "weeklyBody": "اضغط لعرض أسبوعك.",
-  "summariesChannel": "الملخصات"
+  "summariesChannel": "الملخصات",
+  "dayPlan": "خطة اليوم",
+  "unscheduled": "بلا وقت بعد",
+  "unscheduledHint": "اضغط لاختيار وقت، أو اضغط مطولًا واسحب إلى الجدول الزمني",
+  "arrangeForMe": "رتّبها لي",
+  "leftoverCount": "{count, plural, =1{مهمة واحدة ما زالت مفتوحة من قبل} other{{count} مهام ما زالت مفتوحة من قبل}}",
+  "moveHere": "انقلها إلى هنا",
+  "movedCount": "{count, plural, =1{تم نقل مهمة واحدة} other{تم نقل {count} مهام}}",
+  "timeSet": "تم التحديد عند {time}",
+  "dayPlanEmpty": "لا شيء مخطط لهذا اليوم",
+  "dayPlanEmptyHint": "أضف مهمة ثم حدد لها وقتًا."
 }

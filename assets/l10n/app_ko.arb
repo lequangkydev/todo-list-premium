@@ -351,5 +351,15 @@
   "weeklyRecapHint": "일요일 저녁: 이번 주에 완료한 일",
   "weeklyTitle": "{count, plural, other{이번 주에 할 일 {count}개를 완료했어요}}",
   "weeklyBody": "탭해서 이번 주를 확인하세요.",
-  "summariesChannel": "요약"
+  "summariesChannel": "요약",
+  "dayPlan": "하루 계획",
+  "unscheduled": "아직 시간 없음",
+  "unscheduledHint": "탭해서 시간을 고르거나, 길게 눌러 타임라인으로 끌어다 놓으세요",
+  "arrangeForMe": "자동으로 배치",
+  "leftoverCount": "{count, plural, other{이전에 남은 할 일 {count}개}}",
+  "moveHere": "여기로 옮기기",
+  "movedCount": "{count, plural, other{할 일 {count}개를 옮겼어요}}",
+  "timeSet": "{time}로 정했어요",
+  "dayPlanEmpty": "이 날은 계획이 없어요",
+  "dayPlanEmptyHint": "할 일을 추가하고 시간을 정해 보세요."
 }

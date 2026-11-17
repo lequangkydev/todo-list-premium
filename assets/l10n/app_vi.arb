@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Tối Chủ nhật: những gì bạn đã làm trong tuần",
   "weeklyTitle": "{count, plural, other{Tuần này bạn đã xong {count} việc}}",
   "weeklyBody": "Chạm để xem tuần của bạn.",
-  "summariesChannel": "Tổng kết"
+  "summariesChannel": "Tổng kết",
+  "dayPlan": "Lịch theo giờ",
+  "unscheduled": "Chưa xếp giờ",
+  "unscheduledHint": "Chạm để chọn giờ, hoặc nhấn giữ rồi kéo vào khung giờ",
+  "arrangeForMe": "Tự xếp",
+  "leftoverCount": "{count, plural, other{{count} việc còn dở từ trước}}",
+  "moveHere": "Dời sang đây",
+  "movedCount": "{count, plural, other{Đã dời {count} việc}}",
+  "timeSet": "Đã xếp lúc {time}",
+  "dayPlanEmpty": "Ngày này chưa có việc nào",
+  "dayPlanEmptyHint": "Thêm một việc rồi xếp giờ cho nó."
 }

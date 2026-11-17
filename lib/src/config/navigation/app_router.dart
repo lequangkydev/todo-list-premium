@@ -11,6 +11,7 @@ import '../../presentation/language/language_screen.dart';
 import '../../presentation/lists/list_detail_screen.dart';
 import '../../presentation/onboarding/onboarding_screen.dart';
 import '../../presentation/permission/permission_screen.dart';
+import '../../presentation/planner/day_plan_screen.dart';
 import '../../presentation/reminders/reminder_check_screen.dart';
 import '../../presentation/search/search_screen.dart';
 import '../../presentation/setting/setting_screen.dart';
@@ -41,6 +42,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: BackupRoute.page),
     AutoRoute(page: FocusRoute.page),
     AutoRoute(page: StatsRoute.page),
+    AutoRoute(page: DayPlanRoute.page),
     // Search replaces the current view rather than going deeper
     CustomRoute<void>(
       page: SearchRoute.page,

@@ -351,5 +351,15 @@
   "weeklyRecapHint": "เย็นวันอาทิตย์: สิ่งที่คุณทำเสร็จในสัปดาห์นี้",
   "weeklyTitle": "{count, plural, other{สัปดาห์นี้คุณทำเสร็จ {count} งาน}}",
   "weeklyBody": "แตะเพื่อดูสัปดาห์ของคุณ",
-  "summariesChannel": "สรุป"
+  "summariesChannel": "สรุป",
+  "dayPlan": "แผนรายวัน",
+  "unscheduled": "ยังไม่ได้กำหนดเวลา",
+  "unscheduledHint": "แตะเพื่อเลือกเวลา หรือแตะค้างแล้วลากไปวางบนไทม์ไลน์",
+  "arrangeForMe": "จัดให้ฉัน",
+  "leftoverCount": "{count, plural, other{มี {count} งานค้างจากก่อนหน้า}}",
+  "moveHere": "ย้ายมาที่นี่",
+  "movedCount": "{count, plural, other{ย้าย {count} งานแล้ว}}",
+  "timeSet": "ตั้งเวลา {time} แล้ว",
+  "dayPlanEmpty": "วันนี้ยังไม่มีแผน",
+  "dayPlanEmptyHint": "เพิ่มงาน แล้วกำหนดเวลาให้งานนั้น"
 }

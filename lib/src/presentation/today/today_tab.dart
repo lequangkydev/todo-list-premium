@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
+import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/date/dates.dart';
 import '../../core/lunar/festivals.dart';
@@ -139,6 +141,25 @@ class _TodayTabState extends State<TodayTab> {
                           ),
                           sliver: SliverToBoxAdapter(
                             child: QuickAddField(defaultDate: today),
+                          ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.only(
+                                end: AppSpace.sm,
+                              ),
+                              child: TextButton.icon(
+                                onPressed: () =>
+                                    context.pushRoute(DayPlanRoute()),
+                                icon: const Icon(
+                                  Icons.view_timeline_outlined,
+                                  size: 18,
+                                ),
+                                label: Text(context.l10n.dayPlan),
+                              ),
+                            ),
                           ),
                         ),
                         // Getting started: first task, notifications, widget

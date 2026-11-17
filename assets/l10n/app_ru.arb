@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Вечер воскресенья: что вы сделали за неделю",
   "weeklyTitle": "{count, plural, one{На этой неделе вы завершили {count} задачу} few{На этой неделе вы завершили {count} задачи} many{На этой неделе вы завершили {count} задач} other{На этой неделе вы завершили {count} задачи}}",
   "weeklyBody": "Нажмите, чтобы посмотреть свою неделю.",
-  "summariesChannel": "Сводки"
+  "summariesChannel": "Сводки",
+  "dayPlan": "План дня",
+  "unscheduled": "Пока без времени",
+  "unscheduledHint": "Нажмите, чтобы выбрать время, или удерживайте и перетащите на шкалу",
+  "arrangeForMe": "Распределить за меня",
+  "leftoverCount": "{count, plural, one{{count} задача осталась с прошлых дней} few{{count} задачи остались с прошлых дней} many{{count} задач осталось с прошлых дней} other{{count} задачи осталось с прошлых дней}}",
+  "moveHere": "Перенести сюда",
+  "movedCount": "{count, plural, one{Перенесена {count} задача} few{Перенесено {count} задачи} many{Перенесено {count} задач} other{Перенесено {count} задачи}}",
+  "timeSet": "Назначено на {time}",
+  "dayPlanEmpty": "На этот день ничего не запланировано",
+  "dayPlanEmptyHint": "Добавьте задачу и назначьте ей время."
 }

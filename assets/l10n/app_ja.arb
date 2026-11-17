@@ -351,5 +351,15 @@
   "weeklyRecapHint": "日曜の夜:今週完了したこと",
   "weeklyTitle": "{count, plural, other{今週は{count}件のタスクを完了しました}}",
   "weeklyBody": "タップして今週の記録を見る",
-  "summariesChannel": "まとめ"
+  "summariesChannel": "まとめ",
+  "dayPlan": "1日の予定",
+  "unscheduled": "時刻未設定",
+  "unscheduledHint": "タップして時刻を選ぶか、長押ししてタイムラインにドラッグします",
+  "arrangeForMe": "おまかせで配置",
+  "leftoverCount": "{count, plural, other{以前から残っているタスク {count}件}}",
+  "moveHere": "この日に移動",
+  "movedCount": "{count, plural, other{{count}件のタスクを移動しました}}",
+  "timeSet": "{time}に設定しました",
+  "dayPlanEmpty": "この日の予定はありません",
+  "dayPlanEmptyHint": "タスクを追加して、時刻を設定しましょう。"
 }

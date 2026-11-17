@@ -9,15 +9,18 @@ import 'widgets/quick_add_field.dart';
 /// The quick-add field on its own, with the keyboard up — what the widget's
 /// "+", the Quick Settings tile and the "Add a task" shortcut open.
 class QuickAddSheet extends StatelessWidget {
-  const QuickAddSheet({super.key});
+  const QuickAddSheet({super.key, this.defaultDate});
 
-  static Future<void> show(BuildContext context) {
+  /// The day new tasks land on; today when not given
+  final DateTime? defaultDate;
+
+  static Future<void> show(BuildContext context, {DateTime? defaultDate}) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       sheetAnimationStyle: AppMotion.sheet(context),
-      builder: (_) => const QuickAddSheet(),
+      builder: (_) => QuickAddSheet(defaultDate: defaultDate),
     );
   }
 
@@ -47,7 +50,7 @@ class QuickAddSheet extends StatelessWidget {
             const SizedBox(height: AppSpace.md),
             QuickAddField(
               autofocus: true,
-              defaultDate: getIt<DayClock>().value,
+              defaultDate: defaultDate ?? getIt<DayClock>().value,
               onSubmitted: () => Navigator.maybePop(context),
             ),
           ],

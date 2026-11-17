@@ -83,6 +83,9 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         unawaited(context.pushRoute(FocusRoute()));
       case 'upcoming':
         setState(() => _tab = 1);
+      case 'plan':
+        final day = DateTime.tryParse(uri.queryParameters['day'] ?? '');
+        unawaited(context.pushRoute(DayPlanRoute(day: day)));
       case 'stats':
         unawaited(context.pushRoute(const StatsRoute()));
     }

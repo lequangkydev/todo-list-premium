@@ -351,5 +351,15 @@
   "weeklyRecapHint": "Domenica sera: cosa hai fatto questa settimana",
   "weeklyTitle": "{count, plural, =1{Hai completato 1 attività questa settimana} other{Hai completato {count} attività questa settimana}}",
   "weeklyBody": "Tocca per vedere la tua settimana.",
-  "summariesChannel": "Riepiloghi"
+  "summariesChannel": "Riepiloghi",
+  "dayPlan": "Piano del giorno",
+  "unscheduled": "Ancora senza orario",
+  "unscheduledHint": "Tocca per scegliere un orario, oppure tieni premuto e trascina sulla linea del tempo",
+  "arrangeForMe": "Organizza per me",
+  "leftoverCount": "{count, plural, =1{1 attività ancora aperta da prima} other{{count} attività ancora aperte da prima}}",
+  "moveHere": "Sposta qui",
+  "movedCount": "{count, plural, =1{1 attività spostata} other{{count} attività spostate}}",
+  "timeSet": "Impostata alle {time}",
+  "dayPlanEmpty": "Niente in programma per questo giorno",
+  "dayPlanEmptyHint": "Aggiungi un’attività e dalle un orario."
 }
