@@ -12,6 +12,7 @@ import '../config/navigation/app_router.dart';
 import '../config/observer/route_observer.dart';
 import '../config/theme/app_theme.dart';
 import '../gen/l18n/app_localizations.dart';
+import '../shared/l10n/app_delegates.dart';
 import '../shared/cubit/ad_visibility_cubit.dart';
 import '../shared/cubit/haptics_cubit.dart';
 import '../shared/cubit/language_cubit.dart';
@@ -88,7 +89,7 @@ class BodyApp extends StatelessWidget {
       builder: (context, state) {
         final themeMode = context.watch<ThemeModeCubit>().state;
         return MaterialApp.router(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: appLocalizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: state?.locale,
           debugShowCheckedModeBanner: false,
