@@ -433,6 +433,18 @@ ThemeData buildAppTheme(Brightness brightness) {
         ),
       ),
     ),
+    // Same shape and height as filled buttons: side by side (restore
+    // sheet, alarm) they used to be a pill next to a rounded rectangle
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(64, 48),
+        textStyle: text.labelLarge,
+        side: BorderSide(color: scheme.outline),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+      ),
+    ),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
         minimumSize: const Size(48, 48),
