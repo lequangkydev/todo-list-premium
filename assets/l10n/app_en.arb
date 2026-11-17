@@ -402,5 +402,59 @@
         "type": "String"
       }
     }
-  }
+  },
+  "repeatLunarMonthly": "Every lunar month on day {day}",
+  "@repeatLunarMonthly": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "repeatLunarYearly": "Every year on {date} (lunar)",
+  "@repeatLunarYearly": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "lunarDate": "{date} lunar",
+  "@lunarDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "lunarLeapDate": "{date} lunar (leap month)",
+  "@lunarLeapDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "lunarCalendar": "Lunar calendar",
+  "lunarCalendarHint": "Show lunar dates and festivals",
+  "calendarView": "Month view",
+  "listView": "List view",
+  "nothingOnDay": "Nothing on this day",
+  "movedTo": "Moved to {day}",
+  "@movedTo": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "dragHint": "Long-press a task, then drag it onto a day",
+  "festTet": "Lunar New Year (Tết)",
+  "festLantern": "First Full Moon",
+  "festHungKings": "Hung Kings’ Festival",
+  "festBuddha": "Buddha’s Birthday",
+  "festDoanNgo": "Đoan Ngọ Festival",
+  "festVuLan": "Vu Lan Festival",
+  "festMidAutumn": "Mid-Autumn Festival",
+  "festKitchenGods": "Kitchen Gods’ Day"
 }

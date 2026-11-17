@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../date/dates.dart';
+import '../lunar/lunar_calendar.dart';
 
 enum Frequency { daily, weekly, monthly, yearly }
 
@@ -12,6 +13,11 @@ enum Frequency { daily, weekly, monthly, yearly }
 /// Unlike RFC 5545, a month without the requested day is NOT skipped: "every
 /// month on the 31st" lands on Feb 28/29, and "every year on Feb 29" on Feb 28
 /// in non-leap years. That is what people expect from a to-do app.
+///
+/// `X-CAL=LUNAR` makes MONTHLY / YEARLY count Vietnamese lunar months
+/// ([LunarCalendar]): "rằm" every lunar month (leap months included), a
+/// "giỗ" on the same lunar day every year (never in a leap month). A 30th
+/// in a 29-day lunar month lands on the 29th.
 @immutable
 class Recurrence {
   const Recurrence({
@@ -20,6 +26,7 @@ class Recurrence {
     this.weekdays = const {},
     this.monthDay,
     this.month,
+    this.lunar = false,
   }) : assert(interval >= 1);
 
   factory Recurrence.daily({int interval = 1}) =>
@@ -42,6 +49,24 @@ class Recurrence {
     monthDay: day,
   );
 
+  /// Lunar [day] (1–30) of every lunar month — e.g. 15 for "rằm"
+  factory Recurrence.lunarMonthly(int day, {int interval = 1}) => Recurrence(
+    frequency: Frequency.monthly,
+    interval: interval,
+    monthDay: day,
+    lunar: true,
+  );
+
+  /// Lunar [day]/[month] every year — anniversaries (giỗ), Tết, Vu Lan
+  factory Recurrence.lunarYearly(int month, int day, {int interval = 1}) =>
+      Recurrence(
+        frequency: Frequency.yearly,
+        interval: interval,
+        month: month,
+        monthDay: day,
+        lunar: true,
+      );
+
   factory Recurrence.yearly(int month, int day, {int interval = 1}) =>
       Recurrence(
         frequency: Frequency.yearly,
@@ -55,6 +80,9 @@ class Recurrence {
   final Set<int> weekdays;
   final int? monthDay;
   final int? month;
+
+  /// Counts lunar months / years (only MONTHLY and YEARLY)
+  final bool lunar;
 
   bool get isWeekdaysOnly =>
       frequency == Frequency.weekly &&
@@ -104,12 +132,23 @@ class Recurrence {
     if (month != null && (month < 1 || month > 12)) {
       return null;
     }
+    final lunar = parts['X-CAL'] == 'LUNAR';
+    if (lunar &&
+        (monthDay == null ||
+            monthDay < 1 ||
+            monthDay > 30 ||
+            frequency == Frequency.daily ||
+            frequency == Frequency.weekly ||
+            (frequency == Frequency.yearly && month == null))) {
+      return null;
+    }
     return Recurrence(
       frequency: frequency,
       interval: interval < 1 ? 1 : interval,
       weekdays: weekdays,
       monthDay: monthDay,
       month: month,
+      lunar: lunar,
     );
   }
 
@@ -128,12 +167,18 @@ class Recurrence {
     if (monthDay != null) {
       buffer.write(';BYMONTHDAY=$monthDay');
     }
+    if (lunar) {
+      buffer.write(';X-CAL=LUNAR');
+    }
     return buffer.toString();
   }
 
   /// First occurrence strictly after [date] (date-only).
   DateTime nextAfter(DateTime date) {
     final from = Dates.dateOnly(date);
+    if (lunar) {
+      return _lunarNextAfter(from);
+    }
     switch (frequency) {
       case Frequency.daily:
         return Dates.addDays(from, interval);
@@ -188,6 +233,9 @@ class Recurrence {
     if (matches(from)) {
       return from;
     }
+    if (lunar) {
+      return _lunarFirstAfter(from);
+    }
     // Monthly/yearly: the occurrence later in the current period comes first
     if (frequency == Frequency.monthly && monthDay != null) {
       final candidate = DateTime(
@@ -215,6 +263,18 @@ class Recurrence {
 
   bool matches(DateTime date) {
     final d = Dates.dateOnly(date);
+    if (lunar) {
+      final jd = LunarCalendar.jdOf(d);
+      final k = LunarCalendar.monthIndexOf(jd);
+      if (!Dates.isSameDay(LunarCalendar.dayInMonth(k, monthDay!), d)) {
+        return false;
+      }
+      if (frequency == Frequency.monthly) {
+        return true;
+      }
+      final l = LunarDate.fromSolar(d);
+      return !l.leap && l.month == month;
+    }
     switch (frequency) {
       case Frequency.daily:
         return true;
@@ -229,6 +289,59 @@ class Recurrence {
         return (m == null || d.month == m) &&
             (day == null || d.day == _clampDay(d.year, d.month, day));
     }
+  }
+
+  /// Lunar occurrence after [from]: the next one [interval] lunar months /
+  /// years after the one [from] falls in
+  DateTime _lunarNextAfter(DateTime from) {
+    final day = monthDay!;
+    if (frequency == Frequency.monthly) {
+      final k = LunarCalendar.monthIndexOf(LunarCalendar.jdOf(from));
+      var candidate = LunarCalendar.dayInMonth(k, day);
+      // Not yet reached this month → this month's counts as "the current"
+      var step = candidate.isAfter(from) ? 0 : interval;
+      candidate = LunarCalendar.dayInMonth(k + step, day);
+      while (!candidate.isAfter(from)) {
+        step += interval;
+        candidate = LunarCalendar.dayInMonth(k + step, day);
+      }
+      return candidate;
+    }
+    final year = LunarDate.fromSolar(from).year;
+    var y = year;
+    var candidate = _lunarYearly(y);
+    if (!candidate.isAfter(from)) {
+      y += interval;
+      candidate = _lunarYearly(y);
+    }
+    return candidate;
+  }
+
+  /// First lunar occurrence after [from], whatever the interval
+  DateTime _lunarFirstAfter(DateTime from) {
+    final day = monthDay!;
+    if (frequency == Frequency.monthly) {
+      var k = LunarCalendar.monthIndexOf(LunarCalendar.jdOf(from));
+      var candidate = LunarCalendar.dayInMonth(k, day);
+      while (!candidate.isAfter(from)) {
+        k += 1;
+        candidate = LunarCalendar.dayInMonth(k, day);
+      }
+      return candidate;
+    }
+    var y = LunarDate.fromSolar(from).year;
+    var candidate = _lunarYearly(y);
+    while (!candidate.isAfter(from)) {
+      y += 1;
+      candidate = _lunarYearly(y);
+    }
+    return candidate;
+  }
+
+  /// [monthDay]/[month] (regular, not leap) of lunar year [year], clamped
+  DateTime _lunarYearly(int year) {
+    final k = LunarCalendar.monthIndex(month!, year)!;
+    return LunarCalendar.dayInMonth(k, monthDay!);
   }
 
   static int _clampDay(int year, int month, int day) {

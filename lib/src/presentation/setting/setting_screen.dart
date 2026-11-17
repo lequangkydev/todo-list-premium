@@ -16,6 +16,7 @@ import '../../core/notifications/reminder_service.dart';
 import '../../shared/constants/app_constants.dart';
 import '../../shared/cubit/haptics_cubit.dart';
 import '../../shared/cubit/language_cubit.dart';
+import '../../shared/cubit/lunar_cubit.dart';
 import '../../shared/cubit/smart_suggestions_cubit.dart';
 import '../../shared/cubit/theme_mode_cubit.dart';
 import '../../shared/extension/context_extension.dart';
@@ -120,6 +121,8 @@ class _SettingScreenState extends State<SettingScreen>
     final themeMode = context.watch<ThemeModeCubit>().state;
     final haptics = context.watch<HapticsCubit>().state;
     final smart = context.watch<SmartSuggestionsCubit>().state;
+    context.watch<LunarCubit>();
+    final lunar = getIt<LunarCubit>().showFor(language);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.setting)),
       body: ListView(
@@ -221,6 +224,17 @@ class _SettingScreenState extends State<SettingScreen>
                   if (on) {
                     AppHaptics.selection();
                   }
+                },
+              ),
+              const Divider(indent: 56),
+              SwitchListTile(
+                secondary: const Icon(Icons.dark_mode_outlined),
+                title: Text(l10n.lunarCalendar),
+                subtitle: Text(l10n.lunarCalendarHint),
+                value: lunar,
+                onChanged: (on) {
+                  AppHaptics.selection();
+                  context.read<LunarCubit>().update(on);
                 },
               ),
               const Divider(indent: 56),

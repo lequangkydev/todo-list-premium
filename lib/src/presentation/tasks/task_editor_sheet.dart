@@ -7,11 +7,14 @@ import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/ai/smart_suggestions.dart';
 import '../../core/date/dates.dart';
+import '../../core/lunar/lunar_calendar.dart';
 import '../../core/notifications/reminder_service.dart';
 import '../../core/recurrence/recurrence.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../data/repositories/task_repository.dart';
+import '../../shared/cubit/language_cubit.dart';
+import '../../shared/cubit/lunar_cubit.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../../shared/helpers/task_actions.dart';
@@ -431,6 +434,14 @@ class _Properties extends StatelessWidget {
       Recurrence.monthly(base.day),
       Recurrence.monthly(-1),
       Recurrence.yearly(base.month, base.day),
+      // Anniversaries (giỗ), rằm / mùng 1
+      if (getIt<LunarCubit>().showFor(getIt<LanguageCubit>().state)) ...[
+        Recurrence.lunarYearly(
+          LunarDate.fromSolar(base).month,
+          LunarDate.fromSolar(base).day,
+        ),
+        Recurrence.lunarMonthly(LunarDate.fromSolar(base).day),
+      ],
     ];
     final choice = await _choose<int>(context, [
       for (var i = 0; i < options.length; i++)

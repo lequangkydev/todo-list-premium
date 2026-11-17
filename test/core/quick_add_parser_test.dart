@@ -1,4 +1,5 @@
 import 'package:flutter_base/src/core/date_parser/quick_add_parser.dart';
+import 'package:flutter_base/src/core/lunar/lunar_calendar.dart';
 import 'package:flutter_base/src/core/recurrence/recurrence.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -196,5 +197,60 @@ void main() {
 
   test('only a date keeps the input as title', () {
     expect(p('mai').title, 'mai');
+  });
+
+  group('lunar (âm lịch)', () {
+    final today = DateTime(2026, 11, 13);
+    DateTime lunar(int d, int m, int y) => LunarDate(d, m, y).toSolar()!;
+
+    test('rằm and mùng N: the next one', () {
+      final r = p('Cúng rằm');
+      expect(r.title, 'Cúng');
+      expect(r.date, Recurrence.lunarMonthly(15).firstOnOrAfter(today));
+      expect(LunarDate.fromSolar(r.date!).day, 15);
+      expect(p('Đi chùa mùng 1').date!.isAfter(today), isTrue);
+      expect(LunarDate.fromSolar(p('Đi chùa mùng 1').date!).day, 1);
+    });
+
+    test('a lunar day of a named month', () {
+      // Trung thu 2026 has passed by 13 Nov 2026
+      final r = p('Mua bánh trung thu trước rằm tháng 8');
+      expect(r.title, 'Mua bánh trung thu');
+      expect(r.date, lunar(15, 8, 2027));
+      expect(p('Về quê mùng 2 Tết').date, lunar(2, 1, 2027));
+      expect(p('Họp lớp rằm tháng giêng').date, lunar(15, 1, 2027));
+      expect(p('Tất niên 23/12 âm').date, lunar(23, 12, 2026));
+      expect(p('Tất niên 23/12 AL').date, lunar(23, 12, 2026));
+    });
+
+    test('giỗ repeats every lunar year', () {
+      final r = p('Giỗ ông 10/3 âm lịch');
+      expect(r.title, 'Giỗ ông');
+      expect(r.recurrence, Recurrence.lunarYearly(3, 10));
+      expect(r.date, lunar(10, 3, 2027));
+    });
+
+    test('hằng tháng / hằng năm with a lunar date', () {
+      final monthly = p('Thắp hương mùng 1 hằng tháng');
+      expect(monthly.title, 'Thắp hương');
+      expect(monthly.recurrence, Recurrence.lunarMonthly(1));
+      expect(p('Ăn chay mỗi rằm').recurrence, Recurrence.lunarMonthly(15));
+      expect(
+        p('Ăn chay rằm hằng tháng').recurrence,
+        Recurrence.lunarMonthly(15),
+      );
+      expect(
+        p('Cúng cô hồn 15/7 âm hằng năm').recurrence,
+        Recurrence.lunarYearly(7, 15),
+      );
+    });
+
+    test('look-alikes stay text', () {
+      expect(p('Nâng cấp RAM').hasSchedule, isFalse);
+      expect(p('Nâng cấp RAM').title, 'Nâng cấp RAM');
+      // A solar date is still solar
+      expect(p('Nộp hồ sơ 15/7').date, DateTime(2027, 7, 15));
+      expect(p('Họp 9 am').time, 9 * 60);
+    });
   });
 }

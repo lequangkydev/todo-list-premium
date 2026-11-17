@@ -96,6 +96,19 @@ class TaskRepository {
         .watch();
   }
 
+  /// Open tasks due between [from] and [to] (inclusive) — a calendar page
+  Stream<List<Task>> watchRange(DateTime from, DateTime to) {
+    return (_db.select(_t)
+          ..where(
+            (t) =>
+                _openTopLevel(t) &
+                t.dueDate.isBiggerOrEqualValue(_day(from)) &
+                t.dueDate.isSmallerOrEqualValue(_day(to)),
+          )
+          ..orderBy(_byDueThenOrder))
+        .watch();
+  }
+
   /// Open tasks in a list (null = Inbox), in manual order
   Stream<List<Task>> watchList(String? listId) {
     return (_db.select(_t)

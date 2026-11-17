@@ -1,3 +1,4 @@
+import 'package:flutter_base/src/core/lunar/lunar_calendar.dart';
 import 'package:flutter_base/src/core/recurrence/recurrence.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -107,6 +108,68 @@ void main() {
       final r = Recurrence.weekly({DateTime.monday});
       expect(r.firstOnOrAfter(DateTime(2026, 11, 13)), DateTime(2026, 11, 16));
       expect(r.firstOnOrAfter(DateTime(2026, 11, 16)), DateTime(2026, 11, 16));
+    });
+  });
+
+  group('lunar (âm lịch)', () {
+    DateTime lunar(int day, int month, int year, {bool leap = false}) =>
+        LunarDate(day, month, year, leap: leap).toSolar()!;
+
+    test('round-trips and rejects nonsense', () {
+      const rule = 'FREQ=YEARLY;BYMONTH=7;BYMONTHDAY=15;X-CAL=LUNAR';
+      expect(Recurrence.tryParse(rule)?.toRule(), rule);
+      expect(Recurrence.tryParse(rule), Recurrence.lunarYearly(7, 15));
+      expect(
+        Recurrence.lunarMonthly(15).toRule(),
+        'FREQ=MONTHLY;BYMONTHDAY=15;X-CAL=LUNAR',
+      );
+      expect(Recurrence.tryParse('FREQ=DAILY;X-CAL=LUNAR'), isNull);
+      expect(Recurrence.tryParse('FREQ=MONTHLY;X-CAL=LUNAR'), isNull);
+      expect(
+        Recurrence.tryParse('FREQ=YEARLY;BYMONTHDAY=15;X-CAL=LUNAR'),
+        isNull,
+      );
+    });
+
+    test('Vu Lan every year', () {
+      final r = Recurrence.lunarYearly(7, 15);
+      expect(r.firstOnOrAfter(DateTime(2024, 8)), DateTime(2024, 8, 18));
+      expect(r.matches(DateTime(2024, 8, 18)), isTrue);
+      expect(r.nextAfter(DateTime(2024, 8, 18)), lunar(15, 7, 2025));
+      // Completed late: no pile-up of past years
+      expect(
+        r.nextDueAfterCompletion(DateTime(2024, 8, 18), DateTime(2025, 10)),
+        lunar(15, 7, 2026),
+      );
+    });
+
+    test('rằm every lunar month, leap month included', () {
+      final r = Recurrence.lunarMonthly(15);
+      final sixth = lunar(15, 6, 2025);
+      final leapSixth = lunar(15, 6, 2025, leap: true);
+      expect(r.nextAfter(sixth), leapSixth);
+      expect(r.nextAfter(leapSixth), lunar(15, 7, 2025));
+      expect(r.firstOnOrAfter(sixth), sixth);
+      expect(r.firstOnOrAfter(sixth.add(const Duration(days: 1))), leapSixth);
+    });
+
+    test('a giỗ is never in the leap month', () {
+      final r = Recurrence.lunarYearly(6, 15);
+      final after = lunar(15, 6, 2025).add(const Duration(days: 1));
+      expect(r.firstOnOrAfter(after), lunar(15, 6, 2026));
+      expect(r.matches(lunar(15, 6, 2025, leap: true)), isFalse);
+    });
+
+    test('the 30th of a 29-day month lands on the 29th', () {
+      final r = Recurrence.lunarMonthly(30);
+      var day = DateTime(2026);
+      for (var i = 0; i < 12; i++) {
+        day = r.nextAfter(day);
+        final l = LunarDate.fromSolar(day);
+        expect(l.day, inInclusiveRange(29, 30));
+        // It's the last day of its month
+        expect(LunarDate.fromSolar(day.add(const Duration(days: 1))).day, 1);
+      }
     });
   });
 }

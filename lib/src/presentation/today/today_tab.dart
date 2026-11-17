@@ -1,10 +1,15 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/date/dates.dart';
+import '../../core/lunar/festivals.dart';
+import '../../core/lunar/lunar_calendar.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
+import '../../shared/cubit/language_cubit.dart';
+import '../../shared/cubit/lunar_cubit.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/day_clock.dart';
@@ -52,7 +57,19 @@ class _TodayTabState extends State<TodayTab> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  TaskFormat.longDay(context, today),
+                  [
+                    TaskFormat.longDay(context, today),
+                    // "· 24/9 âm lịch · Tết Trung Thu" when the lunar
+                    // calendar is on
+                    if (context.watch<LunarCubit>().showFor(
+                      context.watch<LanguageCubit>().state,
+                    )) ...[
+                      TaskFormat.lunar(context.l10n, today),
+                      if (LunarFestival.of(LunarDate.fromSolar(today))
+                          case final f?)
+                        TaskFormat.festival(context.l10n, f),
+                    ],
+                  ].join(' · '),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: context.colorScheme.onSurfaceVariant,
                   ),

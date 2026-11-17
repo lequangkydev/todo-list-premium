@@ -43,7 +43,7 @@ class QuickAddParser {
 
   QuickAddResult parse(String input, DateTime now) {
     final norm = _Normalized(input);
-    final ctx = _Ctx(Dates.dateOnly(now), now);
+    final ctx = _Ctx(Dates.dateOnly(now), now, input);
     final consumed = <(int, int)>[];
 
     for (final rule in _rules) {
@@ -138,6 +138,15 @@ class QuickAddParser {
     _Rule(r'moi\s+(\d{1,3})\s+(ngay|tuan|thang|nam)', (m, c, o, mid) {
       return c.setUnitRecurrence(_viUnit[m.group(2)]!, int.parse(m.group(1)!));
     }),
+    // "mỗi rằm", "hằng tháng ngày rằm", "mùng 1 hằng tháng" (lunar)
+    _Rule(r'(?:moi|hang)\s+(?:thang\s+)?(?:vao\s+)?(?:ngay\s+)?'
+        r'(?:(ram)|(?:mung|mong)\s*(\d{1,2}))', (m, c, o, mid) {
+      final day = m.group(1) != null ? 15 : int.parse(m.group(2)!);
+      if (day < 1 || day > 10 && m.group(1) == null) {
+        return false;
+      }
+      return c.setRecurrence(Recurrence.lunarMonthly(day));
+    }),
     _Rule(r'(?:hang\s+thang\s+(?:vao\s+)?ngay\s+(\d{1,2}))|'
         r'(?:ngay\s+(\d{1,2})\s+(?:hang|moi)\s+thang)|'
         r'(?:every\s+month\s+on\s+(?:the\s+)?(\d{1,2})(?:st|nd|rd|th)?)', (
@@ -177,6 +186,34 @@ class QuickAddParser {
       r'every\s+year|yearly|annually|hang\s+nam|moi\s+nam',
       (m, c, o, mid) => c.setUnitRecurrence('year', 1),
     ),
+
+    // ---- lunar dates (before solar dates and times: "15/7 âm" isn't 15 July
+    // and "7 âm" isn't 7 am)
+    _Rule(r'(\d{1,2})/(\d{1,2})\s*(?:am\s+lich|am|al|lunar)', (m, c, o, mid) {
+      final lower = o.toLowerCase();
+      if (!lower.contains('âm') &&
+          !lower.endsWith('al') &&
+          !lower.contains('lunar')) {
+        return false;
+      }
+      return c.setLunarDate(int.parse(m.group(1)!), int.parse(m.group(2)!));
+    }),
+    _Rule('ram(?:\\s+thang\\s+($_lunarMonth))?', (m, c, o, mid) {
+      // "RAM" (memory) isn't "rằm"
+      if (!o.toLowerCase().startsWith('rằm')) {
+        return false;
+      }
+      return c.setLunarDate(15, _lunarMonthOf(m.group(1)));
+    }),
+    _Rule(r'(?:mung|mong)\s*(\d{1,2})'
+        '(?:\\s+(tet)|\\s+thang\\s+($_lunarMonth))?', (m, c, o, mid) {
+      final day = int.parse(m.group(1)!);
+      if (day < 1 || day > 10) {
+        return false;
+      }
+      final month = m.group(2) != null ? 1 : _lunarMonthOf(m.group(3));
+      return c.setLunarDate(day, month);
+    }),
 
     // ---- part of day + date ("tối nay", "sáng mai", "tonight")
     _Rule(r'tonight|toi\s+nay', (m, c, o, mid) {
@@ -394,6 +431,16 @@ class QuickAddParser {
 
   static int _fullYear(int y) => y < 100 ? 2000 + y : y;
 
+  /// "giêng" = 1st lunar month, "chạp" = 12th
+  static const _lunarMonth = r'gieng|chap|\d{1,2}';
+
+  static int? _lunarMonthOf(String? word) => switch (word) {
+    null => null,
+    'gieng' => 1,
+    'chap' => 12,
+    _ => int.tryParse(word),
+  };
+
   static DateTime _nextWeekday(DateTime today, int weekday) {
     final diff = (weekday - today.weekday + 7) % 7;
     return Dates.addDays(today, diff);
@@ -504,10 +551,18 @@ class _Rule {
 }
 
 class _Ctx {
-  _Ctx(this.today, this.now);
+  _Ctx(this.today, this.now, this.input);
 
   final DateTime today;
   final DateTime now;
+
+  /// The whole original text ("giỗ" makes a lunar date yearly)
+  final String input;
+
+  /// Set by lunar dates ("rằm", "mùng 1", "10/3 âm"), so "hằng tháng" /
+  /// "hằng năm" repeat by the lunar calendar
+  int? lunarDay;
+  int? lunarMonth;
   DateTime? date;
   int? time;
   int? defaultTime;
@@ -580,6 +635,24 @@ class _Ctx {
     return setDate(candidate);
   }
 
+  /// Next lunar [day] (of lunar [month], or of any month) on or after today
+  bool setLunarDate(int day, int? month) {
+    if (date != null || day < 1 || day > 30) {
+      return false;
+    }
+    if (month != null && (month < 1 || month > 12)) {
+      return false;
+    }
+    lunarDay = day;
+    lunarMonth = month;
+    return setDate(
+      (month == null
+              ? Recurrence.lunarMonthly(day)
+              : Recurrence.lunarYearly(month, day))
+          .firstOnOrAfter(today),
+    );
+  }
+
   bool setDayOfMonth(int day) {
     if (day < 1 || day > 31) {
       return false;
@@ -601,7 +674,21 @@ class _Ctx {
     var rec = recurrence;
     var due = date;
     final unit = pendingUnit;
-    if (unit != null) {
+    final lDay = lunarDay;
+    final lMonth = lunarMonth;
+    if (unit != null && lDay != null && (unit == 'month' || lMonth != null)) {
+      // "rằm hằng tháng", "15/7 âm hằng năm"
+      rec = unit == 'month'
+          ? Recurrence.lunarMonthly(lDay, interval: pendingInterval)
+          : Recurrence.lunarYearly(lMonth!, lDay, interval: pendingInterval);
+    } else if (rec == null &&
+        unit == null &&
+        lDay != null &&
+        lMonth != null &&
+        input.toLowerCase().contains('giỗ')) {
+      // A death anniversary comes back every year
+      rec = Recurrence.lunarYearly(lMonth, lDay);
+    } else if (unit != null) {
       final anchor = due ?? today;
       rec = switch (unit) {
         'day' => Recurrence.daily(interval: pendingInterval),

@@ -96,6 +96,7 @@ dependencies:
   share_plus: ^13.1.0
   shimmer: ^3.0.0
   # TTT
+  table_calendar: ^3.3.0
   timezone: ^0.11.2
   # UUU
   uuid: ^4.6.0

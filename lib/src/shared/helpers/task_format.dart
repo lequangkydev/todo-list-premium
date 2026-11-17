@@ -2,6 +2,8 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../core/date/dates.dart';
+import '../../core/lunar/festivals.dart';
+import '../../core/lunar/lunar_calendar.dart';
 import '../../core/recurrence/recurrence.dart';
 import '../../data/local/database/app_database.dart';
 import '../../gen/l18n/app_localizations.dart';
@@ -72,6 +74,11 @@ class TaskFormat {
   static String recurrence(BuildContext context, Recurrence r) {
     final l10n = AppLocalizations.of(context);
     final locale = _locale(context);
+    if (r.lunar) {
+      return r.frequency == Frequency.yearly
+          ? l10n.repeatLunarYearly('${r.monthDay}/${r.month}')
+          : l10n.repeatLunarMonthly(r.monthDay ?? 1);
+    }
     switch (r.frequency) {
       case Frequency.daily:
         return r.interval == 1
@@ -102,6 +109,24 @@ class TaskFormat {
         final date = DateTime(2024, r.month ?? 1, r.monthDay ?? 1);
         return l10n.repeatYearlyOn(DateFormat.MMMd(locale).format(date));
     }
+  }
+
+  static String festival(AppLocalizations l10n, LunarFestival f) => switch (f) {
+    LunarFestival.tet => l10n.festTet,
+    LunarFestival.lantern => l10n.festLantern,
+    LunarFestival.hungKings => l10n.festHungKings,
+    LunarFestival.buddha => l10n.festBuddha,
+    LunarFestival.doanNgo => l10n.festDoanNgo,
+    LunarFestival.vuLan => l10n.festVuLan,
+    LunarFestival.midAutumn => l10n.festMidAutumn,
+    LunarFestival.kitchenGods => l10n.festKitchenGods,
+  };
+
+  /// "24/9 âm lịch", "1/4 (nhuận) âm lịch"
+  static String lunar(AppLocalizations l10n, DateTime date) {
+    final l = LunarDate.fromSolar(date);
+    final short = '${l.day}/${l.month}';
+    return l.leap ? l10n.lunarLeapDate(short) : l10n.lunarDate(short);
   }
 
   static String reminder(AppLocalizations l10n, int offset) {
