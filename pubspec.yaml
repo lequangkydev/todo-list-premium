@@ -63,6 +63,7 @@ dependencies:
   gma_mediation_unity: ^1.9.0
 
   # HHH
+  home_widget: ^0.10.0
   hydrated_bloc: ^11.0.0
 
   # III

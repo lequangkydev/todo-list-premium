@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">आज</string>
+    <string name="widget_today_description">आज के काम, यहीं पूरे करें</string>
+    <string name="quick_add_label">काम जोड़ें</string>
+</resources>

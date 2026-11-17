@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">Hôm nay</string>
+    <string name="widget_today_description">Việc hôm nay, tick xong ngay tại đây</string>
+    <string name="quick_add_label">Thêm việc</string>
+</resources>

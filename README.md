@@ -78,6 +78,26 @@ Quy ước:
 - Rung phản hồi chỉ gọi qua `AppHaptics`, để công tắc trong Settings có hiệu lực ở mọi nơi.
 - Từ Flutter 3.47, widget Material/Cupertino import từ `package:material_ui/material_ui.dart` / `package:cupertino_ui/cupertino_ui.dart`.
 
+## Widget màn hình chính và lối tắt
+
+| Nền tảng | Có gì | Mã nguồn |
+|---|---|---|
+| Android | Widget "Hôm nay" (tick xong ngay trên widget, nút +), widget "Thêm việc", ô Quick Settings | `android/app/src/main/kotlin/com/vtn/todolist/widget/` (Glance) |
+| iOS 17+ | Widget "Hôm nay" (nhỏ/vừa/lớn, có nút tick), widget "Thêm việc", widget màn hình khoá | `ios/TodayWidget/` (WidgetKit), target `TodayWidgetExtension` |
+| Cả hai | Lối tắt khi giữ icon app: "Thêm việc" | `lib/src/shared/helpers/shortcut_utils.dart` |
+
+Luồng dữ liệu:
+- App ghi danh sách việc hôm nay thành JSON (`WidgetSnapshot`, đã dịch sẵn mọi chữ) mỗi khi task, ngày hoặc ngôn ngữ thay đổi. Widget chỉ hiển thị JSON đó.
+- **Android:** tick trên widget chạy Dart ở nền (`widgetInteraction`): hoàn thành task, cập nhật nhắc nhở, ghi lại snapshot.
+- **iOS:** tick trên widget ẩn dòng đó ngay, huỷ nhắc nhở của task và ghi id vào `pending_done`. App hoàn thành các task này ở lần mở kế tiếp.
+- Các link `todolist://quickadd | today | task?id=…` mở Home rồi đi tới đúng nơi.
+
+**Trước khi build lên máy thật iOS:** bật App Group cho cả app lẫn extension trong Apple Developer, dùng ID:
+- `group.com.vtn.todolist` cho bundle `com.vtn.todolist` và `com.vtn.todolist.TodayWidget`
+- `group.com.vtn.todolist.dev` cho bundle `com.vtn.todolist.dev` và `com.vtn.todolist.dev.TodayWidget`
+
+Nếu Xcode đang để "Automatically manage signing", nó tự đăng ký các App Group này.
+
 ## Đổi schema database
 
 1. Sửa bảng trong `lib/src/data/local/database/tables.dart`, tăng `schemaVersion`.

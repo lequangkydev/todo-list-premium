@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">Today</string>
+    <string name="widget_today_description">Today’s tasks, tick them off here</string>
+    <string name="quick_add_label">Add a task</string>
+</resources>

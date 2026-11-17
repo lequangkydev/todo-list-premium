@@ -21,6 +21,7 @@ import '../../shared/cubit/language_cubit.dart';
 import '../../shared/enum/language.dart';
 import '../../shared/helpers/logger_utils.dart';
 import '../date/dates.dart';
+import '../widgets/widget_sync.dart';
 import 'reminder_planner.dart';
 
 const _channelId = 'task_reminders';
@@ -379,17 +380,28 @@ Future<void> onNotificationActionInBackground(
     } else if (response.actionId == _actionSnooze) {
       await repo.snooze(taskId, snoozeDuration);
     }
-    final prefs = await SharedPreferences.getInstance();
-    final code = prefs.getString(_localeKey) ?? Language.english.languageCode;
-    await initializeDateFormatting(code);
-    final l10n = lookupAppLocalizations(Locale(code));
-    final plugin = FlutterLocalNotificationsPlugin();
-    await _initPlugin(plugin, l10n);
-    final tasks = await repo.watchWithReminders().first;
-    await syncReminders(plugin, tasks, l10n, code);
+    final code = await resyncRemindersInBackground(repo);
+    // Done from a notification: the home-screen widget should know too
+    await configureWidgetStorage();
+    await pushWidgetSnapshot(repo, locale: localeForCode(code));
   } on Exception catch (e) {
     logger.e(e);
   } finally {
     await db.close();
   }
+}
+
+/// Re-plans pending notifications from a background isolate (notification
+/// actions, widget taps) in the language the app last used. Returns that
+/// language code.
+Future<String> resyncRemindersInBackground(TaskRepository repo) async {
+  final prefs = await SharedPreferences.getInstance();
+  final code = prefs.getString(_localeKey) ?? Language.english.languageCode;
+  await initializeDateFormatting(code);
+  final l10n = lookupAppLocalizations(Locale(code));
+  final plugin = FlutterLocalNotificationsPlugin();
+  await _initPlugin(plugin, l10n);
+  final tasks = await repo.watchWithReminders().first;
+  await syncReminders(plugin, tasks, l10n, code);
+  return code;
 }

@@ -33,6 +33,15 @@
           <string>fbAPP-ID</string>
         </array>
       </dict>
+      <!-- Links from the home-screen widgets (todolist://quickadd, …) -->
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>com.vtn.todolist.links</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>todolist</string>
+        </array>
+      </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>$(FLUTTER_BUILD_NUMBER)</string>

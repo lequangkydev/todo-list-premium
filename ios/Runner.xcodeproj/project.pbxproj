@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
+		164192AE54D9EFF90B000598 /* TodayWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D1720C3F3A7E6F26D41872E5 /* TodayWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
+		34508502400CF9F12F45A50A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA770D2825AF1323A6A57652 /* Foundation.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		50C82FF62C74975B0000D1CB /* HomeNativeAdView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50C82FF52C74975B0000D1CB /* HomeNativeAdView.xib */; };
 		50C82FF82C7498020000D1CB /* HomeNativeAdFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C82FF72C7498020000D1CB /* HomeNativeAdFactory.swift */; };
@@ -34,12 +36,14 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		9A0878A870C61CFDC3109D49 /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13DC0E638101BAA28B026474 /* TodayWidget.swift */; };
 		A53E2AE46BA84C437CB7EC42 /* devRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 902D12476B1214DC6452E6EE /* devRelease.xcconfig */; };
 		AA62FE9FF3F514A434F6038A /* devLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 722D4A8407D883AF518A1440 /* devLaunchScreen.storyboard */; };
 		BEE34A99F678A574457E13C6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 21E8E288DC9337CC72243C2C /* GoogleService-Info.plist */; };
 		D25177CA1FE20D79F587EEB0 /* prodDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A4273CEDDDC7F9E9D0B4138D /* prodDebug.xcconfig */; };
 		E47AE3F9B97B5AB2B696737C /* devDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8160E73F7E184CCABC9AFFA2 /* devDebug.xcconfig */; };
 		F8888A2B7A081C2602A692C8 /* prodRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D428FD91F541AD30E0A0B4E /* prodRelease.xcconfig */; };
+		FCAF4458F8440225E92DC1CA /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = CA797B84AA06956E1903C493 /* Localizable.xcstrings */; };
 		FF011AB2282E76E70DA4E9D9 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8725557CB0DDA42A15C9F04E /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +55,13 @@
 			remoteGlobalIDString = 97C146ED1CF9000F007C117D;
 			remoteInfo = Runner;
 		};
+		FDEE49255DF6B426565FC461 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4BA3A16A0423501E5A617854;
+			remoteInfo = TodayWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,6 +71,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				164192AE54D9EFF90B000598 /* TodayWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,10 +80,14 @@
 
 /* Begin PBXFileReference section */
 		0D428FD91F541AD30E0A0B4E /* prodRelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = prodRelease.xcconfig; path = Flutter/prodRelease.xcconfig; sourceTree = "<group>"; };
+		13DC0E638101BAA28B026474 /* TodayWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
+		18FF1C41778CA4001416F5BF /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21AC2A6C5FA44E8A882FBC45 /* Pods-Runner.release-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-dev.xcconfig"; sourceTree = "<group>"; };
 		21E8E288DC9337CC72243C2C /* GoogleService-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		24EDF462759763D8A9923DB8 /* TodayWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = TodayWidget.entitlements; sourceTree = "<group>"; };
+		2BA3289340E15ED09180DF7E /* Runner.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		369B4D98E8E6D4FCCC9CFB7A /* Pods-Runner.profile-prod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile-prod.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile-prod.xcconfig"; sourceTree = "<group>"; };
@@ -95,6 +111,7 @@
 		58EB8843D460EC10058D48F1 /* Pods-Runner.debug-dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-dev.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"; sourceTree = "<group>"; };
 		5F9DDD2E5E0F6D91AB9FA903 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		62C01E34BA061415293AE726 /* prodProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = prodProfile.xcconfig; path = Flutter/prodProfile.xcconfig; sourceTree = "<group>"; };
+		698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TodayWidget.xcconfig; sourceTree = "<group>"; };
 		6E5A1D8E2E27B59500F50298 /* FullNativeAdView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FullNativeAdView.xib; sourceTree = "<group>"; };
 		6E5A1D902E27B5AE00F50298 /* FullNativeAdFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullNativeAdFactory.swift; sourceTree = "<group>"; };
 		6E7D56C62E068B2900488D9D /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
@@ -119,10 +136,21 @@
 		A234740DD0937CEF20607DE8 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		A4273CEDDDC7F9E9D0B4138D /* prodDebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = prodDebug.xcconfig; path = Flutter/prodDebug.xcconfig; sourceTree = "<group>"; };
 		C0318C3CE5BFF51B5C7364A1 /* devProfile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = devProfile.xcconfig; path = Flutter/devProfile.xcconfig; sourceTree = "<group>"; };
+		CA797B84AA06956E1903C493 /* Localizable.xcstrings */ = {isa = PBXFileReference; includeInIndex = 1; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D1720C3F3A7E6F26D41872E5 /* TodayWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TodayWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA770D2825AF1323A6A57652 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		FB816DF7758B6F5C0E6A6FA4 /* prodLaunchScreen.storyboard */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file.storyboard; name = prodLaunchScreen.storyboard; path = Runner/prodLaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		905E9901CA09654E3C00AA5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34508502400CF9F12F45A50A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97C146EB1CF9000F007C117D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,6 +184,14 @@
 				331C807B294A618700263BE5 /* RunnerTests.swift */,
 			);
 			path = RunnerTests;
+			sourceTree = "<group>";
+		};
+		438DAF14E127E5BD060D2175 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				EA770D2825AF1323A6A57652 /* Foundation.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		50C830052C74AC5E0000D1CB /* Enum */ = {
@@ -214,6 +250,19 @@
 			path = Factory;
 			sourceTree = "<group>";
 		};
+		8AC0E27D8CB3E54734299BD4 /* TodayWidget */ = {
+			isa = PBXGroup;
+			children = (
+				13DC0E638101BAA28B026474 /* TodayWidget.swift */,
+				18FF1C41778CA4001416F5BF /* Info.plist */,
+				24EDF462759763D8A9923DB8 /* TodayWidget.entitlements */,
+				698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */,
+				CA797B84AA06956E1903C493 /* Localizable.xcstrings */,
+			);
+			name = TodayWidget;
+			path = TodayWidget;
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +293,7 @@
 				21E8E288DC9337CC72243C2C /* GoogleService-Info.plist */,
 				189D42EACE16585AD1E33D83 /* Pods */,
 				E2DFDDD5487FD0A33DF7C637 /* Frameworks */,
+				8AC0E27D8CB3E54734299BD4 /* TodayWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -252,6 +302,7 @@
 			children = (
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
+				D1720C3F3A7E6F26D41872E5 /* TodayWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,6 +319,7 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+				2BA3289340E15ED09180DF7E /* Runner.entitlements */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -278,6 +330,7 @@
 				50C82FF12C7494FF0000D1CB /* AdjustSigSdk.xcframework */,
 				8725557CB0DDA42A15C9F04E /* Pods_Runner.framework */,
 				6E7D56C62E068B2900488D9D /* ReplayKit.framework */,
+				438DAF14E127E5BD060D2175 /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -302,6 +355,23 @@
 			productReference = 331C8081294A63A400263BE5 /* RunnerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4BA3A16A0423501E5A617854 /* TodayWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 72DB1AEB44DBD4A2F08C63EF /* Build configuration list for PBXNativeTarget "TodayWidgetExtension" */;
+			buildPhases = (
+				DB08860AA5366ECBAFAAA2AC /* Sources */,
+				905E9901CA09654E3C00AA5C /* Frameworks */,
+				5FB3AB103DC6CA8418A0F915 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TodayWidgetExtension;
+			productName = TodayWidgetExtension;
+			productReference = D1720C3F3A7E6F26D41872E5 /* TodayWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		97C146ED1CF9000F007C117D /* Runner */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
@@ -312,14 +382,15 @@
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
+				6E7D56CF2E068B2900488D9D /* Embed Foundation Extensions */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				662B35D30A237DEFC3353F03 /* [CP] Embed Pods Frameworks */,
 				BD9909DAC65DCBD4685C7C2F /* [CP] Copy Pods Resources */,
-				6E7D56CF2E068B2900488D9D /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				005024E4A75538C18D71611E /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -361,6 +432,7 @@
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
+				4BA3A16A0423501E5A617854 /* TodayWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -370,6 +442,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FB3AB103DC6CA8418A0F915 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCAF4458F8440225E92DC1CA /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,9 +619,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB08860AA5366ECBAFAAA2AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A0878A870C61CFDC3109D49 /* TodayWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		005024E4A75538C18D71611E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TodayWidgetExtension;
+			target = 4BA3A16A0423501E5A617854 /* TodayWidgetExtension */;
+			targetProxy = FDEE49255DF6B426565FC461 /* PBXContainerItemProxy */;
+		};
 		331C8086294A63A400263BE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 97C146ED1CF9000F007C117D /* Runner */;
@@ -569,6 +663,119 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0ECA5C28AD8F4FB6B6FF3E51 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.dev.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Profile;
+		};
+		11BEDE6BAE954C27C89F095B /* Profile-dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.dev.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Profile-dev";
+		};
+		242ABFC694E23ACC24CE41EE /* Release-prod */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-prod";
+		};
 		249021D3217E4FDB00AE95B9 /* Profile */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -623,8 +830,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
 				ENABLE_BITCODE = NO;
@@ -902,10 +1111,50 @@
 			};
 			name = Profile;
 		};
+		4AFD66A68E6FC6A4E9030FB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.dev.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		500520572A999FD9001D706E /* Debug-dev */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8160E73F7E184CCABC9AFFA2 /* devDebug.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -916,6 +1165,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0318C3CE5BFF51B5C7364A1 /* devProfile.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -926,6 +1177,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 902D12476B1214DC6452E6EE /* devRelease.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -936,6 +1189,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A4273CEDDDC7F9E9D0B4138D /* prodDebug.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -945,6 +1200,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 62C01E34BA061415293AE726 /* prodProfile.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -954,6 +1211,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0D428FD91F541AD30E0A0B4E /* prodRelease.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1001,6 +1260,117 @@
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-prod";
+		};
+		52A89EEEB934704FE42B88CE /* Release-dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.dev.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-dev";
+		};
+		7DFA8C10129CA7B7EFB08725 /* Debug-dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.dev.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug-dev";
+		};
+		81838AD3783B15ECC3925475 /* Debug-prod */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug-prod";
 		};
 		8D9BA16BE7797DC28716C946 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
@@ -1064,6 +1434,43 @@
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Profile-prod";
+		};
+		8E786534B38C18F815887299 /* Profile-prod */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1249,8 +1656,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
 				ENABLE_BITCODE = NO;
@@ -1273,8 +1682,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
 				ENABLE_BITCODE = NO;
@@ -1365,6 +1776,43 @@
 			};
 			name = "Debug-dev";
 		};
+		CBCD18D94FF61570FB033A30 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 698E4E46412C233C878B5C19 /* TodayWidget.xcconfig */;
+			buildSettings = {
+				APP_GROUP_ID = group.com.vtn.todolist.dev;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = "";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_ENTITLEMENTS = TodayWidget/TodayWidget.entitlements;
+				DEVELOPMENT_TEAM = 2Z4MSK8D4J;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
+				GENERATE_INFOPLIST_FILE = NO;
+				HEADER_SEARCH_PATHS = "";
+				INFOPLIST_FILE = TodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.vtn.todolist.dev.TodayWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1380,6 +1828,22 @@
 				500520602A999FD9001D706E /* Debug-prod */,
 				500520612A999FD9001D706E /* Profile-prod */,
 				500520622A999FD9001D706E /* Release-prod */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		72DB1AEB44DBD4A2F08C63EF /* Build configuration list for PBXNativeTarget "TodayWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4AFD66A68E6FC6A4E9030FB5 /* Release */,
+				CBCD18D94FF61570FB033A30 /* Debug */,
+				0ECA5C28AD8F4FB6B6FF3E51 /* Profile */,
+				7DFA8C10129CA7B7EFB08725 /* Debug-dev */,
+				11BEDE6BAE954C27C89F095B /* Profile-dev */,
+				52A89EEEB934704FE42B88CE /* Release-dev */,
+				81838AD3783B15ECC3925475 /* Debug-prod */,
+				8E786534B38C18F815887299 /* Profile-prod */,
+				242ABFC694E23ACC24CE41EE /* Release-prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

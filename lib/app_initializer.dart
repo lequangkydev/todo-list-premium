@@ -18,6 +18,8 @@ import 'module/admob/utils/utils.dart';
 import 'module/remote_config/remote_config.dart';
 import 'src/config/di/di.dart';
 import 'src/core/notifications/reminder_service.dart';
+import 'src/core/widgets/launch_links.dart';
+import 'src/core/widgets/widget_sync.dart';
 import 'src/data/local/shared_preferences_manager.dart';
 import 'src/shared/constants/app_constants.dart';
 import 'src/shared/global.dart';
@@ -44,6 +46,9 @@ class AppInitializer {
     _initIAP();
     // Keeps pending notifications in sync with tasks — runs in background
     unawaited(getIt<ReminderService>().start());
+    // Home-screen widgets mirror today's tasks; links from them open Home
+    unawaited(getIt<WidgetSync>().start());
+    unawaited(LaunchLinks.instance.start());
 
     _settingSystemUI();
   }

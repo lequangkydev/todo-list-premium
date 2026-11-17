@@ -1,0 +1,3 @@
+// Widget extension: same version numbers as the app (FLUTTER_BUILD_NAME /
+// FLUTTER_BUILD_NUMBER), without the Runner's CocoaPods settings
+#include "../Flutter/Generated.xcconfig"

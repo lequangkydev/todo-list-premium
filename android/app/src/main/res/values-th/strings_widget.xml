@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">วันนี้</string>
+    <string name="widget_today_description">งานวันนี้ ติ๊กเสร็จได้ที่นี่</string>
+    <string name="quick_add_label">เพิ่มงาน</string>
+</resources>

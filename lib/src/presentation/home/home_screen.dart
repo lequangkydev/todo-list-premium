@@ -12,10 +12,12 @@ import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/notifications/reminder_service.dart';
+import '../../core/widgets/launch_links.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../lists/lists_tab.dart';
+import '../tasks/quick_add_sheet.dart';
 import '../tasks/task_editor_sheet.dart';
 import '../today/today_tab.dart';
 import '../upcoming/upcoming_tab.dart';
@@ -38,13 +40,18 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     NativeAllUtil.instance.preloadSlots();
     WidgetsBinding.instance.addObserver(this);
     _reminders.openTaskRequest.addListener(_openRequestedTask);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _openRequestedTask());
+    LaunchLinks.instance.pending.addListener(_openLink);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _openRequestedTask();
+      _openLink();
+    });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _reminders.openTaskRequest.removeListener(_openRequestedTask);
+    LaunchLinks.instance.pending.removeListener(_openLink);
     super.dispose();
   }
 
@@ -52,6 +59,27 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       getIt<DayClock>().refresh();
+    }
+  }
+
+  /// Widget, Quick Settings tile or app shortcut → go where it points
+  void _openLink() {
+    if (!mounted || LaunchLinks.instance.pending.value == null) {
+      return;
+    }
+    final uri = LaunchLinks.instance.take()!;
+    // Come back to Home from wherever the user was (sheets, settings…)
+    final home = ModalRoute.of(context);
+    Navigator.of(context).popUntil((route) => route == home || route.isFirst);
+    setState(() => _tab = 0);
+    switch (uri.host) {
+      case 'quickadd':
+        unawaited(QuickAddSheet.show(context));
+      case 'task':
+        final id = uri.queryParameters['id'];
+        if (id != null) {
+          unawaited(TaskEditorSheet.show(context, id));
+        }
     }
   }
 

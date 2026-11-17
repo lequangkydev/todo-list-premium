@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">今日</string>
+    <string name="widget_today_description">今日のタスクをここでチェック</string>
+    <string name="quick_add_label">タスクを追加</string>
+</resources>

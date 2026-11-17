@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">오늘</string>
+    <string name="widget_today_description">오늘 할 일, 여기서 바로 체크</string>
+    <string name="quick_add_label">할 일 추가</string>
+</resources>

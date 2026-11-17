@@ -5,6 +5,7 @@ import 'package:quick_actions/quick_actions.dart';
 
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../core/widgets/launch_links.dart';
 import '../extension/context_extension.dart';
 import 'utils.dart';
 
@@ -12,6 +13,8 @@ class ShortcutUtils {
   ShortcutUtils._();
 
   static final ShortcutUtils instance = ShortcutUtils._();
+  static const _quickAdd = 'quick_add';
+
   String? shortcutType;
   bool isSplash = true;
   late final quickActions = const QuickActions();
@@ -21,6 +24,14 @@ class ShortcutUtils {
     // khởi tạo và lắng nghe sự kiện bấm vào shortcut
     quickActions.initialize((String shortcutType) {
       this.shortcutType = shortcutType;
+      if (shortcutType == _quickAdd) {
+        // Normal launch flow; Home opens quick add once it's on screen
+        LaunchLinks.instance.open(LaunchLinks.quickAdd);
+        if (!completer.isCompleted) {
+          completer.complete(false);
+        }
+        return;
+      }
       if (!completer.isCompleted) {
         // trả về true khi user vào app bằng cách bấm vào shortcut
         completer.complete(true);
@@ -47,6 +58,11 @@ class ShortcutUtils {
   /// Thêm short cut item
   void setShortcutItems() {
     quickActions.setShortcutItems(<ShortcutItem>[
+      ShortcutItem(
+        type: _quickAdd,
+        localizedTitle: appContext.l10n.addTask,
+        icon: 'add',
+      ),
       ShortcutItem(
         type: 'uninstall',
         localizedTitle: appContext.l10n.uninstall,

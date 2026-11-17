@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Widget picker, Quick Settings and shortcut labels (from assets/l10n) -->
+<resources>
+    <string name="widget_today_name">Hari ini</string>
+    <string name="widget_today_description">Tugas hari ini, centang di sini</string>
+    <string name="quick_add_label">Tambah tugas</string>
+</resources>
