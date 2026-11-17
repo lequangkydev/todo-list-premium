@@ -14,7 +14,7 @@ extension TaskReminderOffsets on Task {
   List<int> get reminderOffsets => ReminderOffsets.parse(reminders);
 }
 
-@DriftDatabase(tables: [TaskLists, Tasks, ActivityDays])
+@DriftDatabase(tables: [TaskLists, Tasks, ActivityDays, FocusSessions])
 class AppDatabase extends _$AppDatabase {
   /// [executor] replaces the on-disk database (tests, migration checks)
   AppDatabase([QueryExecutor? executor])
@@ -44,7 +44,7 @@ class AppDatabase extends _$AppDatabase {
   /// 3. Add the step to `onUpgrade: stepByStep(...)` in [migration] below
   ///    and make the generated tests pass.
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -67,6 +67,10 @@ class AppDatabase extends _$AppDatabase {
             newColumns: [schema.tasks.alarm],
           ),
         );
+      },
+      from3To4: (m, schema) async {
+        await m.createTable(schema.focusSessions);
+        await m.createIndex(schema.idxFocusStarted);
       },
     ),
     beforeOpen: (details) async {

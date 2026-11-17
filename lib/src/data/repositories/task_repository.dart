@@ -135,6 +135,30 @@ class TaskRepository {
         .watch();
   }
 
+  /// Top-level tasks completed on or after [from] (stats)
+  Stream<List<Task>> watchDoneSince(DateTime from) {
+    return (_db.select(_t)..where(
+          (t) =>
+              _alive(t) &
+              t.isDone.equals(true) &
+              t.parentId.isNull() &
+              t.doneAt.isBiggerOrEqualValue(from),
+        ))
+        .watch();
+  }
+
+  /// Every open top-level task (stats: what each list still has)
+  Stream<List<Task>> watchOpen() {
+    return (_db.select(_t)..where(_openTopLevel)).watch();
+  }
+
+  /// Completions per day since [from] (the activity heatmap)
+  Stream<List<ActivityDay>> watchActivitySince(DateTime from) {
+    return (_db.select(
+      _db.activityDays,
+    )..where((a) => a.day.isBiggerOrEqualValue(_day(from)))).watch();
+  }
+
   Stream<int> watchDoneOn(DateTime day) {
     final start = Dates.dateOnly(day);
     final end = Dates.addDays(start, 1);

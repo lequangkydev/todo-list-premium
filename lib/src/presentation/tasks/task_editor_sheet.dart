@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
+import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/ai/smart_suggestions.dart';
 import '../../core/date/dates.dart';
@@ -302,6 +304,13 @@ class _Properties extends StatelessWidget {
           active: task.estimateMinutes != null,
           onTap: () => _pickDuration(context),
         ),
+        if (!task.isDone)
+          _PropertyChip(
+            icon: Icons.timer_outlined,
+            label: l10n.focus,
+            active: false,
+            onTap: () => context.pushRoute(FocusRoute(taskId: task.id)),
+          ),
         if (task.parentId == null) _ListChip(task: task),
       ],
     );

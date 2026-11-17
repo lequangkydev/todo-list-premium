@@ -22,6 +22,7 @@ import '../../shared/cubit/language_cubit.dart';
 import '../../shared/enum/language.dart';
 import '../../shared/helpers/logger_utils.dart';
 import '../date/dates.dart';
+import '../focus/focus_service.dart';
 import '../widgets/launch_links.dart';
 import '../widgets/widget_sync.dart';
 import 'reminder_planner.dart';
@@ -130,9 +131,13 @@ class ReminderService with WidgetsBindingObserver {
 
   Future<void> _onForegroundResponse(NotificationResponse response) async {
     final payload = _payloadOf(response.payload);
-    if (payload['open'] == 'today') {
-      LaunchLinks.instance.open(LaunchLinks.today);
-      return;
+    switch (payload['open']) {
+      case 'today':
+        LaunchLinks.instance.open(LaunchLinks.today);
+        return;
+      case 'focus':
+        LaunchLinks.instance.open(LaunchLinks.focus);
+        return;
     }
     final taskId = payload['task'] as String?;
     if (taskId == null) {
@@ -435,7 +440,7 @@ Future<void> syncReminders(
   try {
     final now = DateTime.now();
     final plan = ReminderPlanner.plan(tasks, now, digestMinutes: digestMinutes);
-    final desired = {...plan.ids, testNotificationId};
+    final desired = {...plan.ids, testNotificationId, ...focusNotificationIds};
     for (final pending in await plugin.pendingNotificationRequests()) {
       if (!desired.contains(pending.id)) {
         await plugin.cancel(id: pending.id);

@@ -95,3 +95,28 @@ class ActivityDays extends Table {
   @override
   Set<Column<Object>> get primaryKey => {day};
 }
+
+/// One block of focused time (schema v4). Only the focused minutes count:
+/// time spent paused isn't in [focusMinutes].
+@DataClassName('FocusSession')
+@TableIndex(name: 'idx_focus_started', columns: {#startedAt})
+class FocusSessions extends Table {
+  TextColumn get id => text()();
+
+  /// The task it was for, if any (kept when the task is deleted)
+  TextColumn get taskId => text().nullable()();
+
+  DateTimeColumn get startedAt => dateTime()();
+
+  DateTimeColumn get endedAt => dateTime()();
+
+  IntColumn get focusMinutes => integer()();
+
+  IntColumn get plannedMinutes => integer()();
+
+  /// Ran its full length (not stopped early)
+  BoolColumn get completed => boolean().withDefault(const Constant(true))();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
+}

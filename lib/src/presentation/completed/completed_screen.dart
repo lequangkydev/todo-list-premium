@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
+import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/ai/weekly_recap.dart';
 import '../../core/date/dates.dart';
@@ -30,7 +31,16 @@ class _CompletedScreenState extends State<CompletedScreen> {
   Widget build(BuildContext context) {
     final today = getIt<DayClock>().value;
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.completed)),
+      appBar: AppBar(
+        title: Text(context.l10n.completed),
+        actions: [
+          IconButton(
+            tooltip: context.l10n.stats,
+            icon: const Icon(Icons.insights_rounded),
+            onPressed: () => context.pushRoute(const StatsRoute()),
+          ),
+        ],
+      ),
       body: StreamBuilder<List<Task>>(
         stream: _stream,
         builder: (context, snapshot) {

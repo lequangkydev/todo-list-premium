@@ -18,6 +18,7 @@ import 'module/admob/utils/utils.dart';
 import 'module/remote_config/remote_config.dart';
 import 'src/config/di/di.dart';
 import 'src/core/backup/backup_service.dart';
+import 'src/core/focus/focus_service.dart';
 import 'src/core/notifications/reminder_service.dart';
 import 'src/core/widgets/launch_links.dart';
 import 'src/core/widgets/widget_sync.dart';
@@ -52,6 +53,8 @@ class AppInitializer {
     unawaited(LaunchLinks.instance.start());
     // Today's backup, if it hasn't been made yet (also on every resume)
     unawaited(getIt<BackupService>().start());
+    // A focus block may be running, or have finished while the app was closed
+    unawaited(getIt<FocusService>().start());
 
     _settingSystemUI();
   }

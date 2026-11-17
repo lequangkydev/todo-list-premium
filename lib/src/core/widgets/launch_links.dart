@@ -14,6 +14,7 @@ import '../../shared/helpers/logger_utils.dart';
 /// - `todolist://today` — show the Today tab
 /// - `todolist://alarm?id=…` — an alarm-style reminder rang: full screen
 /// - `todolist://snooze?id=…` — "Snooze…" on a notification: pick when
+/// - `todolist://focus` — the focus timer
 class LaunchLinks {
   LaunchLinks._();
 
@@ -22,6 +23,7 @@ class LaunchLinks {
   static const scheme = 'todolist';
   static final quickAdd = Uri.parse('$scheme://quickadd');
   static final today = Uri.parse('$scheme://today');
+  static final focus = Uri.parse('$scheme://focus');
 
   static Uri task(String id) => Uri.parse('$scheme://task?id=$id');
 

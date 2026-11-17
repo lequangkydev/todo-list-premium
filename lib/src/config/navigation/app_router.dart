@@ -5,6 +5,7 @@ import 'package:material_ui/material_ui.dart';
 
 import '../../presentation/backup/backup_screen.dart';
 import '../../presentation/completed/completed_screen.dart';
+import '../../presentation/focus/focus_screen.dart';
 import '../../presentation/home/home_screen.dart';
 import '../../presentation/language/language_screen.dart';
 import '../../presentation/lists/list_detail_screen.dart';
@@ -14,6 +15,7 @@ import '../../presentation/reminders/reminder_check_screen.dart';
 import '../../presentation/search/search_screen.dart';
 import '../../presentation/setting/setting_screen.dart';
 import '../../presentation/splash/splash_screen.dart';
+import '../../presentation/stats/stats_screen.dart';
 import '../../presentation/uninstall/uninstall_screen.dart';
 import '../theme/app_theme.dart';
 
@@ -37,6 +39,8 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: CompletedRoute.page),
     AutoRoute(page: ReminderCheckRoute.page),
     AutoRoute(page: BackupRoute.page),
+    AutoRoute(page: FocusRoute.page),
+    AutoRoute(page: StatsRoute.page),
     // Search replaces the current view rather than going deeper
     CustomRoute<void>(
       page: SearchRoute.page,

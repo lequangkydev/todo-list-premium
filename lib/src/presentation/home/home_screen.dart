@@ -11,6 +11,7 @@ import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
+import '../../core/focus/focus_service.dart';
 import '../../core/widgets/launch_links.dart';
 import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
@@ -78,10 +79,22 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         unawaited(AlarmScreen.show(context, id));
       case 'snooze' when id != null:
         unawaited(SnoozeSheet.show(context, id));
+      case 'focus':
+        unawaited(context.pushRoute(FocusRoute()));
     }
   }
 
   List<Widget> _actions(BuildContext context) => [
+    ValueListenableBuilder(
+      valueListenable: getIt<FocusService>().state,
+      builder: (context, focus, _) => IconButton(
+        tooltip: context.l10n.focus,
+        // Filled while a focus block or break is going
+        icon: Icon(focus.active ? Icons.timer_rounded : Icons.timer_outlined),
+        color: focus.active ? context.colorScheme.primary : null,
+        onPressed: () => context.pushRoute(FocusRoute()),
+      ),
+    ),
     IconButton(
       tooltip: context.l10n.search,
       icon: const Icon(Icons.search_rounded),

@@ -665,5 +665,68 @@
   },
   "restoreFailedTitle": "Couldn’t restore",
   "backupUnreadable": "This file isn’t a backup from this app, or it’s damaged. Nothing in the app was changed.",
-  "backupTooNew": "This backup was made by a newer version of the app. Update the app, then try again."
+  "backupTooNew": "This backup was made by a newer version of the app. Update the app, then try again.",
+  "focus": "Focus",
+  "focusStart": "Start focus",
+  "focusPause": "Pause",
+  "focusResume": "Resume",
+  "focusStop": "Stop",
+  "focusFocusing": "Focusing",
+  "focusPaused": "Paused",
+  "focusResting": "On a break",
+  "focusOverTitle": "Focus time is up",
+  "focusOverBody": "Time for a break.",
+  "focusRestOverTitle": "Break’s over",
+  "focusRestOverBody": "Ready for another round?",
+  "focusTakeBreak": "Take a {count}-min break",
+  "@focusTakeBreak": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "focusAgain": "Another round",
+  "focusFinishTask": "Mark task done",
+  "focusSkipBreak": "Skip break",
+  "focusNoTask": "No task attached",
+  "focusLength": "Focus length",
+  "focusBreakLength": "Break length",
+  "stats": "Stats",
+  "statsWeek": "Last 7 days",
+  "statsFocusTotal": "{count, plural, =1{Focus: {time} · 1 session} other{Focus: {time} · {count} sessions}}",
+  "@statsFocusTotal": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "statsActivity": "Activity",
+  "statsActiveDays": "{count, plural, =1{1 active day in the last 30} other{{count} active days in the last 30}}",
+  "@statsActiveDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statsLists": "By list",
+  "statsListHint": "Done in the last 30 days, out of done plus still open",
+  "statsBestTime": "You get the most done around {from}–{to}",
+  "@statsBestTime": {
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "statsEmptyTitle": "Nothing to show yet",
+  "statsEmptyHint": "Finish a task or run a focus session and it will show up here."
 }
