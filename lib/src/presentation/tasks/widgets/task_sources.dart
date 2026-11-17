@@ -5,6 +5,7 @@ import '../../../config/theme/app_theme.dart';
 import '../../../data/local/database/app_database.dart';
 import '../../../data/repositories/list_repository.dart';
 import '../../../data/repositories/task_repository.dart';
+import '../../../shared/widgets/motion.dart';
 
 /// Lookups every task row needs: subtask progress and list by id.
 class TaskLookups {
@@ -209,15 +210,28 @@ class CalmEmptyState extends StatelessWidget {
             child: _EmptyIllustration(icon: icon, color: color),
           ),
           const SizedBox(height: AppSpace.xl),
-          Text(title, style: text.titleMedium, textAlign: TextAlign.center),
-          if (message != null) ...[
-            const SizedBox(height: AppSpace.xs + 2),
-            Text(
-              message!,
-              style: text.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
-              textAlign: TextAlign.center,
+          Entrance(
+            delay: const Duration(milliseconds: 120),
+            child: Column(
+              children: [
+                Text(
+                  title,
+                  style: text.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                if (message != null) ...[
+                  const SizedBox(height: AppSpace.xs + 2),
+                  Text(
+                    message!,
+                    style: text.bodyMedium?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ],
             ),
-          ],
+          ),
         ],
       ),
     );
@@ -250,16 +264,26 @@ class _EmptyIllustration extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            width: 132,
-            height: 132,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: tint(color, scheme.surface, .14),
+          Entrance(
+            offset: 0,
+            scale: .85,
+            duration: AppMotion.slow,
+            child: Container(
+              width: 132,
+              height: 132,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: tint(color, scheme.surface, .14),
+              ),
             ),
           ),
-          Transform.rotate(
-            angle: -.08,
+          TweenAnimationBuilder<double>(
+            // Tilts into place once, from a little further round
+            tween: Tween(begin: -.2, end: -.08),
+            duration: AppMotion.of(context, AppMotion.slow),
+            curve: AppMotion.enter,
+            builder: (context, angle, child) =>
+                Transform.rotate(angle: angle, child: child),
             child: Container(
               width: 112,
               padding: const EdgeInsets.all(AppSpace.md),
@@ -298,14 +322,21 @@ class _EmptyIllustration extends StatelessWidget {
           PositionedDirectional(
             end: 10,
             bottom: 6,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: Border.all(color: scheme.surface, width: 3),
+            child: Entrance(
+              delay: const Duration(milliseconds: 160),
+              offset: 0,
+              scale: .5,
+              duration: AppMotion.slow,
+              curve: Curves.easeOutBack,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: scheme.surface, width: 3),
+                ),
+                child: Icon(icon, size: 22, color: scheme.surface),
               ),
-              child: Icon(icon, size: 22, color: scheme.surface),
             ),
           ),
         ],

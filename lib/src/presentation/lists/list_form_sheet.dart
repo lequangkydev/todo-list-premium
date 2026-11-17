@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
+import '../../config/theme/app_theme.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../shared/extension/context_extension.dart';
@@ -17,6 +18,7 @@ class ListFormSheet extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
+      sheetAnimationStyle: AppMotion.sheet(context),
       builder: (_) => ListFormSheet(list: list),
     );
   }

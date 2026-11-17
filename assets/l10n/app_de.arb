@@ -79,6 +79,7 @@
   "taskCompleted": "Aufgabe erledigt",
   "taskCompletedRepeat": "Erledigt – die nächste ist geplant",
   "taskDeleted": "Aufgabe gelöscht",
+  "movedToTomorrow": "Auf morgen verschoben",
   "undo": "Rückgängig",
   "delete": "Löschen",
   "save": "Speichern",

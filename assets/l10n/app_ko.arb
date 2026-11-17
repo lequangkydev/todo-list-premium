@@ -79,6 +79,7 @@
   "taskCompleted": "할 일 완료",
   "taskCompletedRepeat": "완료 — 다음 일정이 잡혔어요",
   "taskDeleted": "할 일 삭제됨",
+  "movedToTomorrow": "내일로 옮겼어요",
   "undo": "실행 취소",
   "delete": "삭제",
   "save": "저장",

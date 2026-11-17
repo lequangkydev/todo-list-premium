@@ -10,8 +10,10 @@ import '../../../module/admob/widget/ads/auto_reload_native_ad.dart';
 import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../config/theme/app_theme.dart';
 import '../../core/notifications/reminder_service.dart';
 import '../../shared/extension/context_extension.dart';
+import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../lists/lists_tab.dart';
 import '../tasks/task_editor_sheet.dart';
@@ -81,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     final actions = _actions(context);
     final l10n = context.l10n;
     return Scaffold(
-      body: IndexedStack(
+      body: _FadeThroughStack(
         index: _tab,
         children: [
           TodayTab(actions: actions),
@@ -99,7 +101,12 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
               removeBottom: true,
               child: NavigationBar(
                 selectedIndex: _tab,
-                onDestinationSelected: (index) => setState(() => _tab = index),
+                onDestinationSelected: (index) {
+                  if (index != _tab) {
+                    AppHaptics.selection();
+                  }
+                  setState(() => _tab = index);
+                },
                 destinations: [
                   NavigationDestination(
                     icon: const Icon(Icons.wb_sunny_outlined),
@@ -131,6 +138,70 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
       adConfig: adUnitsConfig.nativeBanner,
       expandedAdConfig: adUnitsConfig.nativeBannerExpand,
       enableAutoReload: true,
+    );
+  }
+}
+
+/// [IndexedStack] that fades the newly selected tab in with a slight scale
+/// (Material fade-through). Every tab keeps its state and scroll position.
+class _FadeThroughStack extends StatefulWidget {
+  const _FadeThroughStack({required this.index, required this.children});
+
+  final int index;
+  final List<Widget> children;
+
+  @override
+  State<_FadeThroughStack> createState() => _FadeThroughStackState();
+}
+
+class _FadeThroughStackState extends State<_FadeThroughStack>
+    with SingleTickerProviderStateMixin {
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 280),
+    value: 1,
+  );
+  late final _fade = CurvedAnimation(
+    parent: _controller,
+    curve: const Interval(.25, 1, curve: Curves.easeOut),
+  );
+  late final _scale = Tween<double>(
+    begin: .96,
+    end: 1,
+  ).animate(CurvedAnimation(parent: _controller, curve: AppMotion.enter));
+
+  static const _still = AlwaysStoppedAnimation<double>(1);
+
+  @override
+  void didUpdateWidget(covariant _FadeThroughStack oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.index != widget.index && AppMotion.enabled(context)) {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _fade.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return IndexedStack(
+      index: widget.index,
+      children: [
+        for (var i = 0; i < widget.children.length; i++)
+          // Same wrappers for every tab so switching never rebuilds a tab
+          FadeTransition(
+            opacity: i == widget.index ? _fade : _still,
+            child: ScaleTransition(
+              scale: i == widget.index ? _scale : _still,
+              child: widget.children[i],
+            ),
+          ),
+      ],
     );
   }
 }

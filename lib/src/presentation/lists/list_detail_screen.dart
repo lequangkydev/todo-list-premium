@@ -7,6 +7,7 @@ import '../../data/local/database/app_database.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
+import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../tasks/widgets/quick_add_field.dart';
 import '../tasks/widgets/task_sources.dart';
@@ -36,8 +37,8 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
 
   Future<void> _reorder(List<Task> tasks, int oldIndex, int newIndex) async {
     final ordered = [...tasks];
-    final moved = ordered.removeAt(oldIndex);
-    ordered.insert(newIndex > oldIndex ? newIndex - 1 : newIndex, moved);
+    // onReorderItem already accounts for the removed row
+    ordered.insert(newIndex, ordered.removeAt(oldIndex));
     setState(() => _optimistic = ordered);
     await _repo.reorder(ordered);
     if (mounted) {
@@ -118,17 +119,11 @@ class _ListDetailScreenState extends State<ListDetailScreen> {
                             ),
                             buildDefaultDragHandles: false,
                             itemCount: tasks.length,
-                            onReorder: (a, b) => _reorder(tasks, a, b),
-                            // Lifted row: card surface + soft shadow
+                            onReorderItem: (a, b) => _reorder(tasks, a, b),
+                            onReorderStart: (_) => AppHaptics.selection(),
+                            onReorderEnd: (_) => AppHaptics.light(),
                             proxyDecorator: (child, index, animation) =>
-                                Material(
-                                  elevation: 6,
-                                  color: context.taskColors.card,
-                                  borderRadius: BorderRadius.circular(
-                                    AppRadius.md,
-                                  ),
-                                  child: child,
-                                ),
+                                _LiftedRow(animation: animation, child: child),
                             itemBuilder: (context, index) {
                               final task = tasks[index];
                               return ReorderableDelayedDragStartListener(
@@ -191,6 +186,37 @@ class _CardSlice extends StatelessWidget {
         ),
       ),
       clipBehavior: Clip.antiAlias,
+      child: child,
+    );
+  }
+}
+
+/// The row being dragged: lifts off the card (slight scale + shadow) and
+/// settles back when dropped
+class _LiftedRow extends StatelessWidget {
+  const _LiftedRow({required this.animation, required this.child});
+
+  final Animation<double> animation;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final lift = AppMotion.enabled(context) ? .02 : 0.0;
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        final t = AppMotion.enter.transform(animation.value);
+        return Transform.scale(
+          scale: 1 + lift * t,
+          child: Material(
+            elevation: 8 * t,
+            shadowColor: context.colorScheme.primary.withValues(alpha: .35),
+            color: context.taskColors.card,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            child: child,
+          ),
+        );
+      },
       child: child,
     );
   }

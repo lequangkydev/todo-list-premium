@@ -36,7 +36,12 @@ class _PageActionState extends State<PageAction> {
           SizedBox(
             width: double.infinity,
             height: 52,
-            child: FilledButton(onPressed: widget.onNextTap, child: Text(text)),
+            child: PressScale(
+              child: FilledButton(
+                onPressed: widget.onNextTap,
+                child: Text(text),
+              ),
+            ),
           ),
         ],
       ),

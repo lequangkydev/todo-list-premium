@@ -79,6 +79,7 @@
   "taskCompleted": "任务已完成",
   "taskCompletedRepeat": "已完成——下一次已安排",
   "taskDeleted": "任务已删除",
+  "movedToTomorrow": "已移到明天",
   "undo": "撤销",
   "delete": "删除",
   "save": "保存",

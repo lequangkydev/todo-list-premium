@@ -79,6 +79,7 @@
   "taskCompleted": "Tugas selesai",
   "taskCompletedRepeat": "Selesai — berikutnya sudah dijadwalkan",
   "taskDeleted": "Tugas dihapus",
+  "movedToTomorrow": "Dipindahkan ke besok",
   "undo": "Urungkan",
   "delete": "Hapus",
   "save": "Simpan",

@@ -79,6 +79,7 @@
   "taskCompleted": "Tarefa concluída",
   "taskCompletedRepeat": "Feito — a próxima já está agendada",
   "taskDeleted": "Tarefa excluída",
+  "movedToTomorrow": "Movida para amanhã",
   "undo": "Desfazer",
   "delete": "Excluir",
   "save": "Salvar",

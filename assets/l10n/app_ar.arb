@@ -79,6 +79,7 @@
   "taskCompleted": "اكتملت المهمة",
   "taskCompletedRepeat": "تم — جُدولت المرة التالية",
   "taskDeleted": "حُذفت المهمة",
+  "movedToTomorrow": "نُقلت إلى الغد",
   "undo": "تراجع",
   "delete": "حذف",
   "save": "حفظ",

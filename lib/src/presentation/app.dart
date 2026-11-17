@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_iap/flutter_iap.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../module/remote_config/remote_config.dart';
@@ -95,7 +96,10 @@ class BodyApp extends StatelessWidget {
           ),
           builder: MyAds.instance.overlayBuilder((context, child) {
             configIapScreen(context);
-            return EasyLoading.init()(context, child);
+            // Opening one row's swipe actions closes the others
+            return SlidableAutoCloseBehavior(
+              child: EasyLoading.init()(context, child),
+            );
           }),
         );
       },

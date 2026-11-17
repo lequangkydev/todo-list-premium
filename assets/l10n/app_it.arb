@@ -79,6 +79,7 @@
   "taskCompleted": "Attività completata",
   "taskCompletedRepeat": "Fatto — la prossima è programmata",
   "taskDeleted": "Attività eliminata",
+  "movedToTomorrow": "Spostata a domani",
   "undo": "Annulla",
   "delete": "Elimina",
   "save": "Salva",

@@ -1,41 +1,27 @@
+import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/semantics.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../../config/theme/app_theme.dart';
 import '../../../data/local/database/app_database.dart';
 import '../../../data/repositories/task_repository.dart';
 import '../../../shared/extension/context_extension.dart';
+import '../../../shared/helpers/app_haptics.dart';
 import '../../../shared/helpers/task_actions.dart';
 import '../../../shared/helpers/task_format.dart';
 import '../task_editor_sheet.dart';
 
-/// Groups task rows in one rounded card with inset dividers
-class TaskGroup extends StatelessWidget {
-  const TaskGroup({super.key, required this.children});
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpace.gutter),
-      child: Card(
-        child: Column(
-          children: [
-            for (var i = 0; i < children.length; i++) ...[
-              if (i > 0) const Divider(indent: 60, height: 1),
-              children[i],
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
+export 'task_group.dart';
 
 /// A task row: round check, title, and a quiet line of details.
-class TaskTile extends StatelessWidget {
+///
+/// Swipe towards the end to complete; swipe towards the start for
+/// "Tomorrow" and "Delete". The same actions are offered to screen readers
+/// as custom actions, and the editor remains the non-gesture path.
+class TaskTile extends StatefulWidget {
   const TaskTile({
     super.key,
     required this.task,
@@ -53,12 +39,88 @@ class TaskTile extends StatelessWidget {
   /// Shown as a coloured dot + name when set
   final TaskList? list;
   final bool showDate;
+
+  /// Whether swipe actions are available
   final bool dismissible;
+
+  @override
+  State<TaskTile> createState() => _TaskTileState();
+}
+
+class _TaskTileState extends State<TaskTile>
+    with SingleTickerProviderStateMixin {
+  late final _slidable = SlidableController(this);
+
+  /// Done state shown while the check animation plays, before the database
+  /// confirms it
+  bool? _pendingDone;
+
+  /// Swipe position past which letting go completes the task
+  static const _completeThreshold = .4;
+  bool _pastThreshold = false;
+
+  /// Set once a full swipe is released, so the pane closing again doesn't
+  /// tick a second time
+  bool _released = false;
+
+  Task get task => widget.task;
+
+  @override
+  void initState() {
+    super.initState();
+    _slidable.animation.addListener(_onSlide);
+  }
+
+  @override
+  void didUpdateWidget(covariant TaskTile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Any saved change ends the optimistic state — including a repeating
+    // task that stays open and moves to its next date
+    if (oldWidget.task != task || _pendingDone == task.isDone) {
+      _pendingDone = null;
+    }
+  }
+
+  @override
+  void dispose() {
+    _slidable.animation.removeListener(_onSlide);
+    _slidable.dispose();
+    super.dispose();
+  }
+
+  /// One light tap when a full swipe would complete the task, and again if
+  /// the finger pulls back
+  void _onSlide() {
+    if (_slidable.ratio == 0) {
+      _released = false;
+      _pastThreshold = false;
+      return;
+    }
+    if (_released) {
+      return;
+    }
+    final past = _slidable.ratio >= _completeThreshold;
+    if (past != _pastThreshold) {
+      _pastThreshold = past;
+      AppHaptics.selection();
+    }
+  }
+
+  Future<void> _complete() {
+    AppHaptics.light();
+    return TaskActions.complete(context, task);
+  }
+
+  Future<void> _tomorrow() => TaskActions.moveToTomorrow(context, task);
+
+  Future<void> _delete() => TaskActions.delete(context, task);
 
   @override
   Widget build(BuildContext context) {
     final scheme = context.colorScheme;
     final text = Theme.of(context).textTheme;
+    final l10n = context.l10n;
+    final done = _pendingDone ?? task.isDone;
     final tile = Material(
       color: Colors.transparent,
       child: InkWell(
@@ -77,6 +139,8 @@ class TaskTile extends StatelessWidget {
                 checked: task.isDone,
                 color: context.taskColors.priority(task.priority),
                 semanticLabel: task.title,
+                onWillChange: (checked) =>
+                    setState(() => _pendingDone = checked),
                 onChanged: () => TaskActions.toggle(context, task),
               ),
               const SizedBox(width: AppSpace.xs),
@@ -86,25 +150,20 @@ class TaskTile extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      AnimatedDefaultTextStyle(
-                        duration: AppMotion.of(context, AppMotion.medium),
-                        style: text.bodyLarge!.copyWith(
-                          color: task.isDone
-                              ? scheme.onSurfaceVariant
-                              : scheme.onSurface,
-                          decoration: task.isDone
-                              ? TextDecoration.lineThrough
-                              : null,
-                          decorationColor: scheme.onSurfaceVariant,
-                        ),
-                        child: Text(task.title),
+                      StrikeText(
+                        task.title,
+                        struck: done,
+                        style: text.bodyLarge!,
+                        color: done
+                            ? scheme.onSurfaceVariant
+                            : scheme.onSurface,
                       ),
                       _Details(
                         task: task,
-                        today: today,
-                        subtasks: subtasks,
-                        list: list,
-                        showDate: showDate,
+                        today: widget.today,
+                        subtasks: widget.subtasks,
+                        list: widget.list,
+                        showDate: widget.showDate,
                       ),
                     ],
                   ),
@@ -115,44 +174,235 @@ class TaskTile extends StatelessWidget {
         ),
       ),
     );
-    if (!dismissible) {
+    if (!widget.dismissible) {
       return tile;
     }
-    // Swipe is a shortcut; the editor's Delete button is the alternative
-    return Dismissible(
-      key: ValueKey('task-${task.id}'),
-      direction: DismissDirection.endToStart,
-      background: ColoredBox(
-        color: scheme.errorContainer,
-        child: Align(
-          alignment: AlignmentDirectional.centerEnd,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpace.xl),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  context.l10n.delete,
-                  style: text.labelLarge?.copyWith(
-                    color: scheme.onErrorContainer,
-                  ),
+    final open = !task.isDone;
+    return Semantics(
+      customSemanticsActions: {
+        if (open) CustomSemanticsAction(label: l10n.actionDone): _complete,
+        if (open) CustomSemanticsAction(label: l10n.tomorrow): _tomorrow,
+        CustomSemanticsAction(label: l10n.delete): _delete,
+      },
+      child: Slidable(
+        key: ValueKey('slide-${task.id}'),
+        controller: _slidable,
+        startActionPane: open
+            ? ActionPane(
+                motion: const BehindMotion(),
+                extentRatio: .25,
+                // A full swipe completes, then the pane closes again; the
+                // group animates the row away if it leaves this list. Never
+                // let the pane dismiss itself: rows that stay (search,
+                // repeating tasks) would be left collapsed.
+                dismissible: DismissiblePane(
+                  dismissThreshold: _completeThreshold,
+                  closeOnCancel: true,
+                  confirmDismiss: () async {
+                    _released = true;
+                    setState(() => _pendingDone = true);
+                    unawaited(_complete());
+                    return false;
+                  },
+                  onDismissed: () {},
                 ),
-                const SizedBox(width: AppSpace.sm),
-                ExcludeSemantics(
-                  child: Icon(
-                    Icons.delete_outline_rounded,
-                    color: scheme.onErrorContainer,
+                children: [
+                  _SwipeAction(
+                    icon: Icons.check_rounded,
+                    label: l10n.actionDone,
+                    color: scheme.primary,
+                    onColor: scheme.onPrimary,
+                    onPressed: _complete,
                   ),
-                ),
-              ],
+                ],
+              )
+            : null,
+        endActionPane: ActionPane(
+          motion: const BehindMotion(),
+          extentRatio: open ? .5 : .25,
+          children: [
+            if (open)
+              _SwipeAction(
+                icon: Icons.east_rounded,
+                label: l10n.tomorrow,
+                color: scheme.secondaryContainer,
+                onColor: scheme.onSecondaryContainer,
+                onPressed: _tomorrow,
+              ),
+            _SwipeAction(
+              icon: Icons.delete_outline_rounded,
+              label: l10n.delete,
+              color: scheme.errorContainer,
+              onColor: scheme.onErrorContainer,
+              onPressed: _delete,
             ),
-          ),
+          ],
         ),
+        child: tile,
       ),
-      onDismissed: (_) => TaskActions.delete(context, task),
-      child: tile,
     );
   }
+}
+
+/// A swipe action whose icon grows from 80% to full size as it's revealed
+class _SwipeAction extends StatelessWidget {
+  const _SwipeAction({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onColor,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final Color onColor;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Slidable.of(context);
+    final style = Theme.of(
+      context,
+    ).textTheme.labelMedium?.copyWith(color: onColor);
+    return CustomSlidableAction(
+      backgroundColor: color,
+      foregroundColor: onColor,
+      onPressed: (_) => onPressed(),
+      child: ExcludeSemantics(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (controller == null || !AppMotion.enabled(context))
+              Icon(icon, color: onColor)
+            else
+              AnimatedBuilder(
+                animation: controller.animation,
+                builder: (context, child) => Transform.scale(
+                  scale: .8 + .2 * (controller.ratio.abs() * 4).clamp(0, 1),
+                  child: child,
+                ),
+                child: Icon(icon, color: onColor),
+              ),
+            const SizedBox(height: AppSpace.xs),
+            Text(
+              label,
+              style: style,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Text whose strike-through draws across it (start to end, line by line)
+/// when [struck] turns on, instead of snapping in
+class StrikeText extends StatelessWidget {
+  const StrikeText(
+    this.text, {
+    super.key,
+    required this.struck,
+    required this.style,
+    required this.color,
+  });
+
+  final String text;
+  final bool struck;
+  final TextStyle style;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final duration = AppMotion.of(context, const Duration(milliseconds: 260));
+    final resolved = DefaultTextStyle.of(context).style.merge(style);
+    return TweenAnimationBuilder<double>(
+      tween: Tween(end: struck ? 1 : 0),
+      duration: duration,
+      curve: AppMotion.curve,
+      builder: (context, progress, child) => CustomPaint(
+        foregroundPainter: progress == 0
+            ? null
+            : _StrikePainter(
+                text: text,
+                style: resolved,
+                progress: progress,
+                color: context.colorScheme.onSurfaceVariant,
+                textDirection: Directionality.of(context),
+                textScaler: MediaQuery.textScalerOf(context),
+              ),
+        child: child,
+      ),
+      child: AnimatedDefaultTextStyle(
+        duration: duration,
+        style: style.copyWith(color: color),
+        child: Text(text),
+      ),
+    );
+  }
+}
+
+class _StrikePainter extends CustomPainter {
+  _StrikePainter({
+    required this.text,
+    required this.style,
+    required this.progress,
+    required this.color,
+    required this.textDirection,
+    required this.textScaler,
+  });
+
+  final String text;
+  final TextStyle style;
+  final double progress;
+  final Color color;
+  final TextDirection textDirection;
+  final TextScaler textScaler;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: textDirection,
+      textScaler: textScaler,
+    )..layout(maxWidth: size.width);
+    final lines = painter.computeLineMetrics();
+    painter.dispose();
+    final total = lines.fold<double>(0, (sum, l) => sum + l.width);
+    if (total == 0) {
+      return;
+    }
+    final fontSize = textScaler.scale(style.fontSize ?? 16);
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round;
+    var remaining = total * progress;
+    for (final line in lines) {
+      if (remaining <= 0) {
+        break;
+      }
+      final length = remaining.clamp(0, line.width).toDouble();
+      remaining -= length;
+      final y = line.baseline - fontSize * .3;
+      final rtl = textDirection == TextDirection.rtl;
+      final from = rtl ? line.left + line.width : line.left;
+      final to = rtl ? from - length : from + length;
+      canvas.drawLine(Offset(from, y), Offset(to, y), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_StrikePainter old) =>
+      old.progress != progress ||
+      old.text != text ||
+      old.style != style ||
+      old.color != color ||
+      old.textDirection != textDirection ||
+      old.textScaler != textScaler;
 }
 
 class _Details extends StatelessWidget {
@@ -321,12 +571,18 @@ class CheckCircle extends StatefulWidget {
     required this.color,
     required this.onChanged,
     required this.semanticLabel,
+    this.onWillChange,
     this.size = 22,
   });
 
   final bool checked;
   final Color color;
+
+  /// Fires after the animation, when the change should be saved
   final VoidCallback onChanged;
+
+  /// Fires on tap with the new value, before the animation plays
+  final ValueChanged<bool>? onWillChange;
   final String semanticLabel;
   final double size;
 
@@ -366,7 +622,11 @@ class _CheckCircleState extends State<CheckCircle>
     _busy = true;
     final completing = !_checked;
     setState(() => _checked = !_checked);
-    final reduced = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    widget.onWillChange?.call(_checked);
+    if (completing) {
+      AppHaptics.light();
+    }
+    final reduced = !AppMotion.enabled(context);
     if (completing && !reduced) {
       // Peak moment: a short, celebratory burst before the row leaves
       await _burst.forward(from: 0);

@@ -9,6 +9,7 @@ import '../../../../module/remote_config/remote_config.dart';
 import '../../../config/theme/app_theme.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../shared/extension/context_extension.dart';
+import '../../../shared/widgets/motion.dart';
 import '../onboarding_screen.dart';
 import '../utils/onboarding_controller.dart';
 import 'onboarding_illustration.dart';
@@ -60,8 +61,18 @@ class _ContentPageWidgetState extends State<ContentPageWidget>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Expanded(child: OnboardingIllustration(scene: widget.scene)),
-                buildDescription(),
+                Expanded(
+                  child: Entrance(
+                    offset: 12,
+                    scale: .96,
+                    duration: AppMotion.slow,
+                    child: OnboardingIllustration(scene: widget.scene),
+                  ),
+                ),
+                Entrance(
+                  delay: const Duration(milliseconds: 80),
+                  child: buildDescription(),
+                ),
                 const SizedBox(height: AppSpace.xl),
                 PageAction(
                   activeIndex: widget.index,

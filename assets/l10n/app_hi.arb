@@ -79,6 +79,7 @@
   "taskCompleted": "काम पूरा हुआ",
   "taskCompletedRepeat": "हो गया — अगला तय हो गया",
   "taskDeleted": "काम हटाया गया",
+  "movedToTomorrow": "कल पर टाला गया",
   "undo": "पूर्ववत करें",
   "delete": "हटाएँ",
   "save": "सहेजें",

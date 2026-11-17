@@ -79,6 +79,7 @@
   "taskCompleted": "งานเสร็จแล้ว",
   "taskCompletedRepeat": "เสร็จแล้ว — ตั้งเวลาครั้งถัดไปแล้ว",
   "taskDeleted": "ลบงานแล้ว",
+  "movedToTomorrow": "ย้ายไปพรุ่งนี้แล้ว",
   "undo": "เลิกทำ",
   "delete": "ลบ",
   "save": "บันทึก",

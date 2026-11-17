@@ -134,6 +134,7 @@
   "taskCompleted": "Task completed",
   "taskCompletedRepeat": "Done — next one scheduled",
   "taskDeleted": "Task deleted",
+  "movedToTomorrow": "Moved to tomorrow",
   "undo": "Undo",
   "delete": "Delete",
   "save": "Save",

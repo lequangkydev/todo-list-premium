@@ -9,6 +9,7 @@ import '../../../data/repositories/task_repository.dart';
 import '../../../shared/extension/context_extension.dart';
 import '../../../shared/helpers/day_clock.dart';
 import '../../../shared/helpers/task_format.dart';
+import '../../../shared/widgets/motion.dart';
 
 /// Always-visible "add a task" field with natural-language dates.
 ///
@@ -166,7 +167,8 @@ class _QuickAddFieldState extends State<QuickAddField> {
           ),
         ),
         AnimatedSize(
-          duration: const Duration(milliseconds: 150),
+          duration: AppMotion.of(context, AppMotion.medium),
+          curve: AppMotion.curve,
           alignment: Alignment.topCenter,
           child: showChips
               ? Padding(
@@ -199,35 +201,58 @@ class _ParsedChips extends StatelessWidget {
     final date = result.date;
     final time = result.time;
     final rec = result.recurrence;
-    final labels = <(IconData, String, Color?)>[
+    // Keyed by kind so a chip animates in once, not on every keystroke
+    final labels = <(String, IconData, String, Color?)>[
       if (date != null)
-        (Icons.event_rounded, TaskFormat.day(context, date, today), null),
+        (
+          'date',
+          Icons.event_rounded,
+          TaskFormat.day(context, date, today),
+          null,
+        ),
       if (time != null)
-        (Icons.schedule_rounded, TaskFormat.time(context, time), null),
+        ('time', Icons.schedule_rounded, TaskFormat.time(context, time), null),
       if (rec != null)
-        (Icons.repeat_rounded, TaskFormat.recurrence(context, rec), null),
+        (
+          'repeat',
+          Icons.repeat_rounded,
+          TaskFormat.recurrence(context, rec),
+          null,
+        ),
       if (result.priority > 0)
         (
+          'priority',
           Icons.flag_rounded,
           TaskFormat.priority(context.l10n, result.priority),
           context.taskColors.priority(result.priority),
         ),
     ];
+    const stagger = Duration(milliseconds: 40);
     return Wrap(
       spacing: 6,
       runSpacing: 6,
       children: [
-        for (final (icon, label, color) in labels)
-          Chip(
-            visualDensity: VisualDensity.compact,
-            avatar: Icon(icon, size: 16, color: color ?? scheme.primary),
-            label: Text(label),
+        for (final (i, (kind, icon, label, color)) in labels.indexed)
+          Entrance(
+            key: ValueKey(kind),
+            delay: stagger * i,
+            scale: .92,
+            child: Chip(
+              visualDensity: VisualDensity.compact,
+              avatar: Icon(icon, size: 16, color: color ?? scheme.primary),
+              label: Text(label),
+            ),
           ),
-        ActionChip(
-          visualDensity: VisualDensity.compact,
-          avatar: const Icon(Icons.close_rounded, size: 16),
-          label: Text(context.l10n.keepAsText),
-          onPressed: onIgnore,
+        Entrance(
+          key: const ValueKey('ignore'),
+          delay: stagger * labels.length,
+          scale: .92,
+          child: ActionChip(
+            visualDensity: VisualDensity.compact,
+            avatar: const Icon(Icons.close_rounded, size: 16),
+            label: Text(context.l10n.keepAsText),
+            onPressed: onIgnore,
+          ),
         ),
       ],
     );

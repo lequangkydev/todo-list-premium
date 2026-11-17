@@ -79,6 +79,7 @@
   "taskCompleted": "Tarea completada",
   "taskCompletedRepeat": "Hecha: la siguiente ya está programada",
   "taskDeleted": "Tarea eliminada",
+  "movedToTomorrow": "Movida a mañana",
   "undo": "Deshacer",
   "delete": "Eliminar",
   "save": "Guardar",

@@ -79,6 +79,7 @@
   "taskCompleted": "タスクを完了しました",
   "taskCompletedRepeat": "完了 — 次回を予定しました",
   "taskDeleted": "タスクを削除しました",
+  "movedToTomorrow": "明日に移動しました",
   "undo": "元に戻す",
   "delete": "削除",
   "save": "保存",

@@ -1,13 +1,14 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:animations/animations.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../../config/di/di.dart';
-import '../../config/navigation/app_router.dart';
 import '../../config/theme/app_theme.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/list_repository.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
+import '../completed/completed_screen.dart';
+import 'list_detail_screen.dart';
 import 'list_form_sheet.dart';
 
 /// Inbox and Completed as colour tiles, then user lists (unlimited), each
@@ -60,7 +61,7 @@ class _ListsTabState extends State<ListsTab> {
                         icon: Icons.inbox_rounded,
                         label: context.l10n.inbox,
                         count: count.data ?? 0,
-                        onTap: () => context.pushRoute(ListDetailRoute()),
+                        page: const ListDetailScreen(),
                       ),
                     ),
                   ),
@@ -73,7 +74,7 @@ class _ListsTabState extends State<ListsTab> {
                         icon: Icons.task_alt_rounded,
                         label: context.l10n.completed,
                         count: done.data?.length ?? 0,
-                        onTap: () => context.pushRoute(const CompletedRoute()),
+                        page: const CompletedScreen(),
                       ),
                     ),
                   ),
@@ -105,9 +106,7 @@ class _ListsTabState extends State<ListsTab> {
                         icon: Icons.format_list_bulleted_rounded,
                         title: item.list.name,
                         count: item.openCount,
-                        onTap: () => context.pushRoute(
-                          ListDetailRoute(listId: item.list.id),
-                        ),
+                        page: ListDetailScreen(listId: item.list.id),
                         onLongPress: () =>
                             ListFormSheet.show(context, list: item.list),
                       ),
@@ -155,14 +154,16 @@ class _ColorTile extends StatelessWidget {
     required this.icon,
     required this.label,
     required this.count,
-    required this.onTap,
+    required this.page,
   });
 
   final Color color;
   final IconData icon;
   final String label;
   final int count;
-  final VoidCallback onTap;
+
+  /// Opened with a container transform from this tile
+  final Widget page;
 
   @override
   Widget build(BuildContext context) {
@@ -170,16 +171,18 @@ class _ColorTile extends StatelessWidget {
     final text = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final fill = tint(color, context.taskColors.card, isDark ? .22 : .12);
-    return Semantics(
-      button: true,
-      label: '$label, $count',
-      excludeSemantics: true,
-      child: Material(
-        color: fill,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+    return _ContainerLink(
+      page: page,
+      color: fill,
+      radius: AppRadius.lg,
+      builder: (context, open) => Semantics(
+        button: true,
+        label: '$label, $count',
+        onTap: open,
+        excludeSemantics: true,
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          onTap: onTap,
+          onTap: open,
           child: Padding(
             padding: const EdgeInsets.all(AppSpace.lg),
             child: Column(
@@ -229,18 +232,22 @@ class _ListRow extends StatelessWidget {
     required this.color,
     required this.icon,
     required this.title,
-    required this.onTap,
+    this.onTap,
+    this.page,
     this.count,
     this.onLongPress,
     this.titleColor,
     this.showChevron = true,
-  });
+  }) : assert((onTap == null) != (page == null), 'Pass onTap or page');
 
   final Color color;
   final IconData icon;
   final String title;
   final int? count;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+
+  /// Opened with a container transform from this row
+  final Widget? page;
   final VoidCallback? onLongPress;
   final Color? titleColor;
   final bool showChevron;
@@ -250,6 +257,25 @@ class _ListRow extends StatelessWidget {
     final scheme = context.colorScheme;
     final text = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final target = page;
+    if (target != null) {
+      return _ContainerLink(
+        page: target,
+        color: context.taskColors.card,
+        radius: 0,
+        builder: (context, open) => _tile(context, scheme, text, isDark, open),
+      );
+    }
+    return _tile(context, scheme, text, isDark, onTap!);
+  }
+
+  Widget _tile(
+    BuildContext context,
+    ColorScheme scheme,
+    TextTheme text,
+    bool isDark,
+    VoidCallback onTap,
+  ) {
     return ListTile(
       minTileHeight: 60,
       leading: ExcludeSemantics(
@@ -287,6 +313,43 @@ class _ListRow extends StatelessWidget {
             ),
       onTap: onTap,
       onLongPress: onLongPress,
+    );
+  }
+}
+
+/// Opens [page] by growing it out of the tapped surface (container
+/// transform), so the user sees where the screen came from and returns to
+class _ContainerLink extends StatelessWidget {
+  const _ContainerLink({
+    required this.page,
+    required this.color,
+    required this.radius,
+    required this.builder,
+  });
+
+  final Widget page;
+
+  /// Fill of the closed surface
+  final Color color;
+  final double radius;
+  final Widget Function(BuildContext context, VoidCallback open) builder;
+
+  @override
+  Widget build(BuildContext context) {
+    return OpenContainer<void>(
+      transitionType: ContainerTransitionType.fadeThrough,
+      transitionDuration: AppMotion.of(context, AppMotion.slow),
+      closedElevation: 0,
+      openElevation: 0,
+      closedColor: color,
+      middleColor: color,
+      openColor: Theme.of(context).scaffoldBackgroundColor,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      tappable: false,
+      closedBuilder: builder,
+      openBuilder: (context, _) => page,
     );
   }
 }

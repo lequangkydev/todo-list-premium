@@ -79,6 +79,7 @@
   "taskCompleted": "Görev tamamlandı",
   "taskCompletedRepeat": "Tamam — bir sonraki planlandı",
   "taskDeleted": "Görev silindi",
+  "movedToTomorrow": "Yarına taşındı",
   "undo": "Geri al",
   "delete": "Sil",
   "save": "Kaydet",

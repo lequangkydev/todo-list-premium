@@ -28,6 +28,7 @@ class TaskEditorSheet extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
+      sheetAnimationStyle: AppMotion.sheet(context),
       builder: (_) => TaskEditorSheet(taskId: taskId),
     );
   }
@@ -640,6 +641,7 @@ Future<T?> _choose<T>(
   return showModalBottomSheet<T>(
     context: context,
     useSafeArea: true,
+    sheetAnimationStyle: AppMotion.sheet(context),
     builder: (context) => SafeArea(
       child: ListView(
         shrinkWrap: true,

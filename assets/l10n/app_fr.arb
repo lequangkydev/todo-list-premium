@@ -79,6 +79,7 @@
   "taskCompleted": "Tâche terminée",
   "taskCompletedRepeat": "Fait — la suivante est planifiée",
   "taskDeleted": "Tâche supprimée",
+  "movedToTomorrow": "Déplacée à demain",
   "undo": "Annuler",
   "delete": "Supprimer",
   "save": "Enregistrer",

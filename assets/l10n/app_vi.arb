@@ -79,6 +79,7 @@
   "taskCompleted": "Đã xong việc",
   "taskCompletedRepeat": "Đã xong — đã lên lịch lần tới",
   "taskDeleted": "Đã xoá việc",
+  "movedToTomorrow": "Đã dời sang ngày mai",
   "undo": "Hoàn tác",
   "delete": "Xoá",
   "save": "Lưu",

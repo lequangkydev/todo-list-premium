@@ -6,6 +6,7 @@ import '../../core/date/dates.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
+import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/day_clock.dart';
 import '../../shared/helpers/task_format.dart';
 import '../tasks/widgets/quick_add_field.dart';
@@ -115,7 +116,10 @@ class _TodayTabState extends State<TodayTab> {
                               onTap: () =>
                                   setState(() => _showOverdue = !_showOverdue),
                               trailing: TextButton(
-                                onPressed: () => repo.rescheduleOverdue(today),
+                                onPressed: () {
+                                  AppHaptics.light();
+                                  repo.rescheduleOverdue(today);
+                                },
                                 child: Text(context.l10n.moveToToday),
                               ),
                             ),

@@ -72,6 +72,16 @@ class AppMotion {
 
   static Duration of(BuildContext context, Duration d) =>
       enabled(context) ? d : Duration.zero;
+
+  /// Bottom sheets: rise on an emphasized curve, leave quicker
+  static AnimationStyle sheet(BuildContext context) => enabled(context)
+      ? const AnimationStyle(
+          duration: Duration(milliseconds: 350),
+          reverseDuration: Duration(milliseconds: 220),
+          curve: Easing.emphasizedDecelerate,
+          reverseCurve: Easing.emphasizedAccelerate,
+        )
+      : AnimationStyle.noAnimation;
 }
 
 const String appFontFamily = 'PlusJakartaSans';

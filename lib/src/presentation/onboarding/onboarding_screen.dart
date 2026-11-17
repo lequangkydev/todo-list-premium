@@ -11,6 +11,7 @@ import '../../../module/remote_config/remote_config.dart';
 import '../../../module/tracking_screen/screen_logger.dart';
 import '../../config/theme/app_theme.dart';
 import '../../shared/extension/context_extension.dart';
+import '../../shared/widgets/motion.dart';
 import 'utils/intro_ad_util.dart';
 import 'utils/onboarding_controller.dart';
 import 'widgets/indicator.dart';

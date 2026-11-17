@@ -79,6 +79,7 @@
   "taskCompleted": "Задача выполнена",
   "taskCompletedRepeat": "Готово — следующая запланирована",
   "taskDeleted": "Задача удалена",
+  "movedToTomorrow": "Перенесено на завтра",
   "undo": "Отменить",
   "delete": "Удалить",
   "save": "Сохранить",

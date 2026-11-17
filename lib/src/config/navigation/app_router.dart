@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:injectable/injectable.dart';
 import 'package:material_ui/material_ui.dart';
@@ -12,6 +13,7 @@ import '../../presentation/search/search_screen.dart';
 import '../../presentation/setting/setting_screen.dart';
 import '../../presentation/splash/splash_screen.dart';
 import '../../presentation/uninstall/uninstall_screen.dart';
+import '../theme/app_theme.dart';
 
 part 'app_router.gr.dart';
 
@@ -31,6 +33,29 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: UninstallRoute.page),
     AutoRoute(page: ListDetailRoute.page),
     AutoRoute(page: CompletedRoute.page),
-    AutoRoute(page: SearchRoute.page),
+    // Search replaces the current view rather than going deeper
+    CustomRoute<void>(
+      page: SearchRoute.page,
+      duration: const Duration(milliseconds: 300),
+      reverseDuration: const Duration(milliseconds: 200),
+      transitionsBuilder: _fadeThrough,
+    ),
   ];
+}
+
+Widget _fadeThrough(
+  BuildContext context,
+  Animation<double> animation,
+  Animation<double> secondaryAnimation,
+  Widget child,
+) {
+  if (!AppMotion.enabled(context)) {
+    return child;
+  }
+  return FadeThroughTransition(
+    animation: animation,
+    secondaryAnimation: secondaryAnimation,
+    fillColor: Theme.of(context).scaffoldBackgroundColor,
+    child: child,
+  );
 }
