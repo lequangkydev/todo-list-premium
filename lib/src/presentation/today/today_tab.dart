@@ -18,6 +18,7 @@ import '../tasks/widgets/quick_add_field.dart';
 import '../tasks/widgets/task_sources.dart';
 import '../tasks/widgets/task_tile.dart';
 import 'plan_day_sheet.dart';
+import 'widgets/setup_card.dart';
 import 'widgets/today_summary_card.dart';
 
 /// Today: only what's due today. Overdue work waits quietly in "Still open"
@@ -139,6 +140,16 @@ class _TodayTabState extends State<TodayTab> {
                           sliver: SliverToBoxAdapter(
                             child: QuickAddField(defaultDate: today),
                           ),
+                        ),
+                        // Getting started: first task, notifications, widget
+                        const SliverPadding(
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                            AppSpace.gutter,
+                            AppSpace.xs,
+                            AppSpace.gutter,
+                            0,
+                          ),
+                          sliver: SliverToBoxAdapter(child: SetupCard()),
                         ),
                         if (overdue.isNotEmpty) ...[
                           SliverToBoxAdapter(

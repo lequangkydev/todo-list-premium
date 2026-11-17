@@ -329,5 +329,17 @@
   "statsListHint": "In den letzten 30 Tagen erledigt, von erledigt plus noch offen",
   "statsBestTime": "Am meisten schaffst du etwa von {from} bis {to}",
   "statsEmptyTitle": "Noch nichts zu zeigen",
-  "statsEmptyHint": "Erledige eine Aufgabe oder starte eine Fokuseinheit, dann erscheint sie hier."
+  "statsEmptyHint": "Erledige eine Aufgabe oder starte eine Fokuseinheit, dann erscheint sie hier.",
+  "setupTitle": "Einrichten",
+  "setupHide": "Ausblenden",
+  "setupAdd": "Hinzufügen",
+  "setupTask": "Erste Aufgabe hinzufügen",
+  "setupTaskHint": "Probiere „Mama anrufen morgen 9 Uhr“",
+  "setupNotifications": "Benachrichtigungen einschalten",
+  "setupNotificationsHint": "Für Erinnerungen und die Morgenübersicht",
+  "setupWidget": "Widget zum Startbildschirm hinzufügen",
+  "setupWidgetHint": "Heutige Aufgaben sehen und abhaken, ohne die App zu öffnen",
+  "setupWidgetHowTitle": "Widget hinzufügen",
+  "setupWidgetHowIos": "Halte eine leere Stelle des Home-Bildschirms gedrückt, tippe auf „Bearbeiten“, dann „Widget hinzufügen“ und suche nach dieser App.",
+  "setupWidgetHowAndroid": "Halte eine leere Stelle des Startbildschirms gedrückt, tippe auf „Widgets“ und suche diese App."
 }

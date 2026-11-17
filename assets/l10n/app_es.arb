@@ -329,5 +329,17 @@
   "statsListHint": "Hechas en los últimos 30 días, sobre hechas más pendientes",
   "statsBestTime": "Cuando más tareas terminas es entre las {from} y las {to}",
   "statsEmptyTitle": "Aún no hay nada que mostrar",
-  "statsEmptyHint": "Termina una tarea o haz una sesión de concentración y aparecerá aquí."
+  "statsEmptyHint": "Termina una tarea o haz una sesión de concentración y aparecerá aquí.",
+  "setupTitle": "Primeros pasos",
+  "setupHide": "Ocultar",
+  "setupAdd": "Añadir",
+  "setupTask": "Añade tu primera tarea",
+  "setupTaskHint": "Prueba «Llamar a mamá mañana 9h»",
+  "setupNotifications": "Activa las notificaciones",
+  "setupNotificationsHint": "Para los recordatorios y el resumen matutino",
+  "setupWidget": "Añade el widget a la pantalla de inicio",
+  "setupWidgetHint": "Consulta y marca las tareas de hoy sin abrir la app",
+  "setupWidgetHowTitle": "Añadir el widget",
+  "setupWidgetHowIos": "Mantén pulsada una zona vacía de la pantalla de inicio, toca Editar, luego Añadir widget y busca esta app.",
+  "setupWidgetHowAndroid": "Mantén pulsada una zona vacía de la pantalla de inicio, toca Widgets y busca esta app."
 }

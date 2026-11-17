@@ -21,6 +21,7 @@ import '../../gen/l18n/app_localizations.dart';
 import '../../shared/cubit/language_cubit.dart';
 import '../../shared/enum/language.dart';
 import '../../shared/helpers/logger_utils.dart';
+import '../analytics/app_events.dart';
 import '../date/dates.dart';
 import '../focus/focus_service.dart';
 import '../widgets/launch_links.dart';
@@ -278,6 +279,7 @@ class ReminderService with WidgetsBindingObserver {
           >()
           ?.requestPermissions(alert: true, badge: true, sound: true);
     }
+    AppEvents.notificationPermission(granted: await notificationsEnabled());
     _scheduleSync();
   }
 

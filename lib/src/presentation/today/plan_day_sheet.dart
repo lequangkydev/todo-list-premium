@@ -4,6 +4,7 @@ import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/ai/day_planner.dart';
 import '../../core/ai/smart_suggestions.dart';
+import '../../core/analytics/app_events.dart';
 import '../../data/local/database/app_database.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
@@ -39,6 +40,7 @@ class PlanDaySheet extends StatelessWidget {
     final undo = await getIt<TaskRepository>().schedule({
       for (final p in placed) p.task: (date: today, time: p.start),
     });
+    AppEvents.dayPlanned(placed.length);
     AppHaptics.light();
     if (context.mounted) {
       Navigator.pop(context);

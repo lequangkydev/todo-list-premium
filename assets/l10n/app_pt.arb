@@ -329,5 +329,17 @@
   "statsListHint": "Concluídas nos últimos 30 dias, de concluídas mais em aberto",
   "statsBestTime": "Você conclui mais tarefas entre {from} e {to}",
   "statsEmptyTitle": "Nada para mostrar ainda",
-  "statsEmptyHint": "Conclua uma tarefa ou faça uma sessão de foco e ela aparecerá aqui."
+  "statsEmptyHint": "Conclua uma tarefa ou faça uma sessão de foco e ela aparecerá aqui.",
+  "setupTitle": "Primeiros passos",
+  "setupHide": "Ocultar",
+  "setupAdd": "Adicionar",
+  "setupTask": "Adicione sua primeira tarefa",
+  "setupTaskHint": "Tente “Ligar para a mãe amanhã 9h”",
+  "setupNotifications": "Ative as notificações",
+  "setupNotificationsHint": "Para os lembretes e o resumo da manhã",
+  "setupWidget": "Adicione o widget à tela inicial",
+  "setupWidgetHint": "Veja e marque as tarefas de hoje sem abrir o app",
+  "setupWidgetHowTitle": "Adicionar o widget",
+  "setupWidgetHowIos": "Toque e segure uma área vazia da tela de Início, toque em Editar, depois em Adicionar Widget e procure este app.",
+  "setupWidgetHowAndroid": "Toque e segure uma área vazia da tela inicial, toque em Widgets e procure este app."
 }

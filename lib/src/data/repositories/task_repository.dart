@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../core/analytics/app_events.dart';
 import '../../core/date/dates.dart';
 import '../../core/recurrence/recurrence.dart';
 import '../local/database/app_database.dart';
@@ -133,6 +134,14 @@ class TaskRepository {
           ..orderBy([(t) => OrderingTerm.desc(t.doneAt)])
           ..limit(limit))
         .watch();
+  }
+
+  /// Whether this install has any task at all, done or deleted included
+  Stream<bool> watchHasAnyTask() {
+    final count = _t.id.count();
+    return (_db.selectOnly(_t)..addColumns([count]))
+        .map((row) => (row.read(count) ?? 0) > 0)
+        .watchSingle();
   }
 
   /// Top-level tasks completed on or after [from] (stats)
@@ -307,6 +316,13 @@ class TaskRepository {
             updatedAt: now,
           ),
         );
+    AppEvents.taskCreated(
+      hasDate: due != null,
+      hasTime: due != null && draft.dueTime != null,
+      reminders: due == null ? 0 : draft.reminders.length,
+      recurring: rule != null,
+      subtask: draft.parentId != null,
+    );
     return id;
   }
 
@@ -356,6 +372,10 @@ class TaskRepository {
     final at = now ?? DateTime.now();
     final rule = Recurrence.tryParse(task.rrule);
     final due = task.dueDate;
+    AppEvents.taskCompleted(
+      recurring: rule != null && due != null,
+      subtask: task.parentId != null,
+    );
     if (rule != null && due != null && task.parentId == null) {
       final historyId = _uuid.v4();
       final next = rule.nextDueAfterCompletion(due, at);
@@ -492,12 +512,16 @@ class TaskRepository {
 
   /// Rings the task's reminder again at [until]
   Future<void> snoozeUntil(String id, DateTime until) {
+    AppEvents.reminderSnoozed(until.difference(DateTime.now()).inMinutes);
     return patch(id, TasksCompanion(snoozedUntil: Value(until)));
   }
 
   /// Replaces the task's reminders (minutes before it is due) and, when
   /// given, whether they ring like an alarm
   Future<void> setReminders(String id, List<int> offsets, {bool? alarm}) {
+    if (offsets.isNotEmpty) {
+      AppEvents.reminderSet(count: offsets.length, alarm: alarm ?? false);
+    }
     return patch(
       id,
       TasksCompanion(

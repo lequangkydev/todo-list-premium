@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +18,8 @@ import 'module/adjust/adjust.dart';
 import 'module/admob/utils/utils.dart';
 import 'module/remote_config/remote_config.dart';
 import 'src/config/di/di.dart';
+import 'src/core/activation/setup_guide.dart';
+import 'src/core/analytics/app_events.dart';
 import 'src/core/backup/backup_service.dart';
 import 'src/core/focus/focus_service.dart';
 import 'src/core/notifications/reminder_service.dart';
@@ -43,6 +46,11 @@ class AppInitializer {
       // Month/day names for every locale, offline
       initializeDateFormatting(),
     ]);
+    // Product events go to Firebase Analytics from the app's own isolate
+    // only; background isolates and tests leave the sink unset
+    AppEvents.sink = (name, params) => unawaited(
+      FirebaseAnalytics.instance.logEvent(name: name, parameters: params),
+    );
     await RemoteConfigManager.instance.initConfig();
     _initAdjust();
     _initIAP();
@@ -55,6 +63,8 @@ class AppInitializer {
     unawaited(getIt<BackupService>().start());
     // A focus block may be running, or have finished while the app was closed
     unawaited(getIt<FocusService>().start());
+    // Getting-started card: what's done, what's left
+    unawaited(getIt<SetupGuide>().start());
 
     _settingSystemUI();
   }

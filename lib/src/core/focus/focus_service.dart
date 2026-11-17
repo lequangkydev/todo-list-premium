@@ -15,6 +15,7 @@ import '../../gen/l18n/app_localizations.dart';
 import '../../shared/cubit/language_cubit.dart';
 import '../../shared/enum/language.dart';
 import '../../shared/helpers/logger_utils.dart';
+import '../analytics/app_events.dart';
 import '../notifications/reminder_planner.dart';
 import 'focus_timer.dart';
 
@@ -96,14 +97,14 @@ class FocusService with WidgetsBindingObserver {
     }
   }
 
-  Future<void> startFocus({String? taskId, int? minutes}) => _apply((
-    state: FocusTimer.start(
-      clock(),
-      minutes: minutes ?? settings.value.focus,
-      taskId: taskId,
-    ),
-    record: null,
-  ));
+  Future<void> startFocus({String? taskId, int? minutes}) {
+    final length = minutes ?? settings.value.focus;
+    AppEvents.focusStarted(withTask: taskId != null, minutes: length);
+    return _apply((
+      state: FocusTimer.start(clock(), minutes: length, taskId: taskId),
+      record: null,
+    ));
+  }
 
   Future<void> pause() =>
       _apply((state: FocusTimer.pause(state.value, clock()), record: null));
@@ -139,6 +140,10 @@ class FocusService with WidgetsBindingObserver {
     final record = step.record;
     if (record != null) {
       await _repo.add(record);
+      AppEvents.focusRecorded(
+        minutes: record.focusMinutes,
+        completed: record.completed,
+      );
     }
     await _loadTitle(step.state.taskId);
     _endTimer?.cancel();

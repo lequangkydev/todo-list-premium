@@ -329,5 +329,17 @@
   "statsListHint": "最近 30 天完成数 /(已完成 + 未完成)",
   "statsBestTime": "你在 {from}–{to} 之间完成的任务最多",
   "statsEmptyTitle": "暂无可显示的内容",
-  "statsEmptyHint": "完成一项任务或进行一次专注后,数据会显示在这里。"
+  "statsEmptyHint": "完成一项任务或进行一次专注后,数据会显示在这里。",
+  "setupTitle": "开始使用",
+  "setupHide": "隐藏",
+  "setupAdd": "添加",
+  "setupTask": "添加第一个任务",
+  "setupTaskHint": "试试输入“明天9点给妈妈打电话”",
+  "setupNotifications": "开启通知",
+  "setupNotificationsHint": "用于接收提醒和早间摘要",
+  "setupWidget": "将小组件添加到主屏幕",
+  "setupWidgetHint": "无需打开应用即可查看并勾选今天的任务",
+  "setupWidgetHowTitle": "添加小组件",
+  "setupWidgetHowIos": "长按主屏幕空白处,轻点“编辑”,再轻点“添加小组件”,然后搜索此应用。",
+  "setupWidgetHowAndroid": "长按主屏幕空白处,轻点“小组件”,然后找到此应用。"
 }

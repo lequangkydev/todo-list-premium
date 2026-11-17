@@ -329,5 +329,17 @@
   "statsListHint": "過去30日間の完了数 /(完了 + 未完了)",
   "statsBestTime": "{from}〜{to}ごろに最も多く完了しています",
   "statsEmptyTitle": "まだ表示するものがありません",
-  "statsEmptyHint": "タスクを完了するか集中セッションを行うと、ここに表示されます。"
+  "statsEmptyHint": "タスクを完了するか集中セッションを行うと、ここに表示されます。",
+  "setupTitle": "はじめに",
+  "setupHide": "非表示",
+  "setupAdd": "追加",
+  "setupTask": "最初のタスクを追加",
+  "setupTaskHint": "「明日9時 母に電話」と入力してみましょう",
+  "setupNotifications": "通知をオンにする",
+  "setupNotificationsHint": "リマインダーと朝のまとめを受け取るため",
+  "setupWidget": "ホーム画面にウィジェットを追加",
+  "setupWidgetHint": "アプリを開かずに今日のタスクを確認・完了できます",
+  "setupWidgetHowTitle": "ウィジェットを追加",
+  "setupWidgetHowIos": "ホーム画面の何もない場所を長押しし、「編集」→「ウィジェットを追加」をタップして、このアプリを検索します。",
+  "setupWidgetHowAndroid": "ホーム画面の何もない場所を長押しし、「ウィジェット」をタップして、このアプリを探します。"
 }

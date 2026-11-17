@@ -329,5 +329,17 @@
   "statsListHint": "Completate negli ultimi 30 giorni, su completate più ancora aperte",
   "statsBestTime": "Completi più attività tra le {from} e le {to}",
   "statsEmptyTitle": "Ancora niente da mostrare",
-  "statsEmptyHint": "Completa un’attività o fai una sessione di concentrazione e comparirà qui."
+  "statsEmptyHint": "Completa un’attività o fai una sessione di concentrazione e comparirà qui.",
+  "setupTitle": "Per iniziare",
+  "setupHide": "Nascondi",
+  "setupAdd": "Aggiungi",
+  "setupTask": "Aggiungi la tua prima attività",
+  "setupTaskHint": "Prova “Chiamare mamma domani alle 9”",
+  "setupNotifications": "Attiva le notifiche",
+  "setupNotificationsHint": "Per i promemoria e il riepilogo del mattino",
+  "setupWidget": "Aggiungi il widget alla schermata Home",
+  "setupWidgetHint": "Vedi e spunta le attività di oggi senza aprire l’app",
+  "setupWidgetHowTitle": "Aggiungi il widget",
+  "setupWidgetHowIos": "Tieni premuta un’area vuota della schermata Home, tocca Modifica, poi Aggiungi widget e cerca questa app.",
+  "setupWidgetHowAndroid": "Tieni premuta un’area vuota della schermata Home, tocca Widget e cerca questa app."
 }

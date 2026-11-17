@@ -329,5 +329,17 @@
   "statsListHint": "Selesai dalam 30 hari terakhir, dari yang selesai ditambah yang masih terbuka",
   "statsBestTime": "Anda paling banyak menyelesaikan tugas sekitar {from}–{to}",
   "statsEmptyTitle": "Belum ada yang ditampilkan",
-  "statsEmptyHint": "Selesaikan tugas atau jalankan sesi fokus, hasilnya akan muncul di sini."
+  "statsEmptyHint": "Selesaikan tugas atau jalankan sesi fokus, hasilnya akan muncul di sini.",
+  "setupTitle": "Mulai",
+  "setupHide": "Sembunyikan",
+  "setupAdd": "Tambah",
+  "setupTask": "Tambahkan tugas pertama Anda",
+  "setupTaskHint": "Coba “Telepon ibu besok jam 9”",
+  "setupNotifications": "Aktifkan notifikasi",
+  "setupNotificationsHint": "Untuk pengingat dan ringkasan pagi",
+  "setupWidget": "Tambahkan widget ke layar utama",
+  "setupWidgetHint": "Lihat dan centang tugas hari ini tanpa membuka aplikasi",
+  "setupWidgetHowTitle": "Tambahkan widget",
+  "setupWidgetHowIos": "Sentuh lama area kosong di Layar Utama, ketuk Edit, lalu Tambah Widget, dan cari aplikasi ini.",
+  "setupWidgetHowAndroid": "Sentuh lama area kosong di layar utama, ketuk Widget, lalu cari aplikasi ini."
 }

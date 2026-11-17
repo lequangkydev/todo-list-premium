@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import '../../config/di/di.dart';
 import '../../config/theme/app_theme.dart';
 import '../../core/ai/smart_suggestions.dart';
+import '../../core/analytics/app_events.dart';
 import '../../core/date_parser/quick_add_parser.dart';
 import '../../data/repositories/task_repository.dart';
 import '../../shared/extension/context_extension.dart';
@@ -107,6 +108,7 @@ class _BrainDumpSheetState extends State<BrainDumpSheet> {
         ),
       );
     }
+    AppEvents.brainDumpSaved(ids.length);
     AppHaptics.light();
     if (!mounted) {
       return;

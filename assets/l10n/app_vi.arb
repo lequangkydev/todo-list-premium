@@ -329,5 +329,17 @@
   "statsListHint": "Số việc xong trong 30 ngày qua, trên tổng việc đã xong và còn mở",
   "statsBestTime": "Bạn hoàn thành nhiều việc nhất vào khoảng {from}–{to}",
   "statsEmptyTitle": "Chưa có gì để thống kê",
-  "statsEmptyHint": "Hoàn thành một việc hoặc chạy một phiên tập trung, số liệu sẽ hiện ở đây."
+  "statsEmptyHint": "Hoàn thành một việc hoặc chạy một phiên tập trung, số liệu sẽ hiện ở đây.",
+  "setupTitle": "Bắt đầu",
+  "setupHide": "Ẩn",
+  "setupAdd": "Thêm",
+  "setupTask": "Thêm việc đầu tiên",
+  "setupTaskHint": "Thử gõ “Gọi mẹ mai 9h”",
+  "setupNotifications": "Bật thông báo",
+  "setupNotificationsHint": "Để nhận nhắc nhở và tổng kết buổi sáng",
+  "setupWidget": "Thêm widget ra màn hình chính",
+  "setupWidgetHint": "Xem và tick việc hôm nay mà không cần mở app",
+  "setupWidgetHowTitle": "Thêm widget",
+  "setupWidgetHowIos": "Nhấn giữ vùng trống trên màn hình chính, chọn Sửa rồi Thêm tiện ích, và tìm app này.",
+  "setupWidgetHowAndroid": "Nhấn giữ vùng trống trên màn hình chính, chọn Tiện ích, rồi tìm app này."
 }

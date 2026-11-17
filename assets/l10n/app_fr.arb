@@ -329,5 +329,17 @@
   "statsListHint": "Terminées sur les 30 derniers jours, sur terminées plus en cours",
   "statsBestTime": "Vous terminez le plus de tâches entre {from} et {to}",
   "statsEmptyTitle": "Rien à afficher pour l’instant",
-  "statsEmptyHint": "Terminez une tâche ou lancez une session de concentration : elle apparaîtra ici."
+  "statsEmptyHint": "Terminez une tâche ou lancez une session de concentration : elle apparaîtra ici.",
+  "setupTitle": "Pour bien démarrer",
+  "setupHide": "Masquer",
+  "setupAdd": "Ajouter",
+  "setupTask": "Ajoutez votre première tâche",
+  "setupTaskHint": "Essayez « Appeler maman demain 9h »",
+  "setupNotifications": "Activez les notifications",
+  "setupNotificationsHint": "Pour les rappels et le résumé du matin",
+  "setupWidget": "Ajoutez le widget à l’écran d’accueil",
+  "setupWidgetHint": "Voyez et cochez les tâches du jour sans ouvrir l’app",
+  "setupWidgetHowTitle": "Ajouter le widget",
+  "setupWidgetHowIos": "Appuyez longuement sur une zone vide de l’écran d’accueil, touchez Modifier, puis Ajouter un widget, et cherchez cette app.",
+  "setupWidgetHowAndroid": "Appuyez longuement sur une zone vide de l’écran d’accueil, touchez Widgets, puis cherchez cette app."
 }

@@ -329,5 +329,17 @@
   "statsListHint": "Son 30 günde tamamlananlar / (tamamlanan + açık)",
   "statsBestTime": "En çok görevi {from}–{to} arasında tamamlıyorsunuz",
   "statsEmptyTitle": "Henüz gösterilecek bir şey yok",
-  "statsEmptyHint": "Bir görevi tamamlayın veya bir odak oturumu yapın; burada görünür."
+  "statsEmptyHint": "Bir görevi tamamlayın veya bir odak oturumu yapın; burada görünür.",
+  "setupTitle": "Başlarken",
+  "setupHide": "Gizle",
+  "setupAdd": "Ekle",
+  "setupTask": "İlk görevinizi ekleyin",
+  "setupTaskHint": "“Yarın 9’da annemi ara” yazmayı deneyin",
+  "setupNotifications": "Bildirimleri açın",
+  "setupNotificationsHint": "Hatırlatıcılar ve sabah özeti için",
+  "setupWidget": "Widget’ı ana ekrana ekleyin",
+  "setupWidgetHint": "Uygulamayı açmadan bugünün görevlerini görün ve işaretleyin",
+  "setupWidgetHowTitle": "Widget’ı ekle",
+  "setupWidgetHowIos": "Ana ekranda boş bir alana basılı tutun, Düzenle’ye, ardından Araç Takımı Ekle’ye dokunun ve bu uygulamayı arayın.",
+  "setupWidgetHowAndroid": "Ana ekranda boş bir alana basılı tutun, Widget’lar’a dokunun ve bu uygulamayı bulun."
 }

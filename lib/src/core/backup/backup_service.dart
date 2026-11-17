@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/repositories/backup_repository.dart';
 import '../../shared/helpers/logger_utils.dart';
+import '../analytics/app_events.dart';
 import '../date/dates.dart';
 import 'backup_codec.dart';
 import 'backup_folder.dart';
@@ -105,6 +106,7 @@ class BackupService with WidgetsBindingObserver {
       final bytes = BackupCodec.encode(data);
       final file = await (await store()).write(BackupKind.daily, bytes, at);
       await _copyToFolder(BackupStore.nameFor(BackupKind.daily, at), bytes);
+      AppEvents.backupCreated(toFolder: folderName.value != null);
       lastBackup.value = at;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_lastKey, at.toIso8601String());
@@ -164,7 +166,12 @@ class BackupService with WidgetsBindingObserver {
         at,
       );
     }
-    return _repo.restore(data, mode);
+    final result = await _repo.restore(data, mode);
+    AppEvents.backupRestored(
+      replace: mode == RestoreMode.replace,
+      tasks: result.tasks,
+    );
+    return result;
   }
 
   Future<void> setAuto(bool on) async {

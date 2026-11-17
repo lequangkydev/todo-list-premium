@@ -728,5 +728,17 @@
     }
   },
   "statsEmptyTitle": "Nothing to show yet",
-  "statsEmptyHint": "Finish a task or run a focus session and it will show up here."
+  "statsEmptyHint": "Finish a task or run a focus session and it will show up here.",
+  "setupTitle": "Get set up",
+  "setupHide": "Hide",
+  "setupAdd": "Add",
+  "setupTask": "Add your first task",
+  "setupTaskHint": "Try “Call mum tomorrow 9am”",
+  "setupNotifications": "Turn on notifications",
+  "setupNotificationsHint": "For reminders and the morning summary",
+  "setupWidget": "Add the widget to your home screen",
+  "setupWidgetHint": "See and tick off today’s tasks without opening the app",
+  "setupWidgetHowTitle": "Add the widget",
+  "setupWidgetHowIos": "Touch and hold an empty area of the Home Screen, tap Edit, then Add Widget, and search for this app.",
+  "setupWidgetHowAndroid": "Touch and hold an empty area of the home screen, tap Widgets, then find this app."
 }
