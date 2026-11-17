@@ -341,5 +341,15 @@
   "setupWidgetHint": "Voyez et cochez les tâches du jour sans ouvrir l’app",
   "setupWidgetHowTitle": "Ajouter le widget",
   "setupWidgetHowIos": "Appuyez longuement sur une zone vide de l’écran d’accueil, touchez Modifier, puis Ajouter un widget, et cherchez cette app.",
-  "setupWidgetHowAndroid": "Appuyez longuement sur une zone vide de l’écran d’accueil, touchez Widgets, puis cherchez cette app."
+  "setupWidgetHowAndroid": "Appuyez longuement sur une zone vide de l’écran d’accueil, touchez Widgets, puis cherchez cette app.",
+  "eveningNudge": "Point du soir",
+  "eveningNudgeHint": "Chaque soir à {time} : un coup d’œil à demain",
+  "eveningTitle": "{count, plural, =1{1 tâche demain} other{{count} tâches demain}}",
+  "eveningLeftTitle": "{count, plural, =1{1 tâche encore à faire aujourd’hui} other{{count} tâches encore à faire aujourd’hui}}",
+  "eveningLeft": "{count, plural, =1{1 restante d’aujourd’hui} other{{count} restantes d’aujourd’hui}}",
+  "weeklyRecap": "Bilan de la semaine",
+  "weeklyRecapHint": "Dimanche soir : ce que vous avez accompli cette semaine",
+  "weeklyTitle": "{count, plural, =1{Vous avez terminé 1 tâche cette semaine} other{Vous avez terminé {count} tâches cette semaine}}",
+  "weeklyBody": "Touchez pour voir votre semaine.",
+  "summariesChannel": "Résumés"
 }

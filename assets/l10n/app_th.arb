@@ -341,5 +341,15 @@
   "setupWidgetHint": "ดูและติ๊กงานของวันนี้ได้โดยไม่ต้องเปิดแอป",
   "setupWidgetHowTitle": "เพิ่มวิดเจ็ต",
   "setupWidgetHowIos": "แตะค้างที่พื้นที่ว่างบนหน้าจอโฮม แตะแก้ไข แล้วแตะเพิ่มวิดเจ็ต จากนั้นค้นหาแอปนี้",
-  "setupWidgetHowAndroid": "แตะค้างที่พื้นที่ว่างบนหน้าจอหลัก แตะวิดเจ็ต แล้วหาแอปนี้"
+  "setupWidgetHowAndroid": "แตะค้างที่พื้นที่ว่างบนหน้าจอหลัก แตะวิดเจ็ต แล้วหาแอปนี้",
+  "eveningNudge": "ทบทวนตอนเย็น",
+  "eveningNudgeHint": "ทุกเย็นเวลา {time}: ดูงานของวันพรุ่งนี้",
+  "eveningTitle": "{count, plural, other{พรุ่งนี้มี {count} งาน}}",
+  "eveningLeftTitle": "{count, plural, other{วันนี้ยังเหลือ {count} งาน}}",
+  "eveningLeft": "{count, plural, other{ค้างจากวันนี้ {count} งาน}}",
+  "weeklyRecap": "สรุปรายสัปดาห์",
+  "weeklyRecapHint": "เย็นวันอาทิตย์: สิ่งที่คุณทำเสร็จในสัปดาห์นี้",
+  "weeklyTitle": "{count, plural, other{สัปดาห์นี้คุณทำเสร็จ {count} งาน}}",
+  "weeklyBody": "แตะเพื่อดูสัปดาห์ของคุณ",
+  "summariesChannel": "สรุป"
 }

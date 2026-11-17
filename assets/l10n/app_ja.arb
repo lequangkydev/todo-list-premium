@@ -341,5 +341,15 @@
   "setupWidgetHint": "アプリを開かずに今日のタスクを確認・完了できます",
   "setupWidgetHowTitle": "ウィジェットを追加",
   "setupWidgetHowIos": "ホーム画面の何もない場所を長押しし、「編集」→「ウィジェットを追加」をタップして、このアプリを検索します。",
-  "setupWidgetHowAndroid": "ホーム画面の何もない場所を長押しし、「ウィジェット」をタップして、このアプリを探します。"
+  "setupWidgetHowAndroid": "ホーム画面の何もない場所を長押しし、「ウィジェット」をタップして、このアプリを探します。",
+  "eveningNudge": "夜のチェック",
+  "eveningNudgeHint": "毎晩{time}に明日の予定をお知らせ",
+  "eveningTitle": "{count, plural, other{明日のタスク {count}件}}",
+  "eveningLeftTitle": "{count, plural, other{今日のタスクが{count}件残っています}}",
+  "eveningLeft": "{count, plural, other{今日の残り {count}件}}",
+  "weeklyRecap": "週間まとめ",
+  "weeklyRecapHint": "日曜の夜:今週完了したこと",
+  "weeklyTitle": "{count, plural, other{今週は{count}件のタスクを完了しました}}",
+  "weeklyBody": "タップして今週の記録を見る",
+  "summariesChannel": "まとめ"
 }

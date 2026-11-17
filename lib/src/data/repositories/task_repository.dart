@@ -156,6 +156,20 @@ class TaskRepository {
         .watch();
   }
 
+  /// How many top-level tasks were completed on or after [from]
+  Future<int> countDoneSince(DateTime from) async {
+    final count = _t.id.count();
+    final query = _db.selectOnly(_t)
+      ..addColumns([count])
+      ..where(
+        _alive(_t) &
+            _t.isDone.equals(true) &
+            _t.parentId.isNull() &
+            _t.doneAt.isBiggerOrEqualValue(from),
+      );
+    return await query.map((row) => row.read(count)).getSingle() ?? 0;
+  }
+
   /// Every open top-level task (stats: what each list still has)
   Stream<List<Task>> watchOpen() {
     return (_db.select(_t)..where(_openTopLevel)).watch();

@@ -341,5 +341,15 @@
   "setupWidgetHint": "اطّلع على مهام اليوم وأنجزها دون فتح التطبيق",
   "setupWidgetHowTitle": "إضافة الأداة",
   "setupWidgetHowIos": "اضغط مطولًا على منطقة فارغة في الشاشة الرئيسية، ثم اضغط «تعديل» ثم «إضافة أداة» وابحث عن هذا التطبيق.",
-  "setupWidgetHowAndroid": "اضغط مطولًا على منطقة فارغة في الشاشة الرئيسية، ثم اضغط «الأدوات» وابحث عن هذا التطبيق."
+  "setupWidgetHowAndroid": "اضغط مطولًا على منطقة فارغة في الشاشة الرئيسية، ثم اضغط «الأدوات» وابحث عن هذا التطبيق.",
+  "eveningNudge": "مراجعة المساء",
+  "eveningNudgeHint": "كل مساء الساعة {time}: نظرة على الغد",
+  "eveningTitle": "{count, plural, =1{مهمة واحدة غدًا} other{{count} مهام غدًا}}",
+  "eveningLeftTitle": "{count, plural, =1{مهمة واحدة ما زالت مفتوحة اليوم} other{{count} مهام ما زالت مفتوحة اليوم}}",
+  "eveningLeft": "{count, plural, =1{واحدة متبقية من اليوم} other{{count} متبقية من اليوم}}",
+  "weeklyRecap": "ملخص الأسبوع",
+  "weeklyRecapHint": "مساء الأحد: ما أنجزته هذا الأسبوع",
+  "weeklyTitle": "{count, plural, =1{أنجزت مهمة واحدة هذا الأسبوع} other{أنجزت {count} مهام هذا الأسبوع}}",
+  "weeklyBody": "اضغط لعرض أسبوعك.",
+  "summariesChannel": "الملخصات"
 }

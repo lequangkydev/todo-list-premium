@@ -341,5 +341,15 @@
   "setupWidgetHint": "Consulta y marca las tareas de hoy sin abrir la app",
   "setupWidgetHowTitle": "Añadir el widget",
   "setupWidgetHowIos": "Mantén pulsada una zona vacía de la pantalla de inicio, toca Editar, luego Añadir widget y busca esta app.",
-  "setupWidgetHowAndroid": "Mantén pulsada una zona vacía de la pantalla de inicio, toca Widgets y busca esta app."
+  "setupWidgetHowAndroid": "Mantén pulsada una zona vacía de la pantalla de inicio, toca Widgets y busca esta app.",
+  "eveningNudge": "Repaso de la noche",
+  "eveningNudgeHint": "Cada noche a las {time}: un vistazo a mañana",
+  "eveningTitle": "{count, plural, =1{1 tarea mañana} other{{count} tareas mañana}}",
+  "eveningLeftTitle": "{count, plural, =1{1 tarea de hoy sigue pendiente} other{{count} tareas de hoy siguen pendientes}}",
+  "eveningLeft": "{count, plural, =1{1 pendiente de hoy} other{{count} pendientes de hoy}}",
+  "weeklyRecap": "Resumen semanal",
+  "weeklyRecapHint": "Domingo por la tarde: lo que hiciste esta semana",
+  "weeklyTitle": "{count, plural, =1{Terminaste 1 tarea esta semana} other{Terminaste {count} tareas esta semana}}",
+  "weeklyBody": "Toca para ver tu semana.",
+  "summariesChannel": "Resúmenes"
 }

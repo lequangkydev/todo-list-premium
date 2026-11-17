@@ -341,5 +341,15 @@
   "setupWidgetHint": "ऐप खोले बिना आज के काम देखें और पूरे करें",
   "setupWidgetHowTitle": "विजेट जोड़ें",
   "setupWidgetHowIos": "होम स्क्रीन की ख़ाली जगह को दबाकर रखें, “संपादित करें” फिर “विजेट जोड़ें” पर टैप करें और यह ऐप खोजें।",
-  "setupWidgetHowAndroid": "होम स्क्रीन की ख़ाली जगह को दबाकर रखें, “विजेट” पर टैप करें और यह ऐप ढूँढें।"
+  "setupWidgetHowAndroid": "होम स्क्रीन की ख़ाली जगह को दबाकर रखें, “विजेट” पर टैप करें और यह ऐप ढूँढें।",
+  "eveningNudge": "शाम की समीक्षा",
+  "eveningNudgeHint": "हर शाम {time} बजे: कल पर एक नज़र",
+  "eveningTitle": "{count, plural, =1{कल 1 काम} other{कल {count} काम}}",
+  "eveningLeftTitle": "{count, plural, =1{आज का 1 काम अभी बाकी है} other{आज के {count} काम अभी बाकी हैं}}",
+  "eveningLeft": "{count, plural, =1{आज का 1 बाकी} other{आज के {count} बाकी}}",
+  "weeklyRecap": "साप्ताहिक सारांश",
+  "weeklyRecapHint": "रविवार शाम: इस हफ़्ते आपने क्या पूरा किया",
+  "weeklyTitle": "{count, plural, =1{इस हफ़्ते आपने 1 काम पूरा किया} other{इस हफ़्ते आपने {count} काम पूरे किए}}",
+  "weeklyBody": "अपना हफ़्ता देखने के लिए टैप करें।",
+  "summariesChannel": "सारांश"
 }

@@ -341,5 +341,15 @@
   "setupWidgetHint": "Vedi e spunta le attività di oggi senza aprire l’app",
   "setupWidgetHowTitle": "Aggiungi il widget",
   "setupWidgetHowIos": "Tieni premuta un’area vuota della schermata Home, tocca Modifica, poi Aggiungi widget e cerca questa app.",
-  "setupWidgetHowAndroid": "Tieni premuta un’area vuota della schermata Home, tocca Widget e cerca questa app."
+  "setupWidgetHowAndroid": "Tieni premuta un’area vuota della schermata Home, tocca Widget e cerca questa app.",
+  "eveningNudge": "Punto della sera",
+  "eveningNudgeHint": "Ogni sera alle {time}: uno sguardo a domani",
+  "eveningTitle": "{count, plural, =1{1 attività domani} other{{count} attività domani}}",
+  "eveningLeftTitle": "{count, plural, =1{1 attività di oggi ancora aperta} other{{count} attività di oggi ancora aperte}}",
+  "eveningLeft": "{count, plural, =1{1 ancora aperta da oggi} other{{count} ancora aperte da oggi}}",
+  "weeklyRecap": "Riepilogo settimanale",
+  "weeklyRecapHint": "Domenica sera: cosa hai fatto questa settimana",
+  "weeklyTitle": "{count, plural, =1{Hai completato 1 attività questa settimana} other{Hai completato {count} attività questa settimana}}",
+  "weeklyBody": "Tocca per vedere la tua settimana.",
+  "summariesChannel": "Riepiloghi"
 }

@@ -341,5 +341,15 @@
   "setupWidgetHint": "Veja e marque as tarefas de hoje sem abrir o app",
   "setupWidgetHowTitle": "Adicionar o widget",
   "setupWidgetHowIos": "Toque e segure uma área vazia da tela de Início, toque em Editar, depois em Adicionar Widget e procure este app.",
-  "setupWidgetHowAndroid": "Toque e segure uma área vazia da tela inicial, toque em Widgets e procure este app."
+  "setupWidgetHowAndroid": "Toque e segure uma área vazia da tela inicial, toque em Widgets e procure este app.",
+  "eveningNudge": "Revisão da noite",
+  "eveningNudgeHint": "Toda noite às {time}: uma olhada no amanhã",
+  "eveningTitle": "{count, plural, =1{1 tarefa amanhã} other{{count} tarefas amanhã}}",
+  "eveningLeftTitle": "{count, plural, =1{1 tarefa de hoje ainda em aberto} other{{count} tarefas de hoje ainda em aberto}}",
+  "eveningLeft": "{count, plural, =1{1 de hoje ainda em aberto} other{{count} de hoje ainda em aberto}}",
+  "weeklyRecap": "Resumo semanal",
+  "weeklyRecapHint": "Domingo à noite: o que você fez esta semana",
+  "weeklyTitle": "{count, plural, =1{Você concluiu 1 tarefa esta semana} other{Você concluiu {count} tarefas esta semana}}",
+  "weeklyBody": "Toque para ver sua semana.",
+  "summariesChannel": "Resumos"
 }

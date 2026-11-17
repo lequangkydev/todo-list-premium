@@ -341,5 +341,15 @@
   "setupWidgetHint": "无需打开应用即可查看并勾选今天的任务",
   "setupWidgetHowTitle": "添加小组件",
   "setupWidgetHowIos": "长按主屏幕空白处,轻点“编辑”,再轻点“添加小组件”,然后搜索此应用。",
-  "setupWidgetHowAndroid": "长按主屏幕空白处,轻点“小组件”,然后找到此应用。"
+  "setupWidgetHowAndroid": "长按主屏幕空白处,轻点“小组件”,然后找到此应用。",
+  "eveningNudge": "晚间回顾",
+  "eveningNudgeHint": "每晚 {time}:看看明天的安排",
+  "eveningTitle": "{count, plural, other{明天有 {count} 项任务}}",
+  "eveningLeftTitle": "{count, plural, other{今天还有 {count} 项任务未完成}}",
+  "eveningLeft": "{count, plural, other{今天还剩 {count} 项}}",
+  "weeklyRecap": "每周回顾",
+  "weeklyRecapHint": "周日晚上:你这一周完成了什么",
+  "weeklyTitle": "{count, plural, other{本周你完成了 {count} 项任务}}",
+  "weeklyBody": "轻点查看你的一周。",
+  "summariesChannel": "摘要"
 }

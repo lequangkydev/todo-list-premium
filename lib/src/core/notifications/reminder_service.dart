@@ -95,6 +95,8 @@ class ReminderService with WidgetsBindingObserver {
     });
     _languageSub = _language.stream.listen((_) => _scheduleSync());
     _settings.digest.addListener(_scheduleSync);
+    _settings.evening.addListener(_scheduleSync);
+    _settings.weekly.addListener(_scheduleSync);
   }
 
   AppLocalizations get _l10n => lookupAppLocalizations(_language.state.locale);
@@ -119,12 +121,15 @@ class ReminderService with WidgetsBindingObserver {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString(_localeKey, code);
         final digest = _settings.digest.value;
+        final evening = _settings.evening.value;
         await syncReminders(
           _plugin,
           tasks,
           _l10n,
           code,
           digestMinutes: digest.on ? digest.minutes : null,
+          eveningMinutes: evening.on ? evening.minutes : null,
+          weekDone: _settings.weekly.value ? await doneThisWeek(_repo) : null,
         );
       });
     });
@@ -138,6 +143,12 @@ class ReminderService with WidgetsBindingObserver {
         return;
       case 'focus':
         LaunchLinks.instance.open(LaunchLinks.focus);
+        return;
+      case 'upcoming':
+        LaunchLinks.instance.open(LaunchLinks.upcoming);
+        return;
+      case 'stats':
+        LaunchLinks.instance.open(LaunchLinks.stats);
         return;
     }
     final taskId = payload['task'] as String?;
@@ -338,6 +349,8 @@ class ReminderService with WidgetsBindingObserver {
   Future<void> dispose() async {
     WidgetsBinding.instance.removeObserver(this);
     _settings.digest.removeListener(_scheduleSync);
+    _settings.evening.removeListener(_scheduleSync);
+    _settings.weekly.removeListener(_scheduleSync);
     await _tasksSub?.cancel();
     await _languageSub?.cancel();
     _debounce?.cancel();
@@ -438,10 +451,18 @@ Future<void> syncReminders(
   AppLocalizations l10n,
   String localeCode, {
   int? digestMinutes,
+  int? eveningMinutes,
+  int? weekDone,
 }) async {
   try {
     final now = DateTime.now();
-    final plan = ReminderPlanner.plan(tasks, now, digestMinutes: digestMinutes);
+    final plan = ReminderPlanner.plan(
+      tasks,
+      now,
+      digestMinutes: digestMinutes,
+      eveningMinutes: eveningMinutes,
+      weekDone: weekDone,
+    );
     final desired = {...plan.ids, testNotificationId, ...focusNotificationIds};
     for (final pending in await plugin.pendingNotificationRequests()) {
       if (!desired.contains(pending.id)) {
@@ -473,17 +494,35 @@ Future<void> syncReminders(
       );
     }
     for (final digest in plan.digests) {
-      final body = _digestBody(digest, l10n, localeCode);
+      final (title, body, open) = switch (digest.kind) {
+        DigestKind.morning => (
+          l10n.digestTitle(digest.count),
+          _digestBody(digest, l10n, localeCode),
+          'today',
+        ),
+        DigestKind.evening => (
+          digest.due.isEmpty
+              ? l10n.eveningLeftTitle(digest.overdue.length)
+              : l10n.eveningTitle(digest.due.length),
+          _eveningBody(digest, l10n, localeCode),
+          'upcoming',
+        ),
+        DigestKind.weekly => (
+          l10n.weeklyTitle(digest.done),
+          l10n.weeklyBody,
+          'stats',
+        ),
+      };
       await plugin.zonedSchedule(
         id: digest.notificationId,
         scheduledDate: tz.TZDateTime.from(digest.fireAt, tz.local),
-        title: l10n.digestTitle(digest.count),
+        title: title,
         body: body,
-        payload: jsonEncode({'open': 'today'}),
+        payload: jsonEncode({'open': open}),
         notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             _digestChannelId,
-            l10n.morningSummary,
+            l10n.summariesChannel,
             channelDescription: l10n.digestChannelDescription,
             color: Palette.primary,
             styleInformation: BigTextStyleInformation(body),
@@ -585,6 +624,31 @@ String _bodyOf(
   return l10n.reminderDue('$day $at');
 }
 
+/// Tasks finished since Monday, for the weekly recap
+Future<int> doneThisWeek(TaskRepository repo, [DateTime? now]) =>
+    repo.countDoneSince(Dates.startOfWeek(now ?? DateTime.now()));
+
+/// Tomorrow's tasks, then what's still open from today (when both exist)
+String _eveningBody(PlannedDigest digest, AppLocalizations l10n, String code) {
+  const shown = 4;
+  final time = DateFormat.jm(code);
+  final tomorrow = Dates.addDays(digest.day, 1);
+  final lines = [
+    for (final t in digest.due.take(shown))
+      if (t.dueTime case final minutes?)
+        '${time.format(Dates.atMinutes(tomorrow, minutes))}  ${t.title}'
+      else
+        t.title,
+    if (digest.due.length > shown) l10n.digestMore(digest.due.length - shown),
+    if (digest.due.isNotEmpty && digest.overdue.isNotEmpty)
+      l10n.eveningLeft(digest.overdue.length),
+    // Only leftovers: name them
+    if (digest.due.isEmpty)
+      for (final t in digest.overdue.take(shown)) t.title,
+  ];
+  return lines.join('\n');
+}
+
 /// "9:00 Standup · Pay rent · +2 more · 1 overdue", one per line
 String _digestBody(PlannedDigest digest, AppLocalizations l10n, String code) {
   const shown = 4;
@@ -656,6 +720,15 @@ Future<String> resyncRemindersInBackground(TaskRepository repo) async {
     l10n,
     code,
     digestMinutes: await ReminderSettings.digestMinutes(),
+    eveningMinutes: await _eveningMinutes(),
+    weekDone: await ReminderSettings.readWeekly()
+        ? await doneThisWeek(repo)
+        : null,
   );
   return code;
+}
+
+Future<int?> _eveningMinutes() async {
+  final evening = await ReminderSettings.readEvening();
+  return evening.on ? evening.minutes : null;
 }

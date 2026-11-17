@@ -205,6 +205,82 @@ void main() {
     });
   });
 
+  group('evening look at tomorrow', () {
+    final morning = DateTime(2026, 11, 13, 7);
+
+    test('the tasks of tomorrow, and what is still open by then', () {
+      final tasks = [
+        task('today', due: DateTime(2026, 11, 13)),
+        task('sat-late', due: DateTime(2026, 11, 14), time: 15 * 60),
+        task('sat-early', due: DateTime(2026, 11, 14), time: 8 * 60),
+        task('sub', due: DateTime(2026, 11, 14), parent: 'sat-late'),
+      ];
+      final plan = ReminderPlanner.plan(
+        tasks,
+        morning,
+        digestMinutes: 8 * 60,
+        eveningMinutes: 20 * 60 + 30,
+      );
+      final evenings = [
+        for (final d in plan.digests)
+          if (d.kind == DigestKind.evening) d,
+      ];
+      final tonight = evenings.first;
+      expect(tonight.fireAt, DateTime(2026, 11, 13, 20, 30));
+      expect(tonight.due.map((t) => t.id), ['sat-early', 'sat-late']);
+      expect(tonight.overdue.map((t) => t.id), ['today']);
+      // Saturday evening: nothing on Sunday, three still open
+      expect(evenings[1].due, isEmpty);
+      expect(evenings[1].overdue, hasLength(3));
+      // Morning and evening of one day don't share an id
+      expect(plan.ids, hasLength(plan.digests.length));
+      expect(
+        plan.digests.where((d) => d.kind == DigestKind.morning),
+        hasLength(ReminderPlanner.digestDays),
+      );
+    });
+
+    test('quiet when there is nothing to look at, or it is off', () {
+      expect(
+        ReminderPlanner.plan([], morning, eveningMinutes: 20 * 60).digests,
+        isEmpty,
+      );
+      final t = task('a', due: DateTime(2026, 11, 14));
+      expect(ReminderPlanner.plan([t], morning).digests, isEmpty);
+      // Already past this evening: the next one is tomorrow's
+      final late = ReminderPlanner.plan(
+        [t],
+        DateTime(2026, 11, 13, 21),
+        eveningMinutes: 20 * 60,
+      );
+      expect(late.digests.first.fireAt, DateTime(2026, 11, 14, 20));
+    });
+  });
+
+  group('weekly recap', () {
+    // Friday; the week's Sunday is the 15th
+    test('this Sunday at 18:00, with the count so far', () {
+      final plan = ReminderPlanner.plan([], now, weekDone: 5);
+      final recap = plan.digests.single;
+      expect(recap.kind, DigestKind.weekly);
+      expect(recap.fireAt, DateTime(2026, 11, 15, 18));
+      expect(recap.done, 5);
+    });
+
+    test('nothing done, off, or Sunday already over: no recap', () {
+      expect(ReminderPlanner.plan([], now, weekDone: 0).digests, isEmpty);
+      expect(ReminderPlanner.plan([], now).digests, isEmpty);
+      expect(
+        ReminderPlanner.plan(
+          [],
+          DateTime(2026, 11, 15, 19),
+          weekDone: 9,
+        ).digests,
+        isEmpty,
+      );
+    });
+  });
+
   group('snooze', () {
     final at = DateTime(2026, 11, 13, 14, 20, 35);
     const morning = (on: true, minutes: 7 * 60 + 30);

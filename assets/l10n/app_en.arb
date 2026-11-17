@@ -740,5 +740,50 @@
   "setupWidgetHint": "See and tick off today’s tasks without opening the app",
   "setupWidgetHowTitle": "Add the widget",
   "setupWidgetHowIos": "Touch and hold an empty area of the Home Screen, tap Edit, then Add Widget, and search for this app.",
-  "setupWidgetHowAndroid": "Touch and hold an empty area of the home screen, tap Widgets, then find this app."
+  "setupWidgetHowAndroid": "Touch and hold an empty area of the home screen, tap Widgets, then find this app.",
+  "eveningNudge": "Evening check-in",
+  "eveningNudgeHint": "Every evening at {time}: a look at tomorrow",
+  "@eveningNudgeHint": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eveningTitle": "{count, plural, =1{1 task tomorrow} other{{count} tasks tomorrow}}",
+  "@eveningTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eveningLeftTitle": "{count, plural, =1{1 task still open today} other{{count} tasks still open today}}",
+  "@eveningLeftTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eveningLeft": "{count, plural, =1{1 still open from today} other{{count} still open from today}}",
+  "@eveningLeft": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyRecap": "Weekly recap",
+  "weeklyRecapHint": "Sunday evening: what you got done this week",
+  "weeklyTitle": "{count, plural, =1{You finished 1 task this week} other{You finished {count} tasks this week}}",
+  "@weeklyTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyBody": "Tap to see your week.",
+  "summariesChannel": "Summaries"
 }

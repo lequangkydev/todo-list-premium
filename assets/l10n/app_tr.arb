@@ -341,5 +341,15 @@
   "setupWidgetHint": "Uygulamayı açmadan bugünün görevlerini görün ve işaretleyin",
   "setupWidgetHowTitle": "Widget’ı ekle",
   "setupWidgetHowIos": "Ana ekranda boş bir alana basılı tutun, Düzenle’ye, ardından Araç Takımı Ekle’ye dokunun ve bu uygulamayı arayın.",
-  "setupWidgetHowAndroid": "Ana ekranda boş bir alana basılı tutun, Widget’lar’a dokunun ve bu uygulamayı bulun."
+  "setupWidgetHowAndroid": "Ana ekranda boş bir alana basılı tutun, Widget’lar’a dokunun ve bu uygulamayı bulun.",
+  "eveningNudge": "Akşam kontrolü",
+  "eveningNudgeHint": "Her akşam {time}: yarına bir bakış",
+  "eveningTitle": "{count, plural, other{Yarın {count} görev}}",
+  "eveningLeftTitle": "{count, plural, other{Bugünden {count} görev hâlâ açık}}",
+  "eveningLeft": "{count, plural, other{Bugünden kalan {count} görev}}",
+  "weeklyRecap": "Haftalık özet",
+  "weeklyRecapHint": "Pazar akşamı: bu hafta tamamladıklarınız",
+  "weeklyTitle": "{count, plural, other{Bu hafta {count} görev tamamladınız}}",
+  "weeklyBody": "Haftanızı görmek için dokunun.",
+  "summariesChannel": "Özetler"
 }

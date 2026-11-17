@@ -86,6 +86,20 @@ class _SettingScreenState extends State<SettingScreen>
     _batteryOptimized,
   ].where((bad) => bad).length;
 
+  Future<void> _pickEveningTime() async {
+    final minutes = _settings.evening.value.minutes;
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: minutes ~/ 60, minute: minutes % 60),
+    );
+    if (picked != null) {
+      await _settings.setEvening(
+        on: true,
+        minutes: picked.hour * 60 + picked.minute,
+      );
+    }
+  }
+
   Future<void> _pickDigestTime() async {
     final minutes = _settings.digest.value.minutes;
     final picked = await showTimePicker(
@@ -200,6 +214,41 @@ class _SettingScreenState extends State<SettingScreen>
                       _settings.setDigest(on: on);
                     },
                   ),
+                ),
+              ),
+              const Divider(indent: 56),
+              ValueListenableBuilder(
+                valueListenable: _settings.evening,
+                builder: (context, evening, _) => ListTile(
+                  leading: const Icon(Icons.nights_stay_outlined),
+                  title: Text(l10n.eveningNudge),
+                  subtitle: Text(
+                    l10n.eveningNudgeHint(
+                      TaskFormat.time(context, evening.minutes),
+                    ),
+                  ),
+                  onTap: _pickEveningTime,
+                  trailing: Switch(
+                    value: evening.on,
+                    onChanged: (on) {
+                      AppHaptics.selection();
+                      _settings.setEvening(on: on);
+                    },
+                  ),
+                ),
+              ),
+              const Divider(indent: 56),
+              ValueListenableBuilder(
+                valueListenable: _settings.weekly,
+                builder: (context, weekly, _) => SwitchListTile(
+                  secondary: const Icon(Icons.insights_rounded),
+                  title: Text(l10n.weeklyRecap),
+                  subtitle: Text(l10n.weeklyRecapHint),
+                  value: weekly,
+                  onChanged: (on) {
+                    AppHaptics.selection();
+                    _settings.setWeekly(on: on);
+                  },
                 ),
               ),
               const Divider(indent: 56),

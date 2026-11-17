@@ -81,6 +81,10 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
         unawaited(SnoozeSheet.show(context, id));
       case 'focus':
         unawaited(context.pushRoute(FocusRoute()));
+      case 'upcoming':
+        setState(() => _tab = 1);
+      case 'stats':
+        unawaited(context.pushRoute(const StatsRoute()));
     }
   }
 

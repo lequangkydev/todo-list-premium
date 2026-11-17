@@ -341,5 +341,15 @@
   "setupWidgetHint": "Xem và tick việc hôm nay mà không cần mở app",
   "setupWidgetHowTitle": "Thêm widget",
   "setupWidgetHowIos": "Nhấn giữ vùng trống trên màn hình chính, chọn Sửa rồi Thêm tiện ích, và tìm app này.",
-  "setupWidgetHowAndroid": "Nhấn giữ vùng trống trên màn hình chính, chọn Tiện ích, rồi tìm app này."
+  "setupWidgetHowAndroid": "Nhấn giữ vùng trống trên màn hình chính, chọn Tiện ích, rồi tìm app này.",
+  "eveningNudge": "Nhắc buổi tối",
+  "eveningNudgeHint": "Mỗi tối lúc {time}: xem trước việc ngày mai",
+  "eveningTitle": "{count, plural, other{Mai có {count} việc}}",
+  "eveningLeftTitle": "{count, plural, other{Còn {count} việc hôm nay chưa xong}}",
+  "eveningLeft": "{count, plural, other{{count} việc hôm nay chưa xong}}",
+  "weeklyRecap": "Tổng kết tuần",
+  "weeklyRecapHint": "Tối Chủ nhật: những gì bạn đã làm trong tuần",
+  "weeklyTitle": "{count, plural, other{Tuần này bạn đã xong {count} việc}}",
+  "weeklyBody": "Chạm để xem tuần của bạn.",
+  "summariesChannel": "Tổng kết"
 }

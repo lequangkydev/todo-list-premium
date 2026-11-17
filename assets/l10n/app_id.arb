@@ -341,5 +341,15 @@
   "setupWidgetHint": "Lihat dan centang tugas hari ini tanpa membuka aplikasi",
   "setupWidgetHowTitle": "Tambahkan widget",
   "setupWidgetHowIos": "Sentuh lama area kosong di Layar Utama, ketuk Edit, lalu Tambah Widget, dan cari aplikasi ini.",
-  "setupWidgetHowAndroid": "Sentuh lama area kosong di layar utama, ketuk Widget, lalu cari aplikasi ini."
+  "setupWidgetHowAndroid": "Sentuh lama area kosong di layar utama, ketuk Widget, lalu cari aplikasi ini.",
+  "eveningNudge": "Tinjauan malam",
+  "eveningNudgeHint": "Setiap malam pukul {time}: sekilas tentang besok",
+  "eveningTitle": "{count, plural, other{{count} tugas besok}}",
+  "eveningLeftTitle": "{count, plural, other{{count} tugas hari ini belum selesai}}",
+  "eveningLeft": "{count, plural, other{{count} dari hari ini belum selesai}}",
+  "weeklyRecap": "Rekap mingguan",
+  "weeklyRecapHint": "Minggu malam: apa yang Anda selesaikan minggu ini",
+  "weeklyTitle": "{count, plural, other{Anda menyelesaikan {count} tugas minggu ini}}",
+  "weeklyBody": "Ketuk untuk melihat minggu Anda.",
+  "summariesChannel": "Ringkasan"
 }

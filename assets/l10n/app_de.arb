@@ -341,5 +341,15 @@
   "setupWidgetHint": "Heutige Aufgaben sehen und abhaken, ohne die App zu öffnen",
   "setupWidgetHowTitle": "Widget hinzufügen",
   "setupWidgetHowIos": "Halte eine leere Stelle des Home-Bildschirms gedrückt, tippe auf „Bearbeiten“, dann „Widget hinzufügen“ und suche nach dieser App.",
-  "setupWidgetHowAndroid": "Halte eine leere Stelle des Startbildschirms gedrückt, tippe auf „Widgets“ und suche diese App."
+  "setupWidgetHowAndroid": "Halte eine leere Stelle des Startbildschirms gedrückt, tippe auf „Widgets“ und suche diese App.",
+  "eveningNudge": "Abend-Check",
+  "eveningNudgeHint": "Jeden Abend um {time}: ein Blick auf morgen",
+  "eveningTitle": "{count, plural, =1{1 Aufgabe morgen} other{{count} Aufgaben morgen}}",
+  "eveningLeftTitle": "{count, plural, =1{1 Aufgabe heute noch offen} other{{count} Aufgaben heute noch offen}}",
+  "eveningLeft": "{count, plural, =1{1 von heute noch offen} other{{count} von heute noch offen}}",
+  "weeklyRecap": "Wochenrückblick",
+  "weeklyRecapHint": "Sonntagabend: was du diese Woche geschafft hast",
+  "weeklyTitle": "{count, plural, =1{Du hast diese Woche 1 Aufgabe erledigt} other{Du hast diese Woche {count} Aufgaben erledigt}}",
+  "weeklyBody": "Tippe, um deine Woche zu sehen.",
+  "summariesChannel": "Zusammenfassungen"
 }
