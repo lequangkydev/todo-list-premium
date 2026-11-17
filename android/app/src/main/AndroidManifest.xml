@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
     <!-- Task reminders (flutter_local_notifications) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Re-schedule reminders after a reboot -->
@@ -12,8 +13,13 @@
          notifications); Google Play needs the declaration form for it. -->
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
+    <!-- allowBackup: Android's own Auto Backup copies the task database (in
+         files/) to the user's Google account and to a new phone. Stated here
+         so no library manifest can turn it off. -->
     <application
         android:name="${applicationName}"
+        android:allowBackup="true"
+        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name">
         <receiver

@@ -162,7 +162,7 @@ void main() {
     await settle(tester);
 
     var saved = await reload(tester, task.id);
-    expect(saved.reminders, [0, 15, 1440]);
+    expect(saved.reminderOffsets, [0, 15, 1440]);
     expect(saved.alarm, isTrue);
 
     // Unticking all of them turns the alarm switch off-limits
@@ -173,7 +173,7 @@ void main() {
     final alarm = tester.widget<SwitchListTile>(find.byType(SwitchListTile));
     expect(alarm.onChanged, isNull);
     saved = await reload(tester, task.id);
-    expect(saved.reminders, isEmpty);
+    expect(saved.reminderOffsets, isEmpty);
 
     await tester.tap(find.text(l10n.actionDone));
     await settle(tester);

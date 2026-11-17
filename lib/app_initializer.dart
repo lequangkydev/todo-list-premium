@@ -17,6 +17,7 @@ import 'module/adjust/adjust.dart';
 import 'module/admob/utils/utils.dart';
 import 'module/remote_config/remote_config.dart';
 import 'src/config/di/di.dart';
+import 'src/core/backup/backup_service.dart';
 import 'src/core/notifications/reminder_service.dart';
 import 'src/core/widgets/launch_links.dart';
 import 'src/core/widgets/widget_sync.dart';
@@ -49,6 +50,8 @@ class AppInitializer {
     // Home-screen widgets mirror today's tasks; links from them open Home
     unawaited(getIt<WidgetSync>().start());
     unawaited(LaunchLinks.instance.start());
+    // Today's backup, if it hasn't been made yet (also on every resume)
+    unawaited(getIt<BackupService>().start());
 
     _settingSystemUI();
   }

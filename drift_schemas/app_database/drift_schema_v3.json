@@ -246,11 +246,7 @@
             "customConstraints": null,
             "default_dart": "const CustomExpression('\\'\\'')",
             "default_client_dart": null,
-            "dsl_features": [],
-            "type_converter": {
-              "dart_expr": "const ReminderOffsetsConverter()",
-              "dart_type_name": "List<int>"
-            }
+            "dsl_features": []
           },
           {
             "name": "alarm",

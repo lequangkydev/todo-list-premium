@@ -24,7 +24,7 @@ Task task(
   dueTime: time,
   priority: 0,
   isDone: done,
-  reminders: reminders,
+  reminders: ReminderOffsets.format(reminders),
   alarm: false,
   snoozedUntil: snoozed,
   sortOrder: 0,
@@ -264,10 +264,9 @@ void main() {
   });
 
   test('reminder lists are stored sorted and without duplicates', () {
-    const c = ReminderOffsetsConverter();
-    expect(c.toSql([60, 0, 60, 15]), '0,15,60');
-    expect(c.fromSql('60,0,x,15'), [0, 15, 60]);
-    expect(c.fromSql(''), isEmpty);
+    expect(ReminderOffsets.format([60, 0, 60, 15]), '0,15,60');
+    expect(ReminderOffsets.parse('60,0,x,15'), [0, 15, 60]);
+    expect(ReminderOffsets.parse(''), isEmpty);
   });
 
   test('phone makers', () {

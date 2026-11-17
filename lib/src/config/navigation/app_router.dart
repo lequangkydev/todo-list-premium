@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:injectable/injectable.dart';
 import 'package:material_ui/material_ui.dart';
 
+import '../../presentation/backup/backup_screen.dart';
 import '../../presentation/completed/completed_screen.dart';
 import '../../presentation/home/home_screen.dart';
 import '../../presentation/language/language_screen.dart';
@@ -35,6 +36,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: ListDetailRoute.page),
     AutoRoute(page: CompletedRoute.page),
     AutoRoute(page: ReminderCheckRoute.page),
+    AutoRoute(page: BackupRoute.page),
     // Search replaces the current view rather than going deeper
     CustomRoute<void>(
       page: SearchRoute.page,

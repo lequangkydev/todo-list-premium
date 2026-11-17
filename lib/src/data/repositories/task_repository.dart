@@ -223,7 +223,7 @@ class TaskRepository {
                 _alive(t) &
                 t.isDone.equals(false) &
                 t.dueDate.isNotNull() &
-                t.reminders.equalsValue(const []).not(),
+                t.reminders.equals('').not(),
           )
           ..orderBy(_byDueThenOrder))
         .watch();
@@ -273,7 +273,9 @@ class TaskRepository {
             dueTime: Value(due == null ? null : draft.dueTime),
             priority: Value(draft.priority),
             rrule: Value(rule?.toRule()),
-            reminders: Value(due == null ? const [] : draft.reminders),
+            reminders: Value(
+              due == null ? '' : ReminderOffsets.format(draft.reminders),
+            ),
             alarm: Value(draft.alarm),
             estimateMinutes: Value(draft.estimateMinutes),
             sortOrder: await _nextSortOrder(draft.listId, draft.parentId),
@@ -318,7 +320,7 @@ class TaskRepository {
         dueTime: Value(date == null ? null : time),
         snoozedUntil: const Value(null),
         // A reminder without a date makes no sense
-        reminders: date == null ? const Value([]) : const Value.absent(),
+        reminders: date == null ? const Value('') : const Value.absent(),
         rrule: date == null ? const Value(null) : const Value.absent(),
       ),
     );
@@ -343,7 +345,7 @@ class TaskRepository {
                     isDone: true,
                     doneAt: Value(at),
                     rrule: const Value(null),
-                    reminders: const [],
+                    reminders: '',
                     alarm: false,
                     snoozedUntil: const Value(null),
                     updatedAt: at,
@@ -475,7 +477,7 @@ class TaskRepository {
     return patch(
       id,
       TasksCompanion(
-        reminders: Value(offsets),
+        reminders: Value(ReminderOffsets.format(offsets)),
         alarm: alarm == null ? const Value.absent() : Value(alarm),
         snoozedUntil: const Value(null),
       ),

@@ -17,7 +17,7 @@ Task t(String title, {DateTime? due, int? time, int priority = 0}) => Task(
   dueTime: time,
   priority: priority,
   isDone: false,
-  reminders: const [],
+  reminders: '',
   alarm: false,
   sortOrder: 1,
   createdAt: today,

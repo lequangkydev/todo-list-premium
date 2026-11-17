@@ -57,11 +57,10 @@ class Tasks extends Table {
   TextColumn get rrule => text().nullable()();
 
   /// When to remind, as minutes before the due moment (all-day tasks: before
-  /// 9:00 on the day), e.g. `[0, 60]`; empty = no reminder. Replaced the
-  /// single `remind_offset` in schema v3.
-  TextColumn get reminders => text()
-      .withDefault(const Constant(''))
-      .map(const ReminderOffsetsConverter())();
+  /// 9:00 on the day), e.g. `0,60` (see `ReminderOffsets`,
+  /// `Task.reminderOffsets`); empty = no reminder. Replaced the single
+  /// `remind_offset` in schema v3.
+  TextColumn get reminders => text().withDefault(const Constant(''))();
 
   /// Remind like an alarm clock: alarm sound until handled, full screen on
   /// a locked Android phone, breaks through Focus on iOS (schema v3)

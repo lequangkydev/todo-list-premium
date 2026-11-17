@@ -181,7 +181,7 @@ class ReminderPlanner {
 
   /// Future fire times of all the task's reminders, as (offset, time)
   static List<(int, DateTime)> fireTimesOf(Task task, DateTime now) => [
-    for (final offset in task.reminders)
+    for (final offset in task.reminderOffsets)
       if (fireTimeOf(task, offset, now) case final at?) (offset, at),
   ];
 
@@ -264,7 +264,8 @@ class ReminderPlanner {
   /// Every id a task's notifications may use, e.g. to cancel them when the
   /// task is ticked on a widget
   static List<int> notificationIdsOf(Task task) => [
-    for (final offset in task.reminders) notificationIdOf('${task.id}:$offset'),
+    for (final offset in task.reminderOffsets)
+      notificationIdOf('${task.id}:$offset'),
     notificationIdOf('${task.id}:snooze'),
   ];
 }

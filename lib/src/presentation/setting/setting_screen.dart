@@ -12,6 +12,7 @@ import '../../../module/remote_config/remote_config.dart';
 import '../../../module/tracking_screen/loggable_widget.dart';
 import '../../config/di/di.dart';
 import '../../config/navigation/app_router.dart';
+import '../../core/backup/backup_service.dart';
 import '../../core/notifications/reminder_health.dart';
 import '../../core/notifications/reminder_service.dart';
 import '../../core/notifications/reminder_settings.dart';
@@ -25,6 +26,7 @@ import '../../shared/extension/context_extension.dart';
 import '../../shared/helpers/app_haptics.dart';
 import '../../shared/helpers/task_format.dart';
 import '../../shared/widgets/dialog/rate_dialog.dart';
+import '../backup/backup_labels.dart';
 
 @RoutePage()
 class SettingScreen extends StatefulLoggableWidget {
@@ -297,6 +299,25 @@ class _SettingScreenState extends State<SettingScreen>
                 subtitle: Text(language.languageName),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onTap: () => context.pushRoute(LanguageRoute()),
+              ),
+            ],
+          ),
+          _Group(
+            title: l10n.dataGroup,
+            children: [
+              ValueListenableBuilder(
+                valueListenable: getIt<BackupService>().lastBackup,
+                builder: (context, last, _) => ListTile(
+                  leading: const Icon(Icons.cloud_upload_outlined),
+                  title: Text(l10n.backupTitle),
+                  subtitle: Text(
+                    last == null
+                        ? l10n.backupNone
+                        : l10n.backupLast(backupWhen(context, last)),
+                  ),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: () => context.pushRoute(const BackupRoute()),
+                ),
               ),
             ],
           ),

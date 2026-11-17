@@ -582,5 +582,88 @@
     }
   },
   "checkNow": "Check now",
-  "openTask": "Open task"
+  "openTask": "Open task",
+  "backupTitle": "Backup & restore",
+  "dataGroup": "Data",
+  "backupLast": "Last backup: {when}",
+  "@backupLast": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "backupNone": "No backup yet",
+  "backupOnDeviceOnly": "Kept on this phone only",
+  "backupAlsoIn": "Also copied to “{folder}”",
+  "@backupAlsoIn": {
+    "placeholders": {
+      "folder": {
+        "type": "String"
+      }
+    }
+  },
+  "backupSection": "Back up",
+  "restoreSection": "Restore",
+  "backupDaily": "Back up every day",
+  "backupDailyHint": "Keeps the latest 7 on this phone",
+  "backupFolder": "Backup folder",
+  "backupFolderHintAndroid": "Pick Google Drive or another folder to keep a copy off this phone",
+  "backupFolderHintIos": "Pick a folder in iCloud Drive to keep a copy off this phone",
+  "backupFolderRemove": "Stop copying to this folder",
+  "backupNow": "Back up now",
+  "backupDone": "Backed up",
+  "backupEmpty": "Nothing to back up yet",
+  "backupExport": "Export a backup file",
+  "backupExportHint": "Send it by email or chat, or save it to Drive",
+  "restoreFromFile": "Restore from a file",
+  "restoreFromFileHint": "A .todobackup file from this or another phone",
+  "restoreNoBackups": "No backups on this phone yet",
+  "backupAuto": "Automatic",
+  "backupBeforeRestore": "Before restoring",
+  "backupTaskCount": "{count, plural, =1{1 task} other{{count} tasks}}",
+  "@backupTaskCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupListCount": "{count, plural, =1{1 list} other{{count} lists}}",
+  "@backupListCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupUnreadableItem": "Can’t be read",
+  "restoreTitle": "Restore this backup?",
+  "restoreMade": "Made {when}",
+  "@restoreMade": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "restoreMerge": "Merge with what’s here",
+  "restoreMergeHint": "Adds what’s missing and updates older copies. Nothing is deleted.",
+  "restoreReplace": "Replace everything",
+  "restoreReplaceHint": "The app will hold exactly what’s in the backup.",
+  "restoreSafetyNote": "What’s in the app now is saved first, so you can go back.",
+  "restoreReplaceConfirmTitle": "Replace everything?",
+  "restoreReplaceConfirm": "Tasks and lists that aren’t in the backup will be removed from the app. A copy is kept under “Before restoring”.",
+  "restoreReplaceAction": "Replace",
+  "restoredSummary": "{count, plural, =1{Restored 1 task} other{Restored {count} tasks}}",
+  "@restoredSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "restoreFailedTitle": "Couldn’t restore",
+  "backupUnreadable": "This file isn’t a backup from this app, or it’s damaged. Nothing in the app was changed.",
+  "backupTooNew": "This backup was made by a newer version of the app. Update the app, then try again."
 }

@@ -16,17 +16,18 @@ class LocalDateConverter extends TypeConverter<DateTime, String> {
       '${_pad(value.year, 4)}-${_pad(value.month)}-${_pad(value.day)}';
 }
 
-/// Reminder offsets (minutes) stored as `0,60`: sorted, no duplicates
-class ReminderOffsetsConverter extends TypeConverter<List<int>, String> {
-  const ReminderOffsetsConverter();
+/// Reminder offsets (minutes before the due moment) stored as `0,60`:
+/// sorted, no duplicates. The data class keeps the text too, so tasks
+/// compare by value — a List field would compare by identity and make
+/// every re-read task look changed.
+class ReminderOffsets {
+  ReminderOffsets._();
 
-  @override
-  List<int> fromSql(String fromDb) => normalize([
-    for (final part in fromDb.split(',')) ?int.tryParse(part.trim()),
+  static List<int> parse(String text) => normalize([
+    for (final part in text.split(',')) ?int.tryParse(part.trim()),
   ]);
 
-  @override
-  String toSql(List<int> value) => normalize(value).join(',');
+  static String format(Iterable<int> offsets) => normalize(offsets).join(',');
 
   static List<int> normalize(Iterable<int> offsets) => ({
     for (final o in offsets)

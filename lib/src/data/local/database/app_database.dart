@@ -9,6 +9,11 @@ import 'tables.dart';
 
 part 'app_database.g.dart';
 
+extension TaskReminderOffsets on Task {
+  /// Minutes before the due moment to remind, ascending; empty = none
+  List<int> get reminderOffsets => ReminderOffsets.parse(reminders);
+}
+
 @DriftDatabase(tables: [TaskLists, Tasks, ActivityDays])
 class AppDatabase extends _$AppDatabase {
   /// [executor] replaces the on-disk database (tests, migration checks)

@@ -281,7 +281,7 @@ class _Properties extends StatelessWidget {
           icon: task.alarm && task.reminders.isNotEmpty
               ? Icons.alarm_rounded
               : Icons.notifications_none_rounded,
-          label: TaskFormat.reminders(l10n, task.reminders),
+          label: TaskFormat.reminders(l10n, task.reminderOffsets),
           active: task.reminders.isNotEmpty,
           onTap: () => ReminderSheet.show(context, task),
         ),
@@ -415,7 +415,7 @@ class _Properties extends StatelessWidget {
         snoozedUntil: const Value(null),
         // Picking a time usually means "remind me then"
         reminders: task.reminders.isEmpty
-            ? const Value([0])
+            ? const Value('0')
             : const Value.absent(),
       ),
     );

@@ -30,7 +30,7 @@ Task t(
   isDone: done,
   dueTime: time,
   estimateMinutes: estimate,
-  reminders: const [],
+  reminders: '',
   alarm: false,
   sortOrder: 1,
   createdAt: now,

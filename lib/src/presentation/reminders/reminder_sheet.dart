@@ -52,7 +52,7 @@ class ReminderSheet extends StatefulWidget {
 
 class _ReminderSheetState extends State<ReminderSheet> {
   final _repo = getIt<TaskRepository>();
-  late List<int> _offsets = widget.task.reminders;
+  late List<int> _offsets = widget.task.reminderOffsets;
   late bool _alarm = widget.task.alarm;
   DeviceReminderInfo _device = DeviceReminderInfo.none;
 
@@ -70,7 +70,7 @@ class _ReminderSheetState extends State<ReminderSheet> {
     final next = _offsets.contains(offset)
         ? (List.of(_offsets)..remove(offset))
         : [..._offsets, offset];
-    setState(() => _offsets = ReminderOffsetsConverter.normalize(next));
+    setState(() => _offsets = ReminderOffsets.normalize(next));
     AppHaptics.selection();
     // A reminder needs a day; default to today
     if (widget.task.dueDate == null && _offsets.isNotEmpty) {
@@ -93,10 +93,7 @@ class _ReminderSheetState extends State<ReminderSheet> {
     final allDay = widget.task.dueTime == null;
     final presets = allDay ? ReminderSheet.allDay : ReminderSheet.timed;
     // Offsets set some other way (older versions, quick add) stay listed
-    final options = ReminderOffsetsConverter.normalize([
-      ...presets,
-      ..._offsets,
-    ]);
+    final options = ReminderOffsets.normalize([...presets, ..._offsets]);
     final needsFullScreen =
         _alarm && Platform.isAndroid && !_device.fullScreenAllowed;
     return SafeArea(
