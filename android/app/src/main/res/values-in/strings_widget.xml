@@ -4,4 +4,5 @@
     <string name="widget_today_name">Hari ini</string>
     <string name="widget_today_description">Tugas hari ini, centang di sini</string>
     <string name="quick_add_label">Tambah tugas</string>
+    <string name="widget_lunar_name">Kalender lunar</string>
 </resources>

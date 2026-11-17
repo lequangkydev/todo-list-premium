@@ -4,4 +4,5 @@
     <string name="widget_today_name">Today</string>
     <string name="widget_today_description">Today’s tasks, tick them off here</string>
     <string name="quick_add_label">Add a task</string>
+    <string name="widget_lunar_name">Lunar calendar</string>
 </resources>

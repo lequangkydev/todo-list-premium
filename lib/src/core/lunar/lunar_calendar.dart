@@ -48,6 +48,20 @@ class LunarDate {
 class LunarCalendar {
   LunarCalendar._();
 
+  static const _can = [
+    'Giáp', 'Ất', 'Bính', 'Đinh', 'Mậu', //
+    'Kỷ', 'Canh', 'Tân', 'Nhâm', 'Quý',
+  ];
+  static const _chi = [
+    'Tý', 'Sửu', 'Dần', 'Mão', 'Thìn', 'Tỵ', //
+    'Ngọ', 'Mùi', 'Thân', 'Dậu', 'Tuất', 'Hợi',
+  ];
+
+  /// The lunar year's name in the sexagenary cycle, e.g. 2026 → "Bính Ngọ"
+  /// (Vietnamese names; used when the app is in Vietnamese)
+  static String canChiYear(int lunarYear) =>
+      '${_can[(lunarYear + 6) % 10]} ${_chi[(lunarYear + 8) % 12]}';
+
   static const double timeZone = 7;
 
   static int _floor(double x) => x.floor();

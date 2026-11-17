@@ -4,4 +4,5 @@
     <string name="widget_today_name">Heute</string>
     <string name="widget_today_description">Heutige Aufgaben – hier abhaken</string>
     <string name="quick_add_label">Aufgabe hinzufügen</string>
+    <string name="widget_lunar_name">Mondkalender</string>
 </resources>

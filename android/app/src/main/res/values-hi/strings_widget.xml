@@ -4,4 +4,5 @@
     <string name="widget_today_name">आज</string>
     <string name="widget_today_description">आज के काम, यहीं पूरे करें</string>
     <string name="quick_add_label">काम जोड़ें</string>
+    <string name="widget_lunar_name">चंद्र कैलेंडर</string>
 </resources>

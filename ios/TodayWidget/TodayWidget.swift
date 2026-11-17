@@ -340,10 +340,156 @@ struct QuickAddWidget: Widget {
     }
 }
 
+// MARK: - Lunar calendar
+
+/// One day of the table the app writes (Dart `LunarWidgetSnapshot`): every
+/// label already translated. The widget only looks up today's row.
+struct LunarDay: Decodable {
+    let d: Int
+    let w: String
+    let m: String
+    let l: String
+    let f: String?
+    let y: String?
+}
+
+struct LunarTable: Decodable {
+    let title: String
+    let days: [String: LunarDay]
+
+    static let key = "lunar_snapshot"
+
+    static func load() -> LunarTable? {
+        guard let json = Store.defaults?.string(forKey: key),
+              let data = json.data(using: .utf8)
+        else { return nil }
+        return try? JSONDecoder().decode(LunarTable.self, from: data)
+    }
+
+    /// `yyyy-MM-dd`, as the app writes its keys
+    static func keyFor(_ date: Date) -> String {
+        let parts = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        return String(format: "%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0)
+    }
+}
+
+struct LunarEntry: TimelineEntry {
+    let date: Date
+    let day: LunarDay?
+    let title: String?
+}
+
+struct LunarProvider: TimelineProvider {
+    private func entry(for date: Date, in table: LunarTable?) -> LunarEntry {
+        LunarEntry(date: date, day: table?.days[LunarTable.keyFor(date)], title: table?.title)
+    }
+
+    func placeholder(in context: Context) -> LunarEntry {
+        LunarEntry(date: .now, day: nil, title: nil)
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (LunarEntry) -> Void) {
+        completion(entry(for: .now, in: LunarTable.load()))
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<LunarEntry>) -> Void) {
+        // One entry per day for the coming week, each from its midnight, so
+        // the date turns over without the app running
+        let table = LunarTable.load()
+        let today = Calendar.current.startOfDay(for: .now)
+        var entries = [entry(for: .now, in: table)]
+        for offset in 1...7 {
+            if let day = Calendar.current.date(byAdding: .day, value: offset, to: today) {
+                entries.append(entry(for: day, in: table))
+            }
+        }
+        completion(Timeline(entries: entries, policy: .atEnd))
+    }
+}
+
+struct LunarWidgetView: View {
+    @Environment(\.widgetFamily) private var family
+    let entry: LunarEntry
+
+    private var solarDay: String {
+        "\(entry.day?.d ?? Calendar.current.component(.day, from: entry.date))"
+    }
+
+    private var fallback: String {
+        entry.title ?? String(localized: "widget.lunar.name")
+    }
+
+    var body: some View {
+        content.widgetURL(link("today"))
+    }
+
+    @ViewBuilder private var content: some View {
+        switch family {
+        case .accessoryInline:
+            Text(entry.day?.l ?? fallback)
+        case .accessoryRectangular:
+            VStack(alignment: .leading, spacing: 2) {
+                Text(entry.day?.l ?? fallback)
+                    .font(.headline)
+                    .widgetAccentable()
+                if let extra = entry.day?.f ?? entry.day?.y {
+                    Text(extra).font(.caption).lineLimit(1)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        default:
+            VStack(spacing: 2) {
+                if let day = entry.day {
+                    Text(day.w).font(.caption).foregroundStyle(Color.muted).lineLimit(1)
+                    Text(solarDay)
+                        .font(.system(size: 44, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.brand)
+                    Text(day.m).font(.caption).foregroundStyle(Color.muted).lineLimit(1)
+                    Text(day.l)
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(Color.ink)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                    if let festival = day.f {
+                        Text(festival)
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(Color.priority(3))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    } else if let year = day.y {
+                        Text(year).font(.caption2).foregroundStyle(Color.muted).lineLimit(1)
+                    }
+                } else {
+                    // The app hasn't written the table yet: the date, and
+                    // what opening the app will add
+                    Text(solarDay)
+                        .font(.system(size: 44, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.brand)
+                    Text(fallback).font(.caption).foregroundStyle(Color.muted)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+}
+
+struct LunarWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "LunarWidget", provider: LunarProvider()) { entry in
+            LunarWidgetView(entry: entry)
+                .containerBackground(for: .widget) { Color.card }
+        }
+        .configurationDisplayName(String(localized: "widget.lunar.name"))
+        .description(String(localized: "widget.lunar.name"))
+        .supportedFamilies([.systemSmall, .accessoryRectangular, .accessoryInline])
+    }
+}
+
 @main
 struct TodoWidgets: WidgetBundle {
     var body: some Widget {
         TodayWidget()
         QuickAddWidget()
+        LunarWidget()
     }
 }

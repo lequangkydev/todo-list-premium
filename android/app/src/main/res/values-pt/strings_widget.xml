@@ -4,4 +4,5 @@
     <string name="widget_today_name">Hoje</string>
     <string name="widget_today_description">Tarefas de hoje, marque aqui</string>
     <string name="quick_add_label">Adicionar tarefa</string>
+    <string name="widget_lunar_name">Calendário lunar</string>
 </resources>

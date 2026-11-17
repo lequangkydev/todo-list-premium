@@ -4,4 +4,5 @@
     <string name="widget_today_name">اليوم</string>
     <string name="widget_today_description">مهام اليوم، علّمها هنا</string>
     <string name="quick_add_label">أضف مهمة</string>
+    <string name="widget_lunar_name">التقويم القمري</string>
 </resources>

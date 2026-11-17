@@ -4,4 +4,5 @@
     <string name="widget_today_name">Hôm nay</string>
     <string name="widget_today_description">Việc hôm nay, tick xong ngay tại đây</string>
     <string name="quick_add_label">Thêm việc</string>
+    <string name="widget_lunar_name">Âm lịch</string>
 </resources>

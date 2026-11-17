@@ -21,6 +21,7 @@ import '../../shared/helpers/logger_utils.dart';
 import '../date/dates.dart';
 import '../notifications/reminder_planner.dart';
 import '../notifications/reminder_service.dart';
+import 'lunar_widget_snapshot.dart';
 
 /// Names the native widgets are registered under
 const _iOSWidget = 'TodayWidget';
@@ -134,6 +135,21 @@ Future<void> pushWidgetSnapshot(
     locale: tag,
   );
   await WidgetSnapshot.save(snapshot);
+  // The lunar-calendar widget's table of coming days, kept topped up
+  await HomeWidget.saveWidgetData<String>(
+    LunarWidgetSnapshot.key,
+    jsonEncode(
+      LunarWidgetSnapshot.build(
+        today: today,
+        l10n: lookupAppLocalizations(locale),
+        locale: tag,
+      ),
+    ),
+  );
+  await HomeWidget.updateWidget(
+    iOSName: 'LunarWidget',
+    qualifiedAndroidName: 'com.vtn.todolist.widget.LunarWidgetReceiver',
+  );
 }
 
 /// Keeps the home-screen widgets in step with today's tasks, and applies

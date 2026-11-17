@@ -4,4 +4,5 @@
     <string name="widget_today_name">Сегодня</string>
     <string name="widget_today_description">Задачи на сегодня — отмечайте прямо здесь</string>
     <string name="quick_add_label">Добавить задачу</string>
+    <string name="widget_lunar_name">Лунный календарь</string>
 </resources>

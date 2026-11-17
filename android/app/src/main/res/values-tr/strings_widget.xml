@@ -4,4 +4,5 @@
     <string name="widget_today_name">Bugün</string>
     <string name="widget_today_description">Bugünün görevleri, burada işaretle</string>
     <string name="quick_add_label">Görev ekle</string>
+    <string name="widget_lunar_name">Ay takvimi</string>
 </resources>
